@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pterodactyl Mobile Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'IBM Plex Sans', sans-serif; background-color: #0d1017; color: #cbd5e1; }
+        .hidden { display: none; }
+        .bg-panel { background-color: #161b22; }
+        .bg-sidebar { background-color: #0d1117; }
+        .btn-blue { background-color: #3b82f6; transition: 0.3s; }
+        .btn-blue:hover { background-color: #2563eb; transform: translateY(-2px); }
+        .input-dark { background: #0d1117; border: 1px solid #30363d; color: white; }
+    </style>
+</head>
+<body class="h-screen flex items-center justify-center overflow-hidden">
+
+    <div id="login-page" class="w-full max-w-md p-8 bg-panel rounded-xl border border-gray-800 shadow-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-white mb-2">Pterodactyl</h1>
+            <p class="text-gray-500">Sign in to continue to your panel.</p>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm mb-1 text-gray-400">Username or Email</label>
+                <input type="text" id="username" class="w-full p-3 rounded-lg input-dark focus:outline-none focus:border-blue-500" placeholder="admin@vps.com">
+            </div>
+            <div>
+                <label class="block text-sm mb-1 text-gray-400">Password</label>
+                <input type="password" id="password" class="w-full p-3 rounded-lg input-dark focus:outline-none focus:border-blue-500" placeholder="••••••••">
+            </div>
+            <button onclick="handleLogin()" class="w-full btn-blue p-3 rounded-lg font-bold text-white shadow-lg">Login</button>
+        </div>
+    </div>
+
+    <div id="main-dashboard" class="hidden w-full h-full flex flex-col md:flex-row">
+        <div class="md:w-64 bg-sidebar border-r border-gray-800 flex flex-col">
+            <div class="p-6 text-xl font-bold text-white border-b border-gray-800">Pterodactyl</div>
+            <nav class="flex-1 p-4 space-y-2">
+                <button onclick="switchView('servers')" class="w-full text-left p-3 rounded-lg hover:bg-gray-800 flex items-center gap-3">🖥️ Servers</button>
+                <button onclick="switchView('admin')" id="admin-link" class="w-full text-left p-3 rounded-lg hover:bg-gray-800 flex items-center gap-3 text-blue-400">🛡️ Admin Panel</button>
+                <button class="w-full text-left p-3 rounded-lg hover:bg-gray-800 flex items-center gap-3">📁 File Manager</button>
+                <button class="w-full text-left p-3 rounded-lg hover:bg-gray-800 flex items-center gap-3">📊 Databases</button>
+            </nav>
+            <div class="p-4 border-t border-gray-800 flex justify-between items-center">
+                <span class="text-xs text-gray-500" id="user-display">admin@vps.com</span>
+                <button onclick="location.reload()" class="text-red-500 text-xs">Logout</button>
+            </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-6 md:p-10">
+            <div id="servers-view">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-white">Your Servers</h2>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">+ Create New</button>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-panel p-6 rounded-xl border border-gray-800 hover:border-blue-500 transition cursor-pointer shadow-lg">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Minecraft-Node-01</h3>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest">Running</p>
+                            </div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full shadow-[0_0_10px_#22c55e]"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-sm mt-4 border-t border-gray-800 pt-4">
+                            <p><span class="text-gray-500">CPU:</span> 12%</p>
+                            <p><span class="text-gray-500">RAM:</span> 2GB</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="admin-view" class="hidden">
+                <h2 class="text-2xl font-bold text-white mb-6">Admin Overview</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-center">
+                    <div class="bg-panel p-4 rounded-lg border border-gray-800"><p class="text-gray-500 text-sm">Total Users</p><p class="text-2xl font-bold">142</p></div>
+                    <div class="bg-panel p-4 rounded-lg border border-gray-800"><p class="text-gray-500 text-sm">Servers</p><p class="text-2xl font-bold">38</p></div>
+                    <div class="bg-panel p-4 rounded-lg border border-gray-800"><p class="text-gray-500 text-sm">Revenue</p><p class="text-2xl font-bold text-green-500">$1,250</p></div>
+                </div>
+                <div class="bg-panel rounded-xl border border-gray-800 overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-800 text-gray-400">
+                            <tr><th class="p-4">User</th><th class="p-4">Package</th><th class="p-4">Status</th></tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800">
+                            <tr><td class="p-4">Hamza_IQ</td><td class="p-4">Premium VPS</td><td class="p-4 text-green-500">Active</td></tr>
+                            <tr><td class="p-4">User_88</td><td class="p-4">Free Tier</td><td class="p-4 text-yellow-500">Pending</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin() {
+            const user = document.getElementById('username').value;
+            if (user === "") {
+                alert("Please enter a username!");
+                return;
+            }
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('main-dashboard').classList.remove('hidden');
+            document.body.classList.remove('items-center', 'justify-center');
+            document.getElementById('user-display').innerText = user;
+        }
+
+        function switchView(view) {
+            document.getElementById('servers-view').classList.add('hidden');
+            document.getElementById('admin-view').classList.add('hidden');
+            document.getElementById(view + '-view').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
