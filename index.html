@@ -3,159 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pterodactyl Enterprise | Server Creation</title>
+    <title>Pterodactyl Owner | Full Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --ptero-bg: #090b10; --ptero-panel: #11141d; --ptero-blue: #3b82f6; }
+        :root { --ptero-bg: #090b10; --ptero-blue: #3b82f6; }
         body { font-family: 'Inter', sans-serif; background-color: var(--ptero-bg); color: #adbac7; overflow: hidden; }
         .hidden { display: none; }
         .sidebar-item.active { background: #1c212c; border-left: 4px solid var(--ptero-blue); color: white; }
-        input, select { background: #090b10 !important; border: 1px solid #30363d !important; color: white !important; }
+        .admin-card { background: #11141d; border: 1px solid #30363d; border-radius: 12px; transition: 0.3s; }
+        .admin-card:hover { border-color: var(--ptero-blue); }
     </style>
 </head>
 <body class="h-screen flex items-center justify-center">
 
+    <div id="alert" class="fixed top-5 right-5 z-[100] bg-blue-600 text-white px-6 py-4 rounded-xl shadow-2xl hidden font-bold"></div>
+
     <div id="login-container" class="w-full max-w-md p-10 bg-[#11141d] rounded-3xl border border-gray-800 shadow-2xl">
-        <h1 class="text-4xl font-black text-white text-center mb-8 italic">PTERO<span class="text-blue-600">.</span></h1>
+        <h1 class="text-4xl font-black text-white text-center mb-8 italic">OWNER<span class="text-blue-600">.</span></h1>
         <div class="space-y-4">
-            <input type="email" id="login-email" placeholder="Email (admin@ptero.com / user@ptero.com)" class="w-full p-4 rounded-xl outline-none focus:border-blue-500">
-            <input type="password" id="login-pass" placeholder="Password (admin123 / user123)" class="w-full p-4 rounded-xl outline-none focus:border-blue-500">
-            <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black text-white transition-all">CONNECT</button>
+            <input type="text" id="login-user" placeholder="Username (admin)" class="w-full p-4 rounded-xl bg-[#090b10] border border-gray-700 outline-none focus:border-blue-500 text-white">
+            <input type="password" id="login-pass" placeholder="Password (123)" class="w-full p-4 rounded-xl bg-[#090b10] border border-gray-700 outline-none focus:border-blue-500 text-white">
+            <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black text-white transition-all shadow-lg shadow-blue-900/30">LOGIN TO CORE</button>
         </div>
     </div>
 
     <div id="dashboard" class="hidden w-full h-full flex overflow-hidden">
         
         <aside class="w-72 bg-[#0d1117] border-r border-gray-800 flex flex-col">
-            <div class="p-8 text-2xl font-black text-white italic">PTERO.</div>
+            <div class="p-8 text-2xl font-black text-white italic">PTERO CORE</div>
             <nav class="flex-1 px-4 space-y-1">
-                <button onclick="route('servers')" id="nav-servers" class="sidebar-item active w-full text-left p-4 rounded-lg flex items-center gap-3">🖥️ My Servers</button>
-                <button onclick="route('create')" id="nav-create" class="sidebar-item admin-only hidden w-full text-left p-4 rounded-lg flex items-center gap-3 text-blue-400 font-bold">➕ Create Server</button>
-                <button onclick="route('admin')" id="nav-admin" class="sidebar-item admin-only hidden w-full text-left p-4 rounded-lg flex items-center gap-3 text-blue-400">🛡️ Admin Dashboard</button>
+                <button onclick="route('servers')" id="nav-servers" class="sidebar-item active w-full text-left p-4 rounded-lg flex items-center gap-3">🖥️ Global Servers</button>
+                <button onclick="route('create')" id="nav-create" class="sidebar-item w-full text-left p-4 rounded-lg flex items-center gap-3 text-blue-400 font-bold underline">➕ Create New VPS</button>
+                <button onclick="route('users')" id="nav-users" class="sidebar-item w-full text-left p-4 rounded-lg flex items-center gap-3">👥 User Database</button>
             </nav>
             <div class="p-6 border-t border-gray-800">
-                <p id="user-tag" class="text-xs font-bold text-gray-500 mb-2 uppercase"></p>
-                <button onclick="location.reload()" class="w-full p-2 bg-red-900/20 text-red-500 rounded-lg text-[10px] font-black hover:bg-red-600 hover:text-white transition-all">LOGOUT</button>
+                <button onclick="location.reload()" class="w-full p-2 bg-red-900/20 text-red-500 rounded-lg text-xs font-black">SHUTDOWN SESSION</button>
             </div>
         </aside>
 
         <main class="flex-1 flex flex-col overflow-y-auto">
             <header class="h-20 bg-[#11141d] border-b border-gray-800 flex items-center px-10 justify-between">
-                <h2 id="page-title" class="font-bold text-white uppercase tracking-widest">My Servers</h2>
+                <h2 id="page-title" class="font-bold text-white uppercase tracking-widest">Global Management</h2>
             </header>
 
-            <div class="p-10">
-                <div id="view-servers" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-10 space-y-8">
+                
+                <div id="view-servers" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     </div>
 
-                <div id="view-create" class="hidden max-w-2xl bg-[#11141d] p-8 rounded-2xl border border-gray-800">
-                    <h3 class="text-xl font-bold text-white mb-6">Deploy New Server</h3>
+                <div id="view-create" class="hidden max-w-2xl admin-card p-8">
+                    <h3 class="text-xl font-bold text-white mb-6">Build & Assign Server</h3>
                     <div class="grid grid-cols-2 gap-6">
-                        <div class="col-span-2">
-                            <label class="text-xs font-bold text-gray-500 mb-2 block uppercase">Server Name</label>
-                            <input type="text" id="srv-name" class="w-full p-3 rounded-lg outline-none" placeholder="e.g. Minecraft Survival">
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold text-gray-500 mb-2 block uppercase">Assign to User (Email)</label>
-                            <input type="email" id="srv-user" class="w-full p-3 rounded-lg outline-none" placeholder="user@ptero.com">
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold text-gray-500 mb-2 block uppercase">RAM (GB)</label>
-                            <select id="srv-ram" class="w-full p-3 rounded-lg outline-none">
-                                <option>1GB</option><option>4GB</option><option>8GB</option><option>16GB</option>
-                            </select>
-                        </div>
-                        <button onclick="createServer()" class="col-span-2 bg-blue-600 p-4 rounded-xl font-black text-white hover:bg-blue-500 transition-all">DEPLOY SERVER</button>
+                        <div class="col-span-2"><label class="text-xs font-bold text-gray-500 mb-2 block uppercase tracking-widest">Server Label</label>
+                        <input type="text" id="srv-name" class="w-full p-3 rounded-lg bg-[#090b10] border border-gray-700 outline-none" placeholder="e.g. Iraq-VPS-01"></div>
+                        
+                        <div><label class="text-xs font-bold text-gray-500 mb-2 block uppercase tracking-widest">Owner Email</label>
+                        <input type="email" id="srv-user" class="w-full p-3 rounded-lg bg-[#090b10] border border-gray-700 outline-none font-mono" placeholder="customer@mail.com"></div>
+                        
+                        <div><label class="text-xs font-bold text-gray-500 mb-2 block uppercase tracking-widest">Memory (RAM)</label>
+                        <select id="srv-ram" class="w-full p-3 rounded-lg bg-[#090b10] border border-gray-700 outline-none">
+                            <option>2GB</option><option>8GB</option><option>32GB</option><option>128GB</option>
+                        </select></div>
+
+                        <button onclick="deployServer()" class="col-span-2 bg-blue-600 p-4 rounded-xl font-black text-white hover:bg-blue-500 transition-all shadow-lg shadow-blue-500/20">DEPLOY TO CUSTOMER</button>
                     </div>
                 </div>
 
-                <div id="view-admin" class="hidden">
-                    <div class="grid grid-cols-3 gap-6 mb-10">
-                        <div class="bg-blue-600/10 p-6 rounded-xl border border-blue-600/20 text-center">
-                            <p class="text-gray-500 text-xs font-bold">TOTAL SERVERS</p>
-                            <h4 id="count-total" class="text-4xl font-black text-white">0</h4>
+                <div id="view-users" class="hidden admin-card p-8">
+                    <h3 class="text-xl font-bold text-white mb-6">Active Clients</h3>
+                    <div id="users-list" class="space-y-4">
                         </div>
-                    </div>
                 </div>
+
             </div>
         </main>
     </div>
 
     <script>
-        let currentUser = null;
-        let servers = JSON.parse(localStorage.getItem('ptero_servers')) || [
-            { name: "Global-Node-01", owner: "admin@ptero.com", ram: "16GB", status: "Running" }
-        ];
+        // داتابيس وهمية في المتصفح لكي لا يختفي شغلك
+        let db = JSON.parse(localStorage.getItem('ptero_db')) || {
+            servers: [
+                { id: 1, name: "Master-Node", owner: "admin", ram: "128GB", status: "Running" }
+            ],
+            users: ["admin", "customer@mail.com"]
+        };
+
+        function showAlert(msg) {
+            const el = document.getElementById('alert');
+            el.innerText = msg; el.classList.remove('hidden');
+            setTimeout(() => el.classList.add('hidden'), 3000);
+        }
 
         function handleLogin() {
-            const email = document.getElementById('login-email').value;
-            const pass = document.getElementById('login-pass').value;
-
-            if (pass === 'admin123' || pass === 'user123') {
-                currentUser = email;
+            const u = document.getElementById('login-user').value;
+            const p = document.getElementById('login-pass').value;
+            if (u === 'admin' && p === '123') {
                 document.getElementById('login-container').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('user-tag').innerText = email;
-
-                if (email === 'admin@ptero.com') {
-                    document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
-                }
-                renderServers();
+                document.body.classList.remove('items-center', 'justify-center');
+                renderAll();
             } else {
-                alert("Invalid Credentials");
+                alert("Only Owner can access the Core.");
             }
         }
 
-        function createServer() {
+        function deployServer() {
             const name = document.getElementById('srv-name').value;
             const owner = document.getElementById('srv-user').value;
             const ram = document.getElementById('srv-ram').value;
 
-            if (!name || !owner) return alert("Fill all fields");
+            if(!name || !owner) return alert("Fill everything!");
 
-            const newServer = { name, owner, ram, status: "Installing" };
-            servers.push(newServer);
-            localStorage.setItem('ptero_servers', JSON.stringify(servers));
+            const newSrv = { id: Date.now(), name, owner, ram, status: "Active" };
+            db.servers.push(newSrv);
+            if(!db.users.includes(owner)) db.users.push(owner);
             
-            alert("Server Deployed Successfully to " + owner);
+            save();
+            renderAll();
             route('servers');
-            renderServers();
+            showAlert("✅ Server successfully sent to: " + owner);
         }
 
-        function renderServers() {
-            const container = document.getElementById('view-servers');
-            container.innerHTML = "";
-            
-            const myServers = servers.filter(s => s.owner === currentUser);
-            
-            myServers.forEach(s => {
-                container.innerHTML += `
-                    <div class="bg-[#11141d] p-6 rounded-2xl border border-gray-800 hover:border-blue-500 transition shadow-xl">
-                        <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-lg font-bold text-white">${s.name}</h3>
-                            <span class="text-[10px] font-bold px-2 py-1 rounded bg-green-500/10 text-green-500">${s.status}</span>
+        function deleteServer(id) {
+            if(confirm("Are you sure? This will delete the user's VPS!")) {
+                db.servers = db.servers.filter(s => s.id !== id);
+                save();
+                renderAll();
+                showAlert("🗑️ Server Permanently Deleted.");
+            }
+        }
+
+        function renderAll() {
+            // Render Servers
+            const srvCont = document.getElementById('view-servers');
+            srvCont.innerHTML = "";
+            db.servers.forEach(s => {
+                srvCont.innerHTML += `
+                    <div class="admin-card p-6 shadow-xl relative overflow-hidden">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h4 class="text-xl font-black text-white tracking-tighter">${s.name}</h4>
+                                <p class="text-[10px] text-gray-500 font-mono italic">UUID: ${s.id}</p>
+                            </div>
+                            <span class="px-3 py-1 bg-green-900/30 text-green-500 rounded-full text-[10px] font-bold">● ${s.status}</span>
                         </div>
-                        <div class="text-xs text-gray-500 space-y-1">
-                            <p>Memory: ${s.ram}</p>
-                            <p>Owner: ${s.owner}</p>
+                        <div class="grid grid-cols-2 gap-4 text-xs mb-6">
+                            <div class="bg-black/40 p-3 rounded">
+                                <p class="text-gray-500 uppercase font-bold text-[9px]">Owner Email</p>
+                                <p class="text-blue-400 font-mono">${s.owner}</p>
+                            </div>
+                            <div class="bg-black/40 p-3 rounded">
+                                <p class="text-gray-500 uppercase font-bold text-[9px]">Memory Limit</p>
+                                <p class="text-white">${s.ram}</p>
+                            </div>
                         </div>
-                        <button class="w-full mt-4 p-2 bg-gray-800 rounded-lg text-[10px] font-black hover:bg-blue-600 transition">MANAGE</button>
+                        <div class="flex gap-2">
+                            <button onclick="deleteServer(${s.id})" class="flex-1 bg-red-600/10 text-red-500 py-2 rounded font-bold text-[10px] hover:bg-red-600 hover:text-white transition">TERMINATE</button>
+                            <button onclick="alert('Accessing Console...')" class="flex-1 bg-gray-800 text-white py-2 rounded font-bold text-[10px] hover:bg-blue-600 transition">CONSOLE</button>
+                        </div>
                     </div>
                 `;
             });
-            document.getElementById('count-total').innerText = servers.length;
+
+            // Render Users
+            const userList = document.getElementById('users-list');
+            userList.innerHTML = "";
+            db.users.forEach(u => {
+                userList.innerHTML += `
+                    <div class="p-4 bg-black/30 rounded-xl flex justify-between items-center border border-gray-800">
+                        <span class="text-sm font-mono text-gray-300">${u}</span>
+                        <span class="text-[9px] bg-blue-600/20 text-blue-500 px-3 py-1 rounded font-black">ACTIVE CLIENT</span>
+                    </div>
+                `;
+            });
         }
+
+        function save() { localStorage.setItem('ptero_db', JSON.stringify(db)); }
 
         function route(page) {
             document.getElementById('view-servers').classList.add('hidden');
             document.getElementById('view-create').classList.add('hidden');
-            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById('view-users').classList.add('hidden');
             document.getElementById('view-' + page).classList.remove('hidden');
-            document.getElementById('page-title').innerText = page.replace('-', ' ');
-
-            document.querySelectorAll('.sidebar-item').forEach(btn => btn.classList.remove('active'));
+            
+            document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
             document.getElementById('nav-' + page).classList.add('active');
+            document.getElementById('page-title').innerText = page.replace('-', ' ');
         }
     </script>
 </body>
