@@ -2,111 +2,139 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Codenames - Drb7h Style</title>
+    <title>Drb7h - Infinite Challenge</title>
     <style>
-        :root {
-            --bg: #0b0b0b;
-            --purple: #9146ff; /* لون بنفسجي كيك */
-            --dark-purple: #1a0033;
-            --card: #121212;
-            --text: #ffffff;
-        }
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Cairo', sans-serif;
-            display: flex; flex-direction: column; align-items: center; padding: 20px;
-        }
-        .header { text-shadow: 0 0 15px var(--purple); font-size: 40px; margin-bottom: 10px; }
-        .scoreboard {
-            display: flex; gap: 50px; background: var(--dark-purple);
-            padding: 15px 40px; border-radius: 50px; border: 2px solid var(--purple);
-            margin-bottom: 25px; box-shadow: 0 0 20px rgba(145, 70, 255, 0.3);
-        }
-        .score-item { text-align: center; font-size: 22px; font-weight: bold; }
-        .score-num { font-size: 35px; color: var(--purple); display: block; }
+        @import url('https://fonts.googleapis.com');
+        :root { --bg: #050505; --purple: #9146ff; --hb-color: #d400ff; --bh-color: #00e5ff; }
+        body { background: var(--bg); color: white; font-family: 'Cairo', sans-serif; display: flex; flex-direction: column; align-items: center; margin: 0; overflow-x: hidden; }
         
-        .grid {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
-            max-width: 900px;
-        }
+        .header { background: #111; width: 100%; padding: 15px; border-bottom: 3px solid var(--purple); text-align: center; position: sticky; top: 0; z-index: 10; }
+        .q-title { font-size: 24px; color: gold; margin-top: 10px; }
+        
+        .scores { display: flex; gap: 20px; margin: 15px; }
+        .score-card { background: #1a1a1a; padding: 10px 25px; border-radius: 15px; text-align: center; border: 2px solid transparent; min-width: 130px; }
+        .score-card.hb { border-color: var(--hb-color); }
+        .score-card.bh { border-color: var(--bh-color); }
+        .score-card span { display: block; font-size: 38px; color: #fff; }
+
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px; }
         .card {
-            width: 160px; height: 100px; background: var(--card);
-            border: 1px solid #222; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 18px;
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
+            width: 125px; height: 90px; background: #121212; border: 1px solid #333;
+            border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; position: relative; transition: 0.2s;
         }
-        .card:hover { transform: scale(1.05); border-color: var(--purple); box-shadow: 0 0 15px var(--purple); }
-        
-        /* ألوان الفرق عند الضغط أو الكشف */
-        .card.team-a { background: var(--purple) !important; color: #fff; border: none; }
-        .card.team-b { background: #00e5ff !important; color: #000; border: none; }
-        .card.assassin { background: #ff004c !important; border: none; animation: flash 0.5s infinite; }
+        .card:hover { border-color: var(--purple); transform: scale(1.02); }
+        .card .ans-text { display: none; font-size: 15px; color: #fff; text-align: center; padding: 5px; }
+        .admin-mode .ans-text { display: block; }
+        .admin-mode .num { font-size: 14px; color: var(--purple); position: absolute; top: 5px; right: 8px; }
 
-        .spy-view .card[data-type="a"] { border: 2px solid var(--purple); color: var(--purple); }
-        .spy-view .card[data-type="b"] { border: 2px solid #00e5ff; color: #00e5ff; }
-        .spy-view .card[data-type="kill"] { border: 2px solid #ff004c; color: #ff004c; }
+        .is-hb { background: var(--hb-color) !important; border: none; box-shadow: 0 0 15px var(--hb-color); }
+        .is-bh { background: var(--bh-color) !important; border: none; box-shadow: 0 0 15px var(--bh-color); color: #000; }
+        .is-none { opacity: 0.1 !important; pointer-events: none; }
 
-        .controls { margin-top: 30px; display: flex; gap: 20px; }
-        button {
-            padding: 12px 30px; border-radius: 25px; border: none;
-            background: var(--purple); color: white; cursor: pointer; font-weight: bold;
-        }
-        .btn-spy { background: transparent; border: 2px solid var(--purple); }
+        .admin-controls { display: flex; gap: 10px; margin-bottom: 20px; }
+        button { padding: 10px 20px; border-radius: 25px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-main { background: var(--purple); color: white; }
+        .btn-skip { background: #333; color: #aaa; }
+
+        /* Popup */
+        .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #1a1a1a; padding: 25px; border-radius: 20px; border: 2px solid var(--purple); z-index: 100; text-align: center; box-shadow: 0 0 100px #000; }
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 99; }
     </style>
 </head>
-<body id="mainBody">
+<body class="admin-mode">
 
-    <div class="header">DRB7H CODENAMES</div>
+    <div class="header">
+        <div id="roundCount" style="color: #888;">الجولة: 1</div>
+        <div id="qText" class="q-title">جاري تحميل السؤال...</div>
+        <div class="scores">
+            <div class="score-card hb">HB <span id="sHB">0</span></div>
+            <div class="score-card bh">BH <span id="sBH">0</span></div>
+        </div>
+    </div>
 
-    <div class="scoreboard">
-        <div class="score-item">فريق A <span id="sA" class="score-num">0</span></div>
-        <div class="score-item">فريق B <span id="sB" class="score-num">0</span></div>
+    <div class="admin-controls">
+        <button class="btn-main" onclick="document.body.classList.toggle('admin-mode')">👁️ وضع البث</button>
+        <button class="btn-skip" onclick="nextQuestion()">Skip ⏭️</button>
+        <button class="btn-main" style="background: gold; color: #000;" onclick="finishRound()">إنهاء الجولة ✅</button>
     </div>
 
     <div id="board" class="grid"></div>
 
-    <div class="controls">
-        <button onclick="newGame()">جولة جديدة 🔄</button>
-        <button class="btn-spy" onclick="toggleSpy()">رئيس الجواسيس 👁️</button>
+    <div id="overlay" class="overlay"></div>
+    <div id="popup" class="popup">
+        <h3 id="popTitle"></h3>
+        <button style="background:var(--hb-color); color:white;" onclick="assign('hb')">نقطة لـ HB</button>
+        <button style="background:var(--bh-color); color:black;" onclick="assign('bh')">نقطة لـ BH</button>
+        <br>
+        <button style="background:#444; color:white;" onclick="assign('none')">محد جاوب</button>
+        <button style="background:transparent; color:#777;" onclick="closePop()">إلغاء</button>
     </div>
 
     <script>
-        let scoreA = 0, scoreB = 0;
-        const words = ["دربحة", "كيك", "فالكون", "سيرفر", "بث", "نيون", "ريسبكت", "تشفير", "روبوت", "ماوس", "واقع", "فضاء", "برق", "خيال", "قراصنة", "مصفوفة", "بكسل", "بيانات", "ذكاء", "شريحة", "موجة", "نبض", "رادار", "طاقة", "اتصال"];
+        let round = 1, scoreHB = 0, scoreBH = 0, curCard = null;
+        
+        // بنك الأسئلة اللانهائي
+        const questionBank = [
+            { q: "أشهر ماركات السيارات؟", a: ["تويوتا", "مرسيدس", "فورد", "بي ام", "تسلا", "هوندا"] },
+            { q: "أشهر تطبيقات التواصل؟", a: ["واتساب", "تيك توك", "سناب", "انستا", "تويتر", "يوتيوب"] },
+            { q: "أشهر لاعبي الكورة حالياً؟", a: ["ميسي", "رونالدو", "مبابي", "هالاند", "فينيسيوس", "بيلينجهام"] },
+            { q: "أشهر الأكلات السريعة؟", a: ["بيتزا", "برجر", "شاورما", "كنتاكي", "سوشي", "تاكو"] },
+            { q: "أشهر مدن سياحية بالعالم؟", a: ["باريس", "دبي", "لندن", "اسطنبول", "نيويورك", "طوكيو"] },
+            { q: "أشهر شركات التقنية؟", a: ["آبل", "جوجل", "مايكروسوفت", "أمازون", "سامسونج", "نيفيديا"] },
+            { q: "أشهر قنوات اليوتيوب العربية؟", a: ["ابو فلة", "بندريتا", "دربحة", "اوسمز", "نور مار", "سيد"] }
+        ];
 
-        function newGame() {
+        function nextQuestion() {
             const board = document.getElementById('board');
             board.innerHTML = '';
-            scoreA = 0; scoreB = 0;
-            document.getElementById('sA').innerText = 0;
-            document.getElementById('sB').innerText = 0;
+            
+            // اختيار سؤال عشوائي
+            const data = questionBank[Math.floor(Math.random() * questionBank.length)];
+            document.getElementById('qText').innerText = "السؤال: " + data.q;
+            document.getElementById('roundCount').innerText = "الجولة: " + round;
 
-            let types = [...Array(9).fill('a'), ...Array(8).fill('b'), 'kill', ...Array(7).fill('n')].sort(() => Math.random() - 0.5);
-            words.sort(() => Math.random() - 0.5).forEach((w, i) => {
+            for (let i = 1; i <= 25; i++) {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerText = w;
-                card.dataset.type = types[i];
+                let pts = i <= 6 ? (11 - i) : 1; // أول 6 أرقام نقاطها عالية
+                let word = i <= 6 ? data.a[i-1] : "—";
+                
+                card.innerHTML = `<span class="num">${i}</span><div class="ans-text">${word}</div><div style="font-size:10px; color:gold; position:absolute; bottom:5px;">${pts}p</div>`;
+                card.dataset.pts = pts;
+                card.dataset.word = word;
+                
                 card.onclick = () => {
-                    if (card.classList.contains('clicked')) return;
-                    card.classList.add('clicked');
-                    if (card.dataset.type === 'a') { card.classList.add('team-a'); scoreA++; }
-                    if (card.dataset.type === 'b') { card.classList.add('team-b'); scoreB++; }
-                    if (card.dataset.type === 'kill') { card.classList.add('assassin'); alert('انتهت اللعبة! القاتل ضرب 💀'); }
-                    document.getElementById('sA').innerText = scoreA;
-                    document.getElementById('sB').innerText = scoreB;
+                    if (card.classList.contains('done')) return;
+                    curCard = card;
+                    document.getElementById('popTitle').innerText = word;
+                    document.getElementById('popup').style.display = 'block';
+                    document.getElementById('overlay').style.display = 'block';
                 };
                 board.appendChild(card);
-            });
+            }
         }
 
-        function toggleSpy() {
-            document.getElementById('board').classList.toggle('spy-view');
+        function assign(team) {
+            let p = parseInt(curCard.dataset.pts);
+            if (team === 'hb') { scoreHB += p; curCard.classList.add('is-hb'); }
+            else if (team === 'bh') { scoreBH += p; curCard.classList.add('is-bh'); }
+            else if (team === 'none') { curCard.classList.add('is-none'); }
+            curCard.classList.add('done');
+            document.getElementById('sHB').innerText = scoreHB;
+            document.getElementById('sBH').innerText = scoreBH;
+            closePop();
         }
 
-        newGame();
+        function finishRound() {
+            alert(`نهاية الجولة ${round}!\nالنتيجة الحالية:\nHB: ${scoreHB}\nBH: ${scoreBH}`);
+            round++;
+            nextQuestion();
+        }
+
+        function closePop() { document.getElementById('popup').style.display='none'; document.getElementById('overlay').style.display='none'; }
+
+        nextQuestion();
     </script>
 </body>
 </html>
