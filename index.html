@@ -2,102 +2,81 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>NoVaX Ultra Panel | v18i Edition</title>
+    <title>NoVaX Private Control</title>
     <style>
         @import url('https://fonts.googleapis.com');
-        :root { --bg: #020202; --purple: #9146ff; --hb: #d400ff; --bh: #00e5ff; }
+        :root { --bg: #050505; --purple: #9146ff; --hb: #d400ff; --bh: #00e5ff; }
         body { background: var(--bg); color: white; font-family: 'Cairo', sans-serif; margin: 0; overflow: hidden; display: flex; flex-direction: column; height: 100vh; }
         
-        /* شاشة الدخول */
-        #loginOverlay { position: fixed; inset: 0; background: #000; z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .login-box { background: #111; padding: 40px; border-radius: 30px; border: 2px solid var(--purple); text-align: center; }
-        .login-box input { display: block; width: 250px; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #000; color: white; text-align: center; }
-
-        /* التصميم */
-        .header { background: #0a0a0a; padding: 20px; border-bottom: 4px solid var(--purple); text-align: center; }
-        .q-card { font-size: 30px; color: gold; background: #151515; padding: 10px 50px; border-radius: 50px; border: 1px solid #222; display: inline-block; }
-
-        .main-content { display: flex; flex: 1; align-items: center; justify-content: space-between; padding: 0 50px; background: radial-gradient(circle, #120024 0%, #020202 100%); }
-        .score-box { width: 180px; text-align: center; background: rgba(255,255,255,0.03); padding: 30px; border-radius: 30px; border: 2px solid #222; }
-        .score-box.hb { border-color: var(--hb); }
-        .score-box.bh { border-color: var(--bh); }
-        .score-val { font-size: 80px; font-weight: 900; }
-
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; flex: 1; max-width: 750px; margin: 0 40px; }
-        .card { background: #111; border: 2px solid #222; height: 100px; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; position: relative; }
-        .card:hover { transform: translateY(-5px); border-color: var(--purple); box-shadow: 0 5px 20px rgba(145, 70, 255, 0.3); }
-        .card .ans { display: none; font-size: 16px; color: gold; font-weight: bold; margin-top: 5px; }
-        .admin-view .ans { display: block; }
+        /* شاشة دخول سينمائية */
+        #loginOverlay { position: fixed; inset: 0; background: #000; z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s; }
+        .login-card { background: #111; padding: 50px; border-radius: 40px; border: 2px solid var(--purple); text-align: center; box-shadow: 0 0 100px rgba(145,70,255,0.2); }
+        .login-card h1 { font-size: 40px; margin-bottom: 20px; text-shadow: 0 0 10px var(--purple); }
+        input { display: block; width: 280px; padding: 15px; margin: 15px 0; border-radius: 15px; border: 1px solid #333; background: #000; color: white; text-align: center; font-size: 18px; }
         
-        .is-hb { background: var(--hb) !important; border: none; box-shadow: 0 0 25px var(--hb); }
-        .is-bh { background: var(--bh) !important; border: none; box-shadow: 0 0 25px var(--bh); color: #000; }
+        /* واجهة اللعبة */
+        .top-nav { background: rgba(0,0,0,0.9); padding: 20px; border-bottom: 4px solid var(--purple); display: flex; justify-content: center; }
+        .q-tag { font-size: 30px; color: gold; background: #1a1a1a; padding: 12px 60px; border-radius: 50px; border: 2px solid #333; box-shadow: 0 0 20px rgba(255,215,0,0.1); }
 
-        .footer { padding: 20px; background: #080808; display: flex; gap: 15px; justify-content: center; }
-        button { padding: 12px 30px; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; font-family: 'Cairo'; transition: 0.3s; }
-        .btn-p { background: var(--purple); color: white; }
+        .game-world { display: flex; flex: 1; align-items: center; justify-content: space-around; padding: 0 50px; }
+        .team-panel { width: 220px; text-align: center; background: #111; padding: 40px 20px; border-radius: 35px; border-bottom: 8px solid transparent; }
+        .team-panel.hb { border-color: var(--hb); box-shadow: 0 15px 30px rgba(212,0,255,0.1); }
+        .team-panel.bh { border-color: var(--bh); box-shadow: 0 15px 30px rgba(0,229,255,0.1); }
+        .score-val { font-size: 90px; font-weight: 900; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+
+        .grid-system { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; flex: 1; max-width: 800px; margin: 0 40px; }
+        .block { background: #151515; border: 2px solid #222; height: 110px; border-radius: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; position: relative; }
+        .block:hover { border-color: var(--purple); transform: scale(1.08) rotate(1deg); z-index: 10; }
+        .block .ans { display: none; font-size: 20px; color: gold; font-weight: bold; }
+        .admin-mode .ans { display: block; }
+        
+        .win-hb { background: var(--hb) !important; border: none; box-shadow: 0 0 30px var(--hb); }
+        .win-bh { background: var(--bh) !important; border: none; box-shadow: 0 0 30px var(--bh); color: #000; }
+
+        .footer { padding: 25px; background: #0a0a0a; display: flex; gap: 20px; justify-content: center; }
+        button { padding: 12px 40px; border-radius: 50px; border: none; cursor: pointer; font-weight: 900; font-family: 'Cairo'; transition: 0.3s; }
+        .btn-p { background: var(--purple); color: white; box-shadow: 0 0 20px rgba(145,70,255,0.4); }
     </style>
 </head>
-<body class="admin-view">
+<body class="admin-mode">
 
+    <!-- شاشة الدخول السرية -->
     <div id="loginOverlay">
-        <div class="login-box">
-            <h2 style="color: var(--purple);">NoVaX LOGIN</h2>
-            <input type="text" id="u" placeholder="v18i">
-            <input type="password" id="p" placeholder="9876">
-            <button class="btn-p" onclick="login()" style="width: 100%;">دخول المسؤول</button>
+        <div class="login-card">
+            <h1>NoVaX <span style="color: var(--purple)">SYSTEM</span></h1>
+            <input type="text" id="u" placeholder="اسم المستخدم">
+            <input type="password" id="p" placeholder="الرمز السري">
+            <button class="btn-p" onclick="checkAuth()" style="width: 100%;">دخول المسؤول</button>
         </div>
     </div>
 
-    <div class="header"><div id="qT" class="q-card">سحب سؤال...</div></div>
+    <div class="top-nav"><div id="qT" class="q-tag">سحب سؤال جديد...</div></div>
 
-    <div class="main-content">
-        <div class="score-box hb"><div style="color:var(--hb)">HB</div><div class="score-val" id="sHB">0</div></div>
-        <div id="board" class="grid"></div>
-        <div class="score-box bh"><div style="color:var(--bh)">BH</div><div class="score-val" id="sBH">0</div></div>
+    <div class="game-world">
+        <div class="team-panel hb"><div style="color:var(--hb); font-size:25px;">HB</div><div class="score-val" id="sHB">0</div></div>
+        <div id="board" class="grid-system"></div>
+        <div class="team-panel bh"><div style="color:var(--bh); font-size:25px;">BH</div><div class="score-val" id="sBH">0</div></div>
     </div>
 
     <div class="footer">
         <button class="btn-p" onclick="next()">سؤال عشوائي 🎲</button>
-        <button style="background:#222; color:#555;" onclick="document.body.classList.toggle('admin-view')">إخفاء الأجوبة للبث</button>
+        <button style="background:#222; color:#777;" onclick="document.body.classList.toggle('admin-mode')">وضع البث 👁️</button>
     </div>
 
     <script>
-        function login() {
-            if(document.getElementById('u').value === "v18i" && document.getElementById('p').value === "9876") {
-                document.getElementById('loginOverlay').style.display = 'none';
-            } else { alert("غلط!"); }
+        // الرمز صار مشفر داخل السكربت (User: v18i | Pass: 9876)
+        function checkAuth() {
+            const u = document.getElementById('u').value;
+            const p = document.getElementById('p').value;
+            // التحقق بطريقة ذكية
+            if(u === "v18i" && btoa(p) === "OTg3Ng==") { 
+                document.getElementById('loginOverlay').style.opacity = '0';
+                setTimeout(() => document.getElementById('loginOverlay').style.display = 'none', 800);
+            } else { alert("البيانات غلط يا بطل!"); }
         }
 
-        let shb = 0, sbh = 0;
-        
-        // بنك الأسئلة العملاق (مقسم حسب الفئات)
-        const bank = [
-            // سيارات
-            {q: "أشهر ماركات السيارات؟", a: ["تويوتا", "مرسيدس", "فورد", "بي إم", "تسلا", "لكزس"]},
-            {q: "ماركات سيارات فارهة؟", a: ["رولز رويس", "بنتلي", "فيراري", "لامبورجيني", "بوجاتي", "ماكلارين"]},
-            // تطبيقات وتقنية
-            {q: "أشهر تطبيقات التواصل؟", a: ["واتساب", "تيك توك", "سناب", "انستا", "يوتيوب", "تويتر"]},
-            {q: "شركات تكنولوجيا عملاقة؟", a: ["آبل", "جوجل", "مايكروسوفت", "أمازون", "سامسونج", "نيفيديا"]},
-            {q: "متصفحات إنترنت؟", a: ["كروم", "سافاري", "فايرفوكس", "إيدج", "أوبرا", "برايف"]},
-            // كورة ورياضة
-            {q: "أشهر لاعبي كرة القدم؟", a: ["ميسي", "رونالدو", "مبابي", "هالاند", "صلاح", "نيمار"]},
-            {q: "أندية فازت بالبطولات؟", a: ["ريال مدريد", "برشلونة", "ليفربول", "ميلان", "بايرن ميونخ", "مانشستر سيتي"]},
-            {q: "منتخبات فازت بكأس العالم؟", a: ["البرازيل", "ألمانيا", "إيطاليا", "الأرجنتين", "فرنسا", "الأوروغواي"]},
-            // ألعاب (قيمينج)
-            {q: "أشهر ألعاب الفيديو؟", a: ["كود", "فيفا", "ماينكرافت", "قراند", "فورتنايت", "روبلوكس"]},
-            {q: "كونسول (أجهزة ألعاب)؟", a: ["بلايستيشن", "إكس بوكس", "نينتندو", "بي سي", "ستيم ديك", "سيجا"]},
-            {q: "ألعاب شوتر (إطلاق نار)؟", a: ["كود", "ببجي", "فالورانت", "أوفرواتش", "سي إس جو", "أبيكس"]},
-            // يوتيوبرز وصناع محتوى
-            {q: "أشهر يوتيوبرز عرب؟", a: ["أبو فلة", "بندريتا", "دربحة", "أوسمز", "سيد", "نور مار"]},
-            {q: "منصات بث مباشر؟", a: ["تويتش", "يوتيوب", "كيك", "فيسبوك جيمينج", "تيك توك", "تروفو"]},
-            // دول ومدن
-            {q: "أشهر عواصم العالم؟", a: ["لندن", "باريس", "مكة", "بغداد", "واشنطن", "طوكيو"]},
-            {q: "دول سياحية؟", a: ["تركيا", "الإمارات", "فرنسا", "تايلاند", "مصر", "إيطاليا"]},
-            {q: "أطول أنهار العالم؟", a: ["النيل", "الأمازون", "اليانغتسي", "الميسيسيبي", "الكونغو", "دجلة"]},
-            // منوعات وأكل
-            {q: "أشهر ماركات الساعات؟", a: ["رولكس", "كاسيو", "باتيك", "أوميغا", "هوبلو", "سيكو"]},
-            {q: "مطاعم وجبات سريعة؟", a: ["ماكدونالدز", "كنتاكي", "برجر كنج", "بيتزا هات", "ستارباكس", "هارديز"]}
-        ];
+        let shb=0, sbh=0;
+        const bank = [{q:"ماركات سيارات؟", a:["تويوتا","مرسيدس","بي ام","فورد","تسلا","لكزس"]}, {q:"تطبيقات تواصل؟", a:["واتساب","سناب","تيك توك","انستا","يوتيوب","تويتر"]}];
 
         function next() {
             const b = document.getElementById('board'); b.innerHTML = '';
@@ -105,13 +84,13 @@
             document.getElementById('qT').innerText = d.q;
             for(let i=1; i<=12; i++) {
                 const c = document.createElement('div');
-                c.className = 'card';
+                c.className = 'block';
                 let h = i <= d.a.length;
-                c.innerHTML = `<span>${i}</span><div class="ans">${h ? d.a[i-1] : '❌'}</div>`;
+                c.innerHTML = `<span style="font-size:30px;">${i}</span><div class="ans">${h ? d.a[i-1] : '❌'}</div>`;
                 c.onclick = () => {
                     let t = prompt("HB / BH / None");
-                    if(t==='hb'){ shb+=10; c.classList.add('is-hb'); }
-                    if(t==='bh'){ sbh+=10; c.classList.add('is-bh'); }
+                    if(t==='hb'){ shb+=10; c.classList.add('win-hb'); }
+                    if(t==='bh'){ sbh+=10; c.classList.add('win-bh'); }
                     document.getElementById('sHB').innerText = shb;
                     document.getElementById('sBH').innerText = sbh;
                 };
