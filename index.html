@@ -2,138 +2,123 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Drb7h Infinite Show - 100K Edition</title>
+    <title>NoVaX Ultra Panel | v18i Edition</title>
     <style>
         @import url('https://fonts.googleapis.com');
         :root { --bg: #020202; --purple: #9146ff; --hb: #d400ff; --bh: #00e5ff; }
         body { background: var(--bg); color: white; font-family: 'Cairo', sans-serif; margin: 0; overflow: hidden; display: flex; flex-direction: column; height: 100vh; }
         
-        .header { background: #0a0a0a; padding: 25px; border-bottom: 4px solid var(--purple); text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.9); }
-        .q-card { font-size: 38px; color: gold; background: linear-gradient(145deg, #111, #050505); padding: 15px 60px; border-radius: 100px; border: 2px solid #222; display: inline-block; box-shadow: 0 0 30px rgba(145, 70, 255, 0.2); }
+        /* شاشة الدخول */
+        #loginOverlay { position: fixed; inset: 0; background: #000; z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .login-box { background: #111; padding: 40px; border-radius: 30px; border: 2px solid var(--purple); text-align: center; }
+        .login-box input { display: block; width: 250px; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #000; color: white; text-align: center; }
 
-        .main-stage { display: flex; flex: 1; align-items: center; justify-content: space-between; padding: 0 40px; background: radial-gradient(circle at center, #110022 0%, #020202 100%); }
+        /* التصميم */
+        .header { background: #0a0a0a; padding: 20px; border-bottom: 4px solid var(--purple); text-align: center; }
+        .q-card { font-size: 30px; color: gold; background: #151515; padding: 10px 50px; border-radius: 50px; border: 1px solid #222; display: inline-block; }
+
+        .main-content { display: flex; flex: 1; align-items: center; justify-content: space-between; padding: 0 50px; background: radial-gradient(circle, #120024 0%, #020202 100%); }
+        .score-box { width: 180px; text-align: center; background: rgba(255,255,255,0.03); padding: 30px; border-radius: 30px; border: 2px solid #222; }
+        .score-box.hb { border-color: var(--hb); }
+        .score-box.bh { border-color: var(--bh); }
+        .score-val { font-size: 80px; font-weight: 900; }
+
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; flex: 1; max-width: 750px; margin: 0 40px; }
+        .card { background: #111; border: 2px solid #222; height: 100px; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; position: relative; }
+        .card:hover { transform: translateY(-5px); border-color: var(--purple); box-shadow: 0 5px 20px rgba(145, 70, 255, 0.3); }
+        .card .ans { display: none; font-size: 16px; color: gold; font-weight: bold; margin-top: 5px; }
+        .admin-view .ans { display: block; }
         
-        .team-panel { width: 250px; height: 350px; background: rgba(255,255,255,0.03); border-radius: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 3px solid #222; position: relative; transition: 0.5s; }
-        .team-panel.hb-side { border-color: var(--hb); box-shadow: 0 0 40px rgba(212, 0, 255, 0.1); }
-        .team-panel.bh-side { border-color: var(--bh); box-shadow: 0 0 40px rgba(0, 229, 255, 0.1); }
-        .team-name { font-size: 28px; letter-spacing: 2px; margin-bottom: 10px; }
-        .team-score { font-size: 100px; font-weight: 900; line-height: 1; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        .is-hb { background: var(--hb) !important; border: none; box-shadow: 0 0 25px var(--hb); }
+        .is-bh { background: var(--bh) !important; border: none; box-shadow: 0 0 25px var(--bh); color: #000; }
 
-        .game-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; flex: 1; max-width: 800px; margin: 0 50px; }
-        .card { background: #0f0f0f; border: 2px solid #252525; height: 110px; border-radius: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; position: relative; }
-        .card:hover { border-color: var(--purple); transform: scale(1.05); z-index: 5; }
-        .card .ans { display: none; font-size: 20px; font-weight: bold; text-align: center; color: #fff; }
-        .card .num { position: absolute; top: 10px; right: 15px; font-size: 16px; color: #444; }
-
-        .admin-view .ans { display: block; color: gold; }
-        .admin-view .num { color: var(--purple); }
-
-        .win-hb { background: var(--hb) !important; border: none; box-shadow: 0 0 30px var(--hb); }
-        .win-bh { background: var(--bh) !important; border: none; box-shadow: 0 0 30px var(--bh); color: #000 !important; }
-        .win-none { opacity: 0.05; pointer-events: none; }
-
-        .footer-tools { padding: 20px; background: #080808; display: flex; gap: 20px; justify-content: center; }
-        button { padding: 15px 40px; border-radius: 50px; border: none; cursor: pointer; font-weight: 900; font-family: 'Cairo'; text-transform: uppercase; transition: 0.3s; }
-        .btn-stream { background: transparent; color: white; border: 2px solid var(--purple); }
-        .btn-next { background: var(--purple); color: white; box-shadow: 0 0 20px rgba(145, 70, 255, 0.5); }
-
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; padding: 40px; border-radius: 30px; border: 2px solid var(--purple); z-index: 1000; text-align: center; box-shadow: 0 0 200px #000; }
-        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 999; }
+        .footer { padding: 20px; background: #080808; display: flex; gap: 15px; justify-content: center; }
+        button { padding: 12px 30px; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; font-family: 'Cairo'; transition: 0.3s; }
+        .btn-p { background: var(--purple); color: white; }
     </style>
 </head>
 <body class="admin-view">
 
-    <div class="header">
-        <div id="qText" class="q-card">اضغط سحب سؤال للبدء</div>
-    </div>
-
-    <div class="main-stage">
-        <div class="team-panel hb-side">
-            <div class="team-name" style="color: var(--hb);">TEAM HB</div>
-            <div class="team-score" id="sHB">0</div>
-            <div style="font-size: 14px; opacity: 0.5;">POINTS</div>
-        </div>
-
-        <div id="board" class="game-grid"></div>
-
-        <div class="team-panel bh-side">
-            <div class="team-name" style="color: var(--bh);">TEAM BH</div>
-            <div class="team-score" id="sBH">0</div>
-            <div style="font-size: 14px; opacity: 0.5;">POINTS</div>
+    <div id="loginOverlay">
+        <div class="login-box">
+            <h2 style="color: var(--purple);">NoVaX LOGIN</h2>
+            <input type="text" id="u" placeholder="v18i">
+            <input type="password" id="p" placeholder="9876">
+            <button class="btn-p" onclick="login()" style="width: 100%;">دخول المسؤول</button>
         </div>
     </div>
 
-    <div class="footer-tools">
-        <button class="btn-stream" onclick="document.body.classList.toggle('admin-view')">تبديل وضع البث/المسؤول</button>
-        <button class="btn-next" onclick="generateNewRound()">سحب سؤال جديد 🎲</button>
+    <div class="header"><div id="qT" class="q-card">سحب سؤال...</div></div>
+
+    <div class="main-content">
+        <div class="score-box hb"><div style="color:var(--hb)">HB</div><div class="score-val" id="sHB">0</div></div>
+        <div id="board" class="grid"></div>
+        <div class="score-box bh"><div style="color:var(--bh)">BH</div><div class="score-val" id="sBH">0</div></div>
     </div>
 
-    <div id="overlay" class="overlay"></div>
-    <div id="modal" class="modal">
-        <h2 id="modalWord" style="font-size: 35px; color: gold;"></h2>
-        <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
-            <button style="background: var(--hb); color: white;" onclick="givePoint('hb')">فريق HB</button>
-            <button style="background: var(--bh); color: black;" onclick="givePoint('bh')">فريق BH</button>
-            <button style="background: #333; color: white;" onclick="givePoint('none')">محد جاوب</button>
-        </div>
-        <button style="background: transparent; color: #555; margin-top: 20px;" onclick="closeModal()">إلغاء</button>
+    <div class="footer">
+        <button class="btn-p" onclick="next()">سؤال عشوائي 🎲</button>
+        <button style="background:#222; color:#555;" onclick="document.body.classList.toggle('admin-view')">إخفاء الأجوبة للبث</button>
     </div>
 
     <script>
-        let scoreHB = 0, scoreBH = 0, activeCard = null;
+        function login() {
+            if(document.getElementById('u').value === "v18i" && document.getElementById('p').value === "9876") {
+                document.getElementById('loginOverlay').style.display = 'none';
+            } else { alert("غلط!"); }
+        }
+
+        let shb = 0, sbh = 0;
         
-        // بنك الأسئلة (يمكنك إضافة مئات هنا بنفس التنسيق)
-        const qBank = [
-            {q: "أشهر ماركات السيارات؟", a: ["تويوتا", "مرسيدس", "فورد", "بي أم", "تسلا", "هوندا", "نيسان", "لكزس"]},
-            {q: "أشهر تطبيقات التواصل؟", a: ["واتساب", "تيك توك", "سناب", "انستا", "يوتيوب", "تويتر", "تليجرام", "فيسبوك"]},
-            {q: "أشهر أندية كرة القدم؟", a: ["ريال مدريد", "برشلونة", "ليفربول", "ميلان", "مانشستر", "بايرن", "يوفنتوس", "النصر"]},
-            {q: "أشهر مدن سياحية؟", a: ["دبي", "باريس", "لندن", "اسطنبول", "طوكيو", "مكة", "القاهرة", "روما"]},
-            {q: "أشهر شركات التقنية؟", a: ["آبل", "جوجل", "مايكروسوفت", "سامسونج", "نيفيديا", "أمازون", "سوني", "إنتل"]}
-            // أضف أي عدد تريده هنا..
+        // بنك الأسئلة العملاق (مقسم حسب الفئات)
+        const bank = [
+            // سيارات
+            {q: "أشهر ماركات السيارات؟", a: ["تويوتا", "مرسيدس", "فورد", "بي إم", "تسلا", "لكزس"]},
+            {q: "ماركات سيارات فارهة؟", a: ["رولز رويس", "بنتلي", "فيراري", "لامبورجيني", "بوجاتي", "ماكلارين"]},
+            // تطبيقات وتقنية
+            {q: "أشهر تطبيقات التواصل؟", a: ["واتساب", "تيك توك", "سناب", "انستا", "يوتيوب", "تويتر"]},
+            {q: "شركات تكنولوجيا عملاقة؟", a: ["آبل", "جوجل", "مايكروسوفت", "أمازون", "سامسونج", "نيفيديا"]},
+            {q: "متصفحات إنترنت؟", a: ["كروم", "سافاري", "فايرفوكس", "إيدج", "أوبرا", "برايف"]},
+            // كورة ورياضة
+            {q: "أشهر لاعبي كرة القدم؟", a: ["ميسي", "رونالدو", "مبابي", "هالاند", "صلاح", "نيمار"]},
+            {q: "أندية فازت بالبطولات؟", a: ["ريال مدريد", "برشلونة", "ليفربول", "ميلان", "بايرن ميونخ", "مانشستر سيتي"]},
+            {q: "منتخبات فازت بكأس العالم؟", a: ["البرازيل", "ألمانيا", "إيطاليا", "الأرجنتين", "فرنسا", "الأوروغواي"]},
+            // ألعاب (قيمينج)
+            {q: "أشهر ألعاب الفيديو؟", a: ["كود", "فيفا", "ماينكرافت", "قراند", "فورتنايت", "روبلوكس"]},
+            {q: "كونسول (أجهزة ألعاب)؟", a: ["بلايستيشن", "إكس بوكس", "نينتندو", "بي سي", "ستيم ديك", "سيجا"]},
+            {q: "ألعاب شوتر (إطلاق نار)؟", a: ["كود", "ببجي", "فالورانت", "أوفرواتش", "سي إس جو", "أبيكس"]},
+            // يوتيوبرز وصناع محتوى
+            {q: "أشهر يوتيوبرز عرب؟", a: ["أبو فلة", "بندريتا", "دربحة", "أوسمز", "سيد", "نور مار"]},
+            {q: "منصات بث مباشر؟", a: ["تويتش", "يوتيوب", "كيك", "فيسبوك جيمينج", "تيك توك", "تروفو"]},
+            // دول ومدن
+            {q: "أشهر عواصم العالم؟", a: ["لندن", "باريس", "مكة", "بغداد", "واشنطن", "طوكيو"]},
+            {q: "دول سياحية؟", a: ["تركيا", "الإمارات", "فرنسا", "تايلاند", "مصر", "إيطاليا"]},
+            {q: "أطول أنهار العالم؟", a: ["النيل", "الأمازون", "اليانغتسي", "الميسيسيبي", "الكونغو", "دجلة"]},
+            // منوعات وأكل
+            {q: "أشهر ماركات الساعات؟", a: ["رولكس", "كاسيو", "باتيك", "أوميغا", "هوبلو", "سيكو"]},
+            {q: "مطاعم وجبات سريعة؟", a: ["ماكدونالدز", "كنتاكي", "برجر كنج", "بيتزا هات", "ستارباكس", "هارديز"]}
         ];
 
-        function generateNewRound() {
-            const board = document.getElementById('board');
-            board.innerHTML = '';
-            const randomData = qBank[Math.floor(Math.random() * qBank.length)];
-            document.getElementById('qText').innerText = randomData.q;
-
-            for (let i = 1; i <= 12; i++) {
-                const card = document.createElement('div');
-                card.className = 'card';
-                let hasAns = i <= randomData.a.length;
-                let pointVal = (13 - i) * 10;
-                
-                card.innerHTML = `<span class="num">${i}</span><div class="ans">${hasAns ? randomData.a[i-1] : '❌'}</div>`;
-                card.dataset.pts = pointVal;
-                card.dataset.word = hasAns ? randomData.a[i-1] : "خطأ";
-                
-                card.onclick = () => {
-                    if (card.classList.contains('done')) return;
-                    activeCard = card;
-                    document.getElementById('modalWord').innerText = card.dataset.word;
-                    document.getElementById('modal').style.display = 'block';
-                    document.getElementById('overlay').style.display = 'block';
+        function next() {
+            const b = document.getElementById('board'); b.innerHTML = '';
+            const d = bank[Math.floor(Math.random() * bank.length)];
+            document.getElementById('qT').innerText = d.q;
+            for(let i=1; i<=12; i++) {
+                const c = document.createElement('div');
+                c.className = 'card';
+                let h = i <= d.a.length;
+                c.innerHTML = `<span>${i}</span><div class="ans">${h ? d.a[i-1] : '❌'}</div>`;
+                c.onclick = () => {
+                    let t = prompt("HB / BH / None");
+                    if(t==='hb'){ shb+=10; c.classList.add('is-hb'); }
+                    if(t==='bh'){ sbh+=10; c.classList.add('is-bh'); }
+                    document.getElementById('sHB').innerText = shb;
+                    document.getElementById('sBH').innerText = sbh;
                 };
-                board.appendChild(card);
+                b.appendChild(c);
             }
         }
-
-        function givePoint(team) {
-            let pts = parseInt(activeCard.dataset.pts);
-            if(team === 'hb') { scoreHB += pts; activeCard.classList.add('win-hb'); }
-            if(team === 'bh') { scoreBH += pts; activeCard.classList.add('win-bh'); }
-            if(team === 'none') activeCard.classList.add('win-none');
-            
-            activeCard.classList.add('done');
-            document.getElementById('sHB').innerText = scoreHB;
-            document.getElementById('sBH').innerText = scoreBH;
-            closeModal();
-        }
-
-        function closeModal() { document.getElementById('modal').style.display = 'none'; document.getElementById('overlay').style.display = 'none'; }
-
-        generateNewRound();
+        next();
     </script>
 </body>
 </html>
