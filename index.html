@@ -2,131 +2,120 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>NoVaX Ultra Control | v18i</title>
+    <title>NoVaX Show | Drb7h Style</title>
     <style>
         @import url('https://fonts.googleapis.com');
         :root { --bg: #050505; --purple: #9146ff; --hb: #d400ff; --bh: #00e5ff; }
-        body { background: var(--bg); color: white; font-family: 'Cairo', sans-serif; margin: 0; overflow: hidden; display: flex; flex-direction: column; height: 100vh; }
+        body { background: var(--bg); color: white; font-family: 'Cairo', sans-serif; margin: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
         
-        /* شاشة الدخول */
-        #loginOverlay { position: fixed; inset: 0; background: #000; z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .login-card { background: #111; padding: 40px; border-radius: 30px; border: 2px solid var(--purple); text-align: center; }
-        input { display: block; width: 250px; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #333; background: #000; color: white; text-align: center; }
+        /* الهيدر والسؤال */
+        .top-bar { background: #111; padding: 20px; border-bottom: 4px solid var(--purple); text-align: center; }
+        .q-box { font-size: 35px; color: gold; background: #000; padding: 10px 50px; border-radius: 50px; border: 2px solid #333; box-shadow: 0 0 20px var(--purple); }
 
-        .top-bar { background: #0a0a0a; padding: 15px; border-bottom: 4px solid var(--purple); text-align: center; }
-        .q-box { font-size: 32px; color: gold; background: #151515; padding: 10px 60px; border-radius: 100px; border: 1px solid #222; display: inline-block; }
-
-        .game-main { display: flex; flex: 1; align-items: center; justify-content: space-between; padding: 0 40px; background: radial-gradient(circle, #1a0033 0%, #050505 100%); }
-        .team-box { width: 180px; height: 250px; background: rgba(0,0,0,0.6); border-radius: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 10px solid transparent; }
-        .team-box.hb { border-color: var(--hb); box-shadow: 0 0 30px rgba(212,0,255,0.1); }
-        .team-box.bh { border-color: var(--bh); box-shadow: 0 0 30px rgba(0,229,255,0.1); }
-        .score { font-size: 80px; font-weight: 900; }
-
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; flex: 1; max-width: 700px; margin: 0 30px; }
+        .game-container { display: flex; flex: 1; padding: 20px; gap: 40px; justify-content: center; align-items: center; }
+        
+        /* أعمدة الفرق */
+        .team-column { flex: 1; max-width: 450px; display: flex; flex-direction: column; gap: 15px; }
+        .score-header { font-size: 50px; font-weight: 900; text-align: center; margin-bottom: 10px; text-shadow: 0 0 10px #fff; }
+        
+        /* الكروت */
         .card { 
-            background: #121212; border: 2px solid #252525; height: 90px; border-radius: 15px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.3s; position: relative;
+            height: 70px; background: #1a1a1a; border: 2px solid #333; border-radius: 15px;
+            display: flex; align-items: center; justify-content: center; font-size: 24px;
+            transition: 0.5s; position: relative; overflow: hidden; cursor: pointer;
         }
-        .card.selected { border-color: gold; box-shadow: 0 0 20px gold; transform: scale(1.05); }
-        .card .ans { display: none; font-size: 16px; color: gold; font-weight: bold; margin-top: 5px; }
-        
-        .admin-view .ans { display: block; }
-        .is-hb { background: var(--hb) !important; border: none; box-shadow: 0 0 25px var(--hb); }
-        .is-bh { background: var(--bh) !important; border: none; box-shadow: 0 0 25px var(--bh); color: black !important; }
-        .is-none { opacity: 0.1 !important; pointer-events: none; }
+        .card.revealed { background: #fff !important; color: #000 !important; border: none; transform: rotateX(360deg); font-weight: 900; }
+        .card .num { position: absolute; right: 20px; color: #444; font-size: 18px; }
 
-        /* لوحة التحكم السفلية (المعدلة) */
-        .footer { padding: 15px; background: #0a0a0a; border-top: 2px solid #222; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .action-row { display: flex; gap: 15px; }
-        button { padding: 10px 25px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; font-family: 'Cairo'; transition: 0.3s; }
-        
+        /* التحكم */
+        .controls-row { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+        button { padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-weight: bold; transition: 0.3s; }
         .btn-hb { background: var(--hb); color: white; }
         .btn-bh { background: var(--bh); color: black; }
-        .btn-none { background: #333; color: white; }
-        .btn-next { background: gold; color: black; }
-        
-        .disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-wrong { background: #ff004c; color: white; }
+
+        .footer { padding: 20px; background: #0a0a0a; border-top: 2px solid #222; display: flex; justify-content: center; gap: 20px; }
     </style>
 </head>
-<body id="gameBody" class="admin-view">
+<body>
 
-    <div id="loginOverlay">
-        <div class="login-card">
-            <h1 style="color: var(--purple);">NoVaX LOGIN</h1>
-            <input type="text" id="u" placeholder="v18i">
-            <input type="password" id="p" placeholder="9876">
-            <button style="background:var(--purple); color:white; width:100%;" onclick="login()">دخول</button>
-        </div>
+    <div class="top-bar">
+        <div class="q-box" id="qTitle">سؤال: أشهر ماركات السيارات؟</div>
     </div>
 
-    <div class="top-bar"><div class="q-box" id="qT">اختر سؤال جديد 🎲</div></div>
+    <div class="game-container">
+        <!-- فريق HB يمين -->
+        <div class="team-column">
+            <div class="score-header" style="color: var(--hb);" id="sHB">0</div>
+            <div id="cardsHB"></div>
+            <div class="controls-row">
+                <button class="btn-hb" onclick="addPoint('hb')">إضافة نقطة ✅</button>
+                <button class="btn-wrong" onclick="wrong('hb')">خطأ ❌</button>
+            </div>
+        </div>
 
-    <div class="game-main">
-        <div class="team-box hb"><div style="color: var(--hb)">TEAM HB</div><div class="score" id="sHB">0</div></div>
-        <div id="board" class="grid"></div>
-        <div class="team-box bh"><div style="color: var(--bh)">TEAM BH</div><div class="score" id="sBH">0</div></div>
+        <!-- فريق BH يسار -->
+        <div class="team-column">
+            <div class="score-header" style="color: var(--bh);" id="sBH">0</div>
+            <div id="cardsBH"></div>
+            <div class="controls-row">
+                <button class="btn-bh" onclick="addPoint('bh')">إضافة نقطة ✅</button>
+                <button class="btn-wrong" onclick="wrong('bh')">خطأ ❌</button>
+            </div>
+        </div>
     </div>
 
     <div class="footer">
-        <div class="action-row" id="adminControls">
-            <span style="color: #666; align-self: center; margin-left: 10px;">تحكم المسؤول:</span>
-            <button class="btn-hb" onclick="assign('hb')">نقطة لـ HB</button>
-            <button class="btn-bh" onclick="assign('bh')">نقطة لـ BH</button>
-            <button class="btn-none" onclick="assign('none')">محد جاوب</button>
-            <div style="width: 2px; background: #333; margin: 0 10px;"></div>
-            <button class="btn-next" onclick="next()">سؤال جديد 🔄</button>
-            <button style="background: #222; color: #888;" onclick="document.body.classList.toggle('admin-view')">👁️ بث</button>
-        </div>
+        <button style="background: gold; color: black;" onclick="nextGame()">السؤال التالي 🔄</button>
+        <button style="background: #333; color: white;" onclick="resetScores()">تصفير النقاط 0️⃣</button>
     </div>
 
     <script>
-        function login() {
-            if(document.getElementById('u').value === "v18i" && document.getElementById('p').value === "9876") {
-                document.getElementById('loginOverlay').style.display = 'none';
-            } else { alert("خطأ!"); }
-        }
-
-        let shb=0, sbh=0, selectedBox=null;
+        let scoreA = 0, scoreB = 0;
         const bank = [
-            {q: "أشهر ماركات السيارات؟", a: ["تويوتا", "مرسيدس", "فورد", "بي إم", "تسلا", "لكزس"]},
-            {q: "أشهر تطبيقات التواصل؟", a: ["واتساب", "تيك توك", "سناب", "انستا", "يوتيوب", "تويتر"]},
-            {q: "أشهر لاعبي كرة قدم؟", a: ["ميسي", "رونالدو", "مبابي", "هالاند", "صلاح", "نيمار"]}
+            {q: "أشهر تطبيقات التواصل؟", a: ["واتساب", "سناب", "تيك توك", "انستا", "يوتيوب", "تويتر"]},
+            {q: "ماركات سيارات فخمة؟", a: ["مرسيدس", "رولز رويس", "فيراري", "بنتلي", "لكزس", "بي إم"]}
         ];
 
-        function next() {
-            const b = document.getElementById('board'); b.innerHTML = '';
-            const d = bank[Math.floor(Math.random() * bank.length)];
-            document.getElementById('qT').innerText = d.q;
-            for(let i=1; i<=12; i++) {
+        function nextGame() {
+            const data = bank[Math.floor(Math.random() * bank.length)];
+            document.getElementById('qTitle').innerText = "سؤال: " + data.q;
+            renderCards('cardsHB', data.a);
+            renderCards('cardsBH', data.a);
+        }
+
+        function renderCards(id, answers) {
+            const div = document.getElementById(id);
+            div.innerHTML = '';
+            answers.forEach((ans, i) => {
                 const c = document.createElement('div');
                 c.className = 'card';
-                let has = i <= d.a.length;
-                c.innerHTML = `<span>${i}</span><div class="ans">${has ? d.a[i-1] : '❌'}</div>`;
+                c.innerHTML = `<span class="num">${i+1}</span> <span class="txt">??????</span>`;
                 c.onclick = () => {
-                    if (c.classList.contains('done')) return;
-                    if (selectedBox) selectedBox.classList.remove('selected');
-                    selectedBox = c;
-                    c.classList.add('selected');
+                    c.classList.toggle('revealed');
+                    c.querySelector('.txt').innerText = c.classList.contains('revealed') ? ans : "??????";
                 };
-                b.appendChild(c);
-            }
+                div.appendChild(c);
+            });
         }
 
-        function assign(team) {
-            if (!selectedBox) { alert("اختر رقم المربع أولاً!"); return; }
-            if (team === 'hb') { shb += 10; selectedBox.classList.add('is-hb'); }
-            else if (team === 'bh') { sbh += 10; selectedBox.classList.add('is-bh'); }
-            else if (team === 'none') { selectedBox.classList.add('is-none'); }
-            
-            selectedBox.classList.remove('selected');
-            selectedBox.classList.add('done');
-            selectedBox = null;
-            document.getElementById('sHB').innerText = shb;
-            document.getElementById('sBH').innerText = sbh;
+        function addPoint(t) {
+            if(t === 'hb') scoreA += 10; else scoreB += 10;
+            updateScores();
         }
 
-        next();
+        function wrong(t) {
+            alert(`خطأ لفريق ${t.toUpperCase()}! ❌`);
+        }
+
+        function updateScores() {
+            document.getElementById('sHB').innerText = scoreA;
+            document.getElementById('sBH').innerText = scoreB;
+        }
+
+        function resetScores() { scoreA = 0; scoreB = 0; updateScores(); }
+
+        nextGame();
     </script>
 </body>
 </html>
