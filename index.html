@@ -1,196 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pterodactyl Owner | Full Control</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Codenames - Purple Score Edition</title>
     <style>
-        :root { --ptero-bg: #090b10; --ptero-blue: #3b82f6; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--ptero-bg); color: #adbac7; overflow: hidden; }
-        .hidden { display: none; }
-        .sidebar-item.active { background: #1c212c; border-left: 4px solid var(--ptero-blue); color: white; }
-        .admin-card { background: #11141d; border: 1px solid #30363d; border-radius: 12px; transition: 0.3s; }
-        .admin-card:hover { border-color: var(--ptero-blue); }
+        :root {
+            --bg: #050505;
+            --card-default: #1a1a1a;
+            --primary: #9d00ff; /* بنفسجي أساسي */
+            --team1: #d400ff;    /* فريق بنفسجي فاتح */
+            --team2: #4b0082;    /* فريق أرجواني غامق */
+            --killer: #ff0000;   /* القاتلة (أحمر للتحذير) */
+            --text: #ffffff;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', sans-serif;
+            display: flex; flex-direction: column; align-items: center; padding: 20px;
+        }
+        .scoreboard {
+            display: flex; gap: 40px; margin-bottom: 20px; padding: 15px;
+            background: #111; border-radius: 15px; border: 1px solid var(--primary);
+        }
+        .score-box { text-align: center; font-size: 20px; }
+        .score-box span { display: block; font-size: 30px; font-weight: bold; color: var(--primary); }
+        
+        .grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+            max-width: 900px;
+        }
+        .card {
+            background: var(--card-default); border: 1px solid #333;
+            border-radius: 8px; padding: 25px 15px; text-align: center;
+            cursor: pointer; transition: 0.3s; font-weight: bold; width: 140px;
+        }
+        /* كلاسات الألوان المخفية (تظهر عند الضغط أو وضع الجاسوس) */
+        .card.team1 { border-color: var(--team1); color: var(--team1); }
+        .card.team2 { border-color: var(--team2); color: var(--team2); }
+        .card.killer { border-color: var(--killer); color: var(--killer); }
+        
+        .revealed-t1 { background: var(--team1) !important; color: white !important; }
+        .revealed-t2 { background: var(--team2) !important; color: white !important; }
+        .revealed-kill { background: var(--killer) !important; color: white !important; }
+
+        .controls { margin-top: 20px; display: flex; gap: 10px; }
+        button {
+            background: var(--primary); border: none; color: white;
+            padding: 10px 25px; border-radius: 8px; cursor: pointer;
+        }
+        .spy-btn { background: #333; border: 1px solid var(--primary); }
     </style>
 </head>
-<body class="h-screen flex items-center justify-center">
+<body>
 
-    <div id="alert" class="fixed top-5 right-5 z-[100] bg-blue-600 text-white px-6 py-4 rounded-xl shadow-2xl hidden font-bold"></div>
+    <h1>CODENAMES <small style="font-size: 12px;">Purple Edition</small></h1>
 
-    <div id="login-container" class="w-full max-w-md p-10 bg-[#11141d] rounded-3xl border border-gray-800 shadow-2xl">
-        <h1 class="text-4xl font-black text-white text-center mb-8 italic">OWNER<span class="text-blue-600">.</span></h1>
-        <div class="space-y-4">
-            <input type="text" id="login-user" placeholder="Username (admin)" class="w-full p-4 rounded-xl bg-[#090b10] border border-gray-700 outline-none focus:border-blue-500 text-white">
-            <input type="password" id="login-pass" placeholder="Password (123)" class="w-full p-4 rounded-xl bg-[#090b10] border border-gray-700 outline-none focus:border-blue-500 text-white">
-            <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black text-white transition-all shadow-lg shadow-blue-900/30">LOGIN TO CORE</button>
-        </div>
+    <div class="scoreboard">
+        <div class="score-box">نقاط الفريق A<span id="scoreA">0</span></div>
+        <div class="score-box">نقاط الفريق B<span id="scoreB">0</span></div>
     </div>
 
-    <div id="dashboard" class="hidden w-full h-full flex overflow-hidden">
-        
-        <aside class="w-72 bg-[#0d1117] border-r border-gray-800 flex flex-col">
-            <div class="p-8 text-2xl font-black text-white italic">PTERO CORE</div>
-            <nav class="flex-1 px-4 space-y-1">
-                <button onclick="route('servers')" id="nav-servers" class="sidebar-item active w-full text-left p-4 rounded-lg flex items-center gap-3">🖥️ Global Servers</button>
-                <button onclick="route('create')" id="nav-create" class="sidebar-item w-full text-left p-4 rounded-lg flex items-center gap-3 text-blue-400 font-bold underline">➕ Create New VPS</button>
-                <button onclick="route('users')" id="nav-users" class="sidebar-item w-full text-left p-4 rounded-lg flex items-center gap-3">👥 User Database</button>
-            </nav>
-            <div class="p-6 border-t border-gray-800">
-                <button onclick="location.reload()" class="w-full p-2 bg-red-900/20 text-red-500 rounded-lg text-xs font-black">SHUTDOWN SESSION</button>
-            </div>
-        </aside>
+    <div class="grid" id="board"></div>
 
-        <main class="flex-1 flex flex-col overflow-y-auto">
-            <header class="h-20 bg-[#11141d] border-b border-gray-800 flex items-center px-10 justify-between">
-                <h2 id="page-title" class="font-bold text-white uppercase tracking-widest">Global Management</h2>
-            </header>
-
-            <div class="p-10 space-y-8">
-                
-                <div id="view-servers" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    </div>
-
-                <div id="view-create" class="hidden max-w-2xl admin-card p-8">
-                    <h3 class="text-xl font-bold text-white mb-6">Build & Assign Server</h3>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="col-span-2"><label class="text-xs font-bold text-gray-500 mb-2 block uppercase tracking-widest">Server Label</label>
-                        <input type="text" id="srv-name" class="w-full p-3 rounded-lg bg-[#090b10] border border-gray-700 outline-none" placeholder="e.g. Iraq-VPS-01"></div>
-                        
-                        <div><label class="text-xs font-bold text-gray-500 mb-2 block uppercase tracking-widest">Owner Email</label>
-                        <input type="email" id="srv-user" class="w-full p-3 rounded-lg bg-[#090b10] border border-gray-700 outline-none font-mono" placeholder="customer@mail.com"></div>
-                        
-                        <div><label class="text-xs font-bold text-gray-500 mb-2 block uppercase tracking-widest">Memory (RAM)</label>
-                        <select id="srv-ram" class="w-full p-3 rounded-lg bg-[#090b10] border border-gray-700 outline-none">
-                            <option>2GB</option><option>8GB</option><option>32GB</option><option>128GB</option>
-                        </select></div>
-
-                        <button onclick="deployServer()" class="col-span-2 bg-blue-600 p-4 rounded-xl font-black text-white hover:bg-blue-500 transition-all shadow-lg shadow-blue-500/20">DEPLOY TO CUSTOMER</button>
-                    </div>
-                </div>
-
-                <div id="view-users" class="hidden admin-card p-8">
-                    <h3 class="text-xl font-bold text-white mb-6">Active Clients</h3>
-                    <div id="users-list" class="space-y-4">
-                        </div>
-                </div>
-
-            </div>
-        </main>
+    <div class="controls">
+        <button onclick="initGame()">لعبة جديدة</button>
+        <button class="spy-btn" onclick="toggleSpy()">وضع الجاسوس (كشف الألوان)</button>
     </div>
 
     <script>
-        // داتابيس وهمية في المتصفح لكي لا يختفي شغلك
-        let db = JSON.parse(localStorage.getItem('ptero_db')) || {
-            servers: [
-                { id: 1, name: "Master-Node", owner: "admin", ram: "128GB", status: "Running" }
-            ],
-            users: ["admin", "customer@mail.com"]
-        };
-
-        function showAlert(msg) {
-            const el = document.getElementById('alert');
-            el.innerText = msg; el.classList.remove('hidden');
-            setTimeout(() => el.classList.add('hidden'), 3000);
-        }
-
-        function handleLogin() {
-            const u = document.getElementById('login-user').value;
-            const p = document.getElementById('login-pass').value;
-            if (u === 'admin' && p === '123') {
-                document.getElementById('login-container').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                document.body.classList.remove('items-center', 'justify-center');
-                renderAll();
-            } else {
-                alert("Only Owner can access the Core.");
-            }
-        }
-
-        function deployServer() {
-            const name = document.getElementById('srv-name').value;
-            const owner = document.getElementById('srv-user').value;
-            const ram = document.getElementById('srv-ram').value;
-
-            if(!name || !owner) return alert("Fill everything!");
-
-            const newSrv = { id: Date.now(), name, owner, ram, status: "Active" };
-            db.servers.push(newSrv);
-            if(!db.users.includes(owner)) db.users.push(owner);
+        let scoreA = 0; let scoreB = 0;
+        let isSpyView = false;
+        const words = ["أسد", "موز", "سيارة", "كود", "قمر", "نجمة", "بحر", "طائرة", "قهوة", "جبل", "نهر", "ساعة", "مفتاح", "هاتف", "شاشة", "كتاب", "قلم", "مكتب", "كرسي", "شجرة", "وردة", "شمس", "بيت", "ثلج", "برمجة"];
+        
+        function initGame() {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+            scoreA = 0; scoreB = 0;
+            updateScore();
             
-            save();
-            renderAll();
-            route('servers');
-            showAlert("✅ Server successfully sent to: " + owner);
-        }
+            let deck = words.sort(() => 0.5 - Math.random());
+            
+            for (let i = 0; i < 25; i++) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerText = deck[i];
+                
+                // توزيع الأدوار (9 للفريق A، 8 للفريق B، 1 قاتلة، الباقي محايد)
+                if (i < 9) card.dataset.type = 'team1';
+                else if (i < 17) card.dataset.type = 'team2';
+                else if (i === 17) card.dataset.type = 'killer';
+                else card.dataset.type = 'neutral';
 
-        function deleteServer(id) {
-            if(confirm("Are you sure? This will delete the user's VPS!")) {
-                db.servers = db.servers.filter(s => s.id !== id);
-                save();
-                renderAll();
-                showAlert("🗑️ Server Permanently Deleted.");
+                card.onclick = () => selectCard(card);
+                board.appendChild(card);
             }
+            // خلط أماكن الكروت
+            let cards = Array.from(board.children);
+            cards.sort(() => 0.5 - Math.random()).forEach(c => board.appendChild(c));
         }
 
-        function renderAll() {
-            // Render Servers
-            const srvCont = document.getElementById('view-servers');
-            srvCont.innerHTML = "";
-            db.servers.forEach(s => {
-                srvCont.innerHTML += `
-                    <div class="admin-card p-6 shadow-xl relative overflow-hidden">
-                        <div class="flex justify-between items-start mb-6">
-                            <div>
-                                <h4 class="text-xl font-black text-white tracking-tighter">${s.name}</h4>
-                                <p class="text-[10px] text-gray-500 font-mono italic">UUID: ${s.id}</p>
-                            </div>
-                            <span class="px-3 py-1 bg-green-900/30 text-green-500 rounded-full text-[10px] font-bold">● ${s.status}</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 text-xs mb-6">
-                            <div class="bg-black/40 p-3 rounded">
-                                <p class="text-gray-500 uppercase font-bold text-[9px]">Owner Email</p>
-                                <p class="text-blue-400 font-mono">${s.owner}</p>
-                            </div>
-                            <div class="bg-black/40 p-3 rounded">
-                                <p class="text-gray-500 uppercase font-bold text-[9px]">Memory Limit</p>
-                                <p class="text-white">${s.ram}</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="deleteServer(${s.id})" class="flex-1 bg-red-600/10 text-red-500 py-2 rounded font-bold text-[10px] hover:bg-red-600 hover:text-white transition">TERMINATE</button>
-                            <button onclick="alert('Accessing Console...')" class="flex-1 bg-gray-800 text-white py-2 rounded font-bold text-[10px] hover:bg-blue-600 transition">CONSOLE</button>
-                        </div>
-                    </div>
-                `;
-            });
+        function selectCard(card) {
+            if (card.classList.contains('revealed')) return;
+            
+            card.classList.add('revealed');
+            if (card.dataset.type === 'team1') {
+                card.classList.add('revealed-t1');
+                scoreA++;
+            } else if (card.dataset.type === 'team2') {
+                card.classList.add('revealed-t2');
+                scoreB++;
+            } else if (card.dataset.type === 'killer') {
+                card.classList.add('revealed-kill');
+                alert("انتهت اللعبة! ضربتم الكلمة القاتلة.");
+            }
+            updateScore();
+        }
 
-            // Render Users
-            const userList = document.getElementById('users-list');
-            userList.innerHTML = "";
-            db.users.forEach(u => {
-                userList.innerHTML += `
-                    <div class="p-4 bg-black/30 rounded-xl flex justify-between items-center border border-gray-800">
-                        <span class="text-sm font-mono text-gray-300">${u}</span>
-                        <span class="text-[9px] bg-blue-600/20 text-blue-500 px-3 py-1 rounded font-black">ACTIVE CLIENT</span>
-                    </div>
-                `;
+        function toggleSpy() {
+            isSpyView = !isSpyView;
+            document.querySelectorAll('.card').forEach(card => {
+                if (isSpyView) {
+                    if (card.dataset.type === 'team1') card.classList.add('team1');
+                    if (card.dataset.type === 'team2') card.classList.add('team2');
+                    if (card.dataset.type === 'killer') card.classList.add('killer');
+                } else {
+                    card.classList.remove('team1', 'team2', 'killer');
+                }
             });
         }
 
-        function save() { localStorage.setItem('ptero_db', JSON.stringify(db)); }
-
-        function route(page) {
-            document.getElementById('view-servers').classList.add('hidden');
-            document.getElementById('view-create').classList.add('hidden');
-            document.getElementById('view-users').classList.add('hidden');
-            document.getElementById('view-' + page).classList.remove('hidden');
-            
-            document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
-            document.getElementById('nav-' + page).classList.add('active');
-            document.getElementById('page-title').innerText = page.replace('-', ' ');
+        function updateScore() {
+            document.getElementById('scoreA').innerText = scoreA;
+            document.getElementById('scoreB').innerText = scoreB;
         }
+
+        initGame();
     </script>
 </body>
 </html>
