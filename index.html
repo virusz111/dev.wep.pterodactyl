@@ -2,81 +2,97 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>NoVaX Private Control</title>
+    <title>NoVaX Ultra Control | v18i</title>
     <style>
         @import url('https://fonts.googleapis.com');
         :root { --bg: #050505; --purple: #9146ff; --hb: #d400ff; --bh: #00e5ff; }
         body { background: var(--bg); color: white; font-family: 'Cairo', sans-serif; margin: 0; overflow: hidden; display: flex; flex-direction: column; height: 100vh; }
         
-        /* شاشة دخول سينمائية */
-        #loginOverlay { position: fixed; inset: 0; background: #000; z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s; }
-        .login-card { background: #111; padding: 50px; border-radius: 40px; border: 2px solid var(--purple); text-align: center; box-shadow: 0 0 100px rgba(145,70,255,0.2); }
-        .login-card h1 { font-size: 40px; margin-bottom: 20px; text-shadow: 0 0 10px var(--purple); }
-        input { display: block; width: 280px; padding: 15px; margin: 15px 0; border-radius: 15px; border: 1px solid #333; background: #000; color: white; text-align: center; font-size: 18px; }
+        /* شاشة الدخول */
+        #loginOverlay { position: fixed; inset: 0; background: #000; z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .login-card { background: #111; padding: 40px; border-radius: 30px; border: 2px solid var(--purple); text-align: center; }
+        input { display: block; width: 250px; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #333; background: #000; color: white; text-align: center; }
+
+        .top-bar { background: #0a0a0a; padding: 15px; border-bottom: 4px solid var(--purple); text-align: center; }
+        .q-box { font-size: 32px; color: gold; background: #151515; padding: 10px 60px; border-radius: 100px; border: 1px solid #222; display: inline-block; }
+
+        .game-main { display: flex; flex: 1; align-items: center; justify-content: space-between; padding: 0 40px; background: radial-gradient(circle, #1a0033 0%, #050505 100%); }
+        .team-box { width: 180px; height: 250px; background: rgba(0,0,0,0.6); border-radius: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 10px solid transparent; }
+        .team-box.hb { border-color: var(--hb); box-shadow: 0 0 30px rgba(212,0,255,0.1); }
+        .team-box.bh { border-color: var(--bh); box-shadow: 0 0 30px rgba(0,229,255,0.1); }
+        .score { font-size: 80px; font-weight: 900; }
+
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; flex: 1; max-width: 700px; margin: 0 30px; }
+        .card { 
+            background: #121212; border: 2px solid #252525; height: 90px; border-radius: 15px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s; position: relative;
+        }
+        .card.selected { border-color: gold; box-shadow: 0 0 20px gold; transform: scale(1.05); }
+        .card .ans { display: none; font-size: 16px; color: gold; font-weight: bold; margin-top: 5px; }
         
-        /* واجهة اللعبة */
-        .top-nav { background: rgba(0,0,0,0.9); padding: 20px; border-bottom: 4px solid var(--purple); display: flex; justify-content: center; }
-        .q-tag { font-size: 30px; color: gold; background: #1a1a1a; padding: 12px 60px; border-radius: 50px; border: 2px solid #333; box-shadow: 0 0 20px rgba(255,215,0,0.1); }
+        .admin-view .ans { display: block; }
+        .is-hb { background: var(--hb) !important; border: none; box-shadow: 0 0 25px var(--hb); }
+        .is-bh { background: var(--bh) !important; border: none; box-shadow: 0 0 25px var(--bh); color: black !important; }
+        .is-none { opacity: 0.1 !important; pointer-events: none; }
 
-        .game-world { display: flex; flex: 1; align-items: center; justify-content: space-around; padding: 0 50px; }
-        .team-panel { width: 220px; text-align: center; background: #111; padding: 40px 20px; border-radius: 35px; border-bottom: 8px solid transparent; }
-        .team-panel.hb { border-color: var(--hb); box-shadow: 0 15px 30px rgba(212,0,255,0.1); }
-        .team-panel.bh { border-color: var(--bh); box-shadow: 0 15px 30px rgba(0,229,255,0.1); }
-        .score-val { font-size: 90px; font-weight: 900; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
-
-        .grid-system { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; flex: 1; max-width: 800px; margin: 0 40px; }
-        .block { background: #151515; border: 2px solid #222; height: 110px; border-radius: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; position: relative; }
-        .block:hover { border-color: var(--purple); transform: scale(1.08) rotate(1deg); z-index: 10; }
-        .block .ans { display: none; font-size: 20px; color: gold; font-weight: bold; }
-        .admin-mode .ans { display: block; }
+        /* لوحة التحكم السفلية (المعدلة) */
+        .footer { padding: 15px; background: #0a0a0a; border-top: 2px solid #222; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .action-row { display: flex; gap: 15px; }
+        button { padding: 10px 25px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; font-family: 'Cairo'; transition: 0.3s; }
         
-        .win-hb { background: var(--hb) !important; border: none; box-shadow: 0 0 30px var(--hb); }
-        .win-bh { background: var(--bh) !important; border: none; box-shadow: 0 0 30px var(--bh); color: #000; }
-
-        .footer { padding: 25px; background: #0a0a0a; display: flex; gap: 20px; justify-content: center; }
-        button { padding: 12px 40px; border-radius: 50px; border: none; cursor: pointer; font-weight: 900; font-family: 'Cairo'; transition: 0.3s; }
-        .btn-p { background: var(--purple); color: white; box-shadow: 0 0 20px rgba(145,70,255,0.4); }
+        .btn-hb { background: var(--hb); color: white; }
+        .btn-bh { background: var(--bh); color: black; }
+        .btn-none { background: #333; color: white; }
+        .btn-next { background: gold; color: black; }
+        
+        .disabled { opacity: 0.3; cursor: not-allowed; }
     </style>
 </head>
-<body class="admin-mode">
+<body id="gameBody" class="admin-view">
 
-    <!-- شاشة الدخول السرية -->
     <div id="loginOverlay">
         <div class="login-card">
-            <h1>NoVaX <span style="color: var(--purple)">SYSTEM</span></h1>
-            <input type="text" id="u" placeholder="اسم المستخدم">
-            <input type="password" id="p" placeholder="الرمز السري">
-            <button class="btn-p" onclick="checkAuth()" style="width: 100%;">دخول المسؤول</button>
+            <h1 style="color: var(--purple);">NoVaX LOGIN</h1>
+            <input type="text" id="u" placeholder="v18i">
+            <input type="password" id="p" placeholder="9876">
+            <button style="background:var(--purple); color:white; width:100%;" onclick="login()">دخول</button>
         </div>
     </div>
 
-    <div class="top-nav"><div id="qT" class="q-tag">سحب سؤال جديد...</div></div>
+    <div class="top-bar"><div class="q-box" id="qT">اختر سؤال جديد 🎲</div></div>
 
-    <div class="game-world">
-        <div class="team-panel hb"><div style="color:var(--hb); font-size:25px;">HB</div><div class="score-val" id="sHB">0</div></div>
-        <div id="board" class="grid-system"></div>
-        <div class="team-panel bh"><div style="color:var(--bh); font-size:25px;">BH</div><div class="score-val" id="sBH">0</div></div>
+    <div class="game-main">
+        <div class="team-box hb"><div style="color: var(--hb)">TEAM HB</div><div class="score" id="sHB">0</div></div>
+        <div id="board" class="grid"></div>
+        <div class="team-box bh"><div style="color: var(--bh)">TEAM BH</div><div class="score" id="sBH">0</div></div>
     </div>
 
     <div class="footer">
-        <button class="btn-p" onclick="next()">سؤال عشوائي 🎲</button>
-        <button style="background:#222; color:#777;" onclick="document.body.classList.toggle('admin-mode')">وضع البث 👁️</button>
+        <div class="action-row" id="adminControls">
+            <span style="color: #666; align-self: center; margin-left: 10px;">تحكم المسؤول:</span>
+            <button class="btn-hb" onclick="assign('hb')">نقطة لـ HB</button>
+            <button class="btn-bh" onclick="assign('bh')">نقطة لـ BH</button>
+            <button class="btn-none" onclick="assign('none')">محد جاوب</button>
+            <div style="width: 2px; background: #333; margin: 0 10px;"></div>
+            <button class="btn-next" onclick="next()">سؤال جديد 🔄</button>
+            <button style="background: #222; color: #888;" onclick="document.body.classList.toggle('admin-view')">👁️ بث</button>
+        </div>
     </div>
 
     <script>
-        // الرمز صار مشفر داخل السكربت (User: v18i | Pass: 9876)
-        function checkAuth() {
-            const u = document.getElementById('u').value;
-            const p = document.getElementById('p').value;
-            // التحقق بطريقة ذكية
-            if(u === "v18i" && btoa(p) === "OTg3Ng==") { 
-                document.getElementById('loginOverlay').style.opacity = '0';
-                setTimeout(() => document.getElementById('loginOverlay').style.display = 'none', 800);
-            } else { alert("البيانات غلط يا بطل!"); }
+        function login() {
+            if(document.getElementById('u').value === "v18i" && document.getElementById('p').value === "9876") {
+                document.getElementById('loginOverlay').style.display = 'none';
+            } else { alert("خطأ!"); }
         }
 
-        let shb=0, sbh=0;
-        const bank = [{q:"ماركات سيارات؟", a:["تويوتا","مرسيدس","بي ام","فورد","تسلا","لكزس"]}, {q:"تطبيقات تواصل؟", a:["واتساب","سناب","تيك توك","انستا","يوتيوب","تويتر"]}];
+        let shb=0, sbh=0, selectedBox=null;
+        const bank = [
+            {q: "أشهر ماركات السيارات؟", a: ["تويوتا", "مرسيدس", "فورد", "بي إم", "تسلا", "لكزس"]},
+            {q: "أشهر تطبيقات التواصل؟", a: ["واتساب", "تيك توك", "سناب", "انستا", "يوتيوب", "تويتر"]},
+            {q: "أشهر لاعبي كرة قدم؟", a: ["ميسي", "رونالدو", "مبابي", "هالاند", "صلاح", "نيمار"]}
+        ];
 
         function next() {
             const b = document.getElementById('board'); b.innerHTML = '';
@@ -84,19 +100,32 @@
             document.getElementById('qT').innerText = d.q;
             for(let i=1; i<=12; i++) {
                 const c = document.createElement('div');
-                c.className = 'block';
-                let h = i <= d.a.length;
-                c.innerHTML = `<span style="font-size:30px;">${i}</span><div class="ans">${h ? d.a[i-1] : '❌'}</div>`;
+                c.className = 'card';
+                let has = i <= d.a.length;
+                c.innerHTML = `<span>${i}</span><div class="ans">${has ? d.a[i-1] : '❌'}</div>`;
                 c.onclick = () => {
-                    let t = prompt("HB / BH / None");
-                    if(t==='hb'){ shb+=10; c.classList.add('win-hb'); }
-                    if(t==='bh'){ sbh+=10; c.classList.add('win-bh'); }
-                    document.getElementById('sHB').innerText = shb;
-                    document.getElementById('sBH').innerText = sbh;
+                    if (c.classList.contains('done')) return;
+                    if (selectedBox) selectedBox.classList.remove('selected');
+                    selectedBox = c;
+                    c.classList.add('selected');
                 };
                 b.appendChild(c);
             }
         }
+
+        function assign(team) {
+            if (!selectedBox) { alert("اختر رقم المربع أولاً!"); return; }
+            if (team === 'hb') { shb += 10; selectedBox.classList.add('is-hb'); }
+            else if (team === 'bh') { sbh += 10; selectedBox.classList.add('is-bh'); }
+            else if (team === 'none') { selectedBox.classList.add('is-none'); }
+            
+            selectedBox.classList.remove('selected');
+            selectedBox.classList.add('done');
+            selectedBox = null;
+            document.getElementById('sHB').innerText = shb;
+            document.getElementById('sBH').innerText = sbh;
+        }
+
         next();
     </script>
 </body>
