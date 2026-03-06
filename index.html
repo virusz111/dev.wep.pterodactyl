@@ -3,26 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RESPECT RP | THE SUPREME EDITION V8</title>
+    <title>RESPECT RP | THE ULTIMATE SUPREME SYSTEM</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     <style>
-        /* --- 1. Variables & Base --- */
+        /* --- 1. الإعدادات العامة والمتغيرات --- */
         :root {
             --main-blue: #00d2ff;
             --deep-purple: #1c142e; /* من صورتك */
             --dark-bg: #0b011a;      /* من صورتك */
             --danger-red: #ff3b3b;   /* زر "أنت لست بمفعل" */
             --kick-green: #53fc18;
-            --glass: blur(25px);
-            --border-glow: rgba(0, 210, 255, 0.3);
+            --glass: blur(20px);
             --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* --- 2. سحر الإيموجيات البيضاء --- */
+        /* --- 2. نظام الإيموجي الأبيض (طلبك الخاص) --- */
         .white-emoji {
             filter: grayscale(1) brightness(10) contrast(10);
             display: inline-block;
@@ -32,12 +31,12 @@
             width: 24px;
         }
 
-        /* --- 3. Scrollbar --- */
+        /* --- 3. تصميم شريط التمرير --- */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--dark-bg); }
         ::-webkit-scrollbar-thumb { background: var(--main-blue); border-radius: 10px; }
 
-        /* --- 4. Global Styles --- */
+        /* --- 4. التنسيق العام للجسم --- */
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
         html { scroll-behavior: smooth; }
         body { 
@@ -45,8 +44,10 @@
             color: #fff; 
             font-family: 'Cairo', sans-serif; 
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
+        /* الخلفية المتحركة */
         .master-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at top right, rgba(0, 210, 255, 0.05), transparent),
@@ -55,24 +56,25 @@
             background-size: cover; z-index: -2;
         }
 
-        /* --- 5. Navigation --- */
+        /* --- 5. الهيدر (Navbar) --- */
         header {
             position: fixed; top: 0; width: 100%; padding: 25px 8%;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: var(--glass);
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: var(--glass);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 1000;
         }
-        .logo { font-size: 30px; font-weight: 900; color: #fff; text-decoration: none; }
+        .logo { font-size: 30px; font-weight: 900; color: #fff; text-decoration: none; letter-spacing: 1px; }
         .logo span { color: var(--main-blue); text-shadow: 0 0 20px var(--main-blue); }
 
-        nav ul { display: flex; list-style: none; gap: 35px; }
+        nav ul { display: flex; list-style: none; gap: 40px; }
         nav ul li a { color: #888; text-decoration: none; font-weight: 700; transition: var(--transition); font-size: 1rem; }
         nav ul li a:hover { color: #fff; text-shadow: 0 0 10px #fff; }
 
         .auth-status { display: flex; align-items: center; gap: 15px; }
         .login-btn { 
-            background: #fff; color: #000; padding: 12px 30px; border-radius: 10px; 
+            background: #fff; color: #000; padding: 12px 30px; border-radius: 8px; 
             font-weight: 900; cursor: pointer; border: none; transition: var(--transition);
+            font-family: 'Cairo';
         }
         .login-btn:hover { background: var(--main-blue); transform: translateY(-3px); box-shadow: 0 5px 15px var(--main-blue); }
 
@@ -80,15 +82,16 @@
         .hero { 
             height: 100vh; display: flex; flex-direction: column; 
             justify-content: center; align-items: center; text-align: center; 
+            padding: 0 10%;
         }
-        .hero h1 { font-size: clamp(3rem, 10vw, 6.5rem); font-weight: 900; line-height: 1; margin-bottom: 20px; }
+        .hero h1 { font-size: clamp(3.5rem, 8vw, 6.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 25px; }
         .hero h1 span { color: var(--main-blue); }
-        .hero p { color: #aaa; font-size: 1.5rem; max-width: 850px; margin-bottom: 50px; }
+        .hero p { color: #aaa; font-size: 1.4rem; max-width: 850px; margin-bottom: 50px; }
 
-        /* --- 7. Stats --- */
+        /* --- 7. الإحصائيات --- */
         .stats-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px; width: 85%; margin: -100px auto 100px; position: relative; z-index: 10;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; width: 85%; margin: -100px auto 100px; position: relative; z-index: 10;
         }
         .stat-card {
             background: rgba(255,255,255,0.02); padding: 50px 30px; border-radius: 25px;
@@ -99,69 +102,70 @@
         .stat-card i { font-size: 3.5rem; color: var(--main-blue); margin-bottom: 25px; }
         .stat-card h2 { font-size: 3rem; font-weight: 900; }
 
-        /* --- 8. Jobs Section (As Per Your Image) --- */
-        .jobs-section { padding: 120px 8%; text-align: center; }
+        /* --- 8. قسم الوظائف (نفس تصميم صورتك) --- */
+        .jobs-section { padding: 120px 8%; text-align: center; background: rgba(0,0,0,0.2); }
         .jobs-header h2 { font-size: 3.5rem; font-weight: 900; margin-bottom: 20px; }
-        .jobs-header p { color: #888; font-size: 1.25rem; margin-bottom: 80px; }
+        .jobs-header p { color: #888; font-size: 1.25rem; margin-bottom: 80px; max-width: 800px; margin-inline: auto; }
 
         .jobs-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
         .job-item {
             background: var(--deep-purple); padding: 50px 40px; border-radius: 20px;
             border: 1px solid rgba(255,255,255,0.02); transition: var(--transition);
-            display: flex; flex-direction: column; height: 100%;
+            display: flex; flex-direction: column; height: 100%; text-align: center;
         }
         .job-item:hover { border-color: var(--main-blue); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
         .job-item h3 { font-size: 2rem; margin-bottom: 20px; font-weight: 900; }
         .job-item p { color: #777; font-size: 1.1rem; line-height: 1.7; margin-bottom: 40px; flex-grow: 1; }
 
         .status-tag {
-            width: 100%; padding: 16px; border: none; border-radius: 8px;
+            width: 100%; padding: 18px; border: none; border-radius: 10px;
             font-weight: 900; font-family: 'Cairo'; font-size: 1.1rem;
-            transition: var(--transition);
+            transition: var(--transition); cursor: not-allowed;
         }
-        .not-active { background: var(--danger-red); color: #fff; cursor: not-allowed; }
+        .not-active { background: var(--danger-red); color: #fff; }
         .ready-to-apply { background: var(--main-blue); color: #000; cursor: pointer; display: none; }
+        .ready-to-apply:hover { box-shadow: 0 0 20px var(--main-blue); transform: scale(1.02); }
 
-        /* --- 9. Apply Form --- */
+        /* --- 9. استمارة التقديم الضخمة --- */
         #application-portal {
             display: none; max-width: 1100px; margin: 100px auto; 
             background: var(--deep-purple); padding: 80px; border-radius: 40px;
             border: 2px solid var(--main-blue); text-align: right;
-            animation: fadeInUp 1s;
+            animation: animate__fadeInUp 1s;
         }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
         .form-input { display: flex; flex-direction: column; gap: 15px; }
-        .form-input label { font-weight: 900; color: var(--main-blue); }
+        .form-input label { font-weight: 900; color: var(--main-blue); font-size: 1.1rem; }
         .form-input input, .form-input textarea {
             background: #050608; border: 1px solid #222; padding: 20px;
-            border-radius: 12px; color: #fff; font-size: 1.1rem; transition: 0.3s;
+            border-radius: 12px; color: #fff; font-size: 1.1rem; transition: 0.3s; font-family: 'Cairo';
         }
-        .form-input input:focus { border-color: var(--main-blue); box-shadow: 0 0 15px var(--border-glow); }
+        .form-input input:focus { border-color: var(--main-blue); box-shadow: 0 0 15px rgba(0,210,255,0.2); }
 
-        /* --- 10. Streams Section (Kick) --- */
-        .streams-section { padding: 100px 8%; background: rgba(0,0,0,0.3); }
-        .kick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 30px; margin-top: 50px; }
-        .kick-card { background: #000; border-radius: 20px; overflow: hidden; border: 1px solid #111; }
-        .kick-preview { height: 220px; background: #1a1a1a; position: relative; }
-        .live-badge { position: absolute; top: 15px; left: 15px; background: #ff0000; padding: 5px 15px; border-radius: 5px; font-weight: 900; font-size: 0.8rem; animation: pulse 2s infinite; }
-        .kick-info { padding: 25px; display: flex; gap: 20px; }
-        .kick-info img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--kick-green); }
+        /* --- 10. قسم القوانين --- */
+        .rules-section { padding: 100px 8%; }
+        .rule-card {
+            background: rgba(255,255,255,0.02); padding: 40px; border-radius: 20px;
+            margin-bottom: 25px; border-right: 8px solid var(--main-blue);
+            display: flex; align-items: center; gap: 30px; transition: 0.3s;
+        }
+        .rule-card:hover { background: rgba(255,255,255,0.05); transform: translateX(-10px); }
+        .rule-card .num { font-size: 2.5rem; font-weight: 900; color: var(--main-blue); opacity: 0.3; }
 
-        /* --- 11. Footer --- */
+        /* --- 11. الفوتر --- */
         footer { padding: 100px 8%; background: #030405; text-align: center; border-top: 1px solid #111; }
         .socials { display: flex; justify-content: center; gap: 50px; margin: 50px 0; }
         .socials a { color: #333; font-size: 2.5rem; transition: 0.4s; }
         .socials a:hover { color: #fff; transform: scale(1.2); }
 
-        /* --- 12. Animations --- */
+        /* --- 12. تأثيرات التحميل --- */
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
-
+        
         @media (max-width: 1000px) {
-            .hero h1 { font-size: 4rem; }
+            .hero h1 { font-size: 3.5rem; }
             .form-grid { grid-template-columns: 1fr; }
             nav { display: none; }
-            .stats-grid { margin-top: 0; }
+            header { padding: 20px 5%; }
         }
     </style>
 </head>
@@ -175,65 +179,64 @@
             <ul>
                 <li><a href="#home">الرئيسية</a></li>
                 <li><a href="#jobs">الوظائف</a></li>
-                <li><a href="#streams">البثوث</a></li>
                 <li><a href="#rules">القوانين</a></li>
                 <li><a href="#store">المتجر</a></li>
             </ul>
         </nav>
         <div class="auth-status" id="auth-area">
-            <button id="discord-login-btn" class="login-btn">ربط الحساب <span class="white-emoji">🔑</span></button>
+            <button id="discord-login-btn" class="login-btn">تسجيل الدخول <span class="white-emoji">🔑</span></button>
         </div>
     </header>
 
     <section class="hero" id="home">
         <h1 class="animate__animated animate__zoomIn">RESPECT RP <span class="white-emoji">👑</span></h1>
-        <p class="animate__animated animate__fadeInUp">عالم الرول بلاي الأكثر واقعية بانتظارك. انضم إلينا الآن وكن جزءاً من الأساطير.</p>
-        <a href="#jobs" class="login-btn" style="padding: 20px 60px; font-size: 1.3rem;">ابدأ مسيرتك</a>
+        <p class="animate__animated animate__fadeInUp">بوابتك الرسمية للانضمام إلى أقوى مجتمع رول بلاي في الشرق الأوسط. <span class="white-emoji">💎</span></p>
+        <a href="#jobs" class="login-btn" style="padding: 20px 60px; font-size: 1.3rem;">تصفح القطاعات المتاحة</a>
     </section>
 
     <div class="stats-grid">
         <div class="stat-card">
-            <i class="fas fa-signal"></i>
+            <i class="fas fa-server"></i>
             <h2 style="color:var(--kick-green)">ONLINE</h2>
             <p>حالة الخادم <span class="white-emoji">📡</span></p>
         </div>
         <div class="stat-card">
-            <i class="fas fa-user-friends"></i>
-            <h2 id="player-count">184</h2>
-            <p>لاعب متصل <span class="white-emoji">👥</span></p>
+            <i class="fas fa-users"></i>
+            <h2 id="p-count">192</h2>
+            <p>لاعب متصل الآن <span class="white-emoji">👥</span></p>
         </div>
         <div class="stat-card">
-            <i class="fas fa-file-signature"></i>
-            <h2>+40K</h2>
-            <p>طلب مقبول <span class="white-emoji">📝</span></p>
+            <i class="fas fa-shield-alt"></i>
+            <h2>SECURE</h2>
+            <p>نظام الحماية V8 <span class="white-emoji">🛡️</span></p>
         </div>
     </div>
 
     <section class="jobs-section" id="jobs">
         <div class="jobs-header">
             <h2>التقديم على الوظائف <span class="white-emoji">💼</span></h2>
-            <p>يمكنك التقديم على القطاعات الرسمية في مدينة ريسبكت. <br> التقديم متاح فقط للمواطنين المفعلين في الديسكورد الرسمي.</p>
+            <p>يمكنك طلب التقديم على الوظائف المتاحة داخل سيرفر فايف ام "ريسبكت" التي تكون بنظام المقابلات أو المطلوب منك التقديم من هذا القسم.</p>
         </div>
 
         <div class="jobs-wrapper">
             <div class="job-item">
                 <h3>منفذي القانون <span class="white-emoji">👮</span></h3>
-                <p>هم رجال ينفذون القانون في سبيل حفظ الأمن والأمان في المنطقة وتطبيق النظام بكل حزم.</p>
+                <p>منفذي القانون هم رجال ينفذون القانون في سبيل حفظ الأمن والأمان في المنطقة وتطبيق النظام بكل حزم.</p>
                 <button class="status-tag not-active job-trigger">أنت لست بمفعل</button>
             </div>
             <div class="job-item">
                 <h3>الحكماء (EMS) <span class="white-emoji">🚑</span></h3>
-                <p>المسؤولون عن حفظ حياة المواطنين ومعالجتهم وتقديم الوصفات الطبية اللازمة في أصعب الظروف.</p>
+                <p>هم رجال مسؤولين عن حفظ حياة المواطنين ومعالجتهم وتقديم الوصفات الطبية اللازمة في أصعب الظروف.</p>
                 <button class="status-tag not-active job-trigger">أنت لست بمفعل</button>
             </div>
             <div class="job-item">
                 <h3>وزارة العدل <span class="white-emoji">⚖️</span></h3>
-                <p>كل ما يتعلق بالقضاء ومؤسساته وتطبيق القانون وحماية حقوق المواطنين في ريسبكت.</p>
+                <p>كل ما يتعلق بالقضاء ومؤسساته وتطبيق القانون وحماية حقوق المواطنين في ريسبكت بشكل قانوني.</p>
                 <button class="status-tag not-active job-trigger">أنت لست بمفعل</button>
             </div>
             <div class="job-item">
                 <h3>تقديم القبائل <span class="white-emoji">🏴</span></h3>
-                <p>مجموعة كبيرة من الناس لهم نظامهم الخاص يحمون بعضهم البعض ويستحلون مناطق نفوذ.</p>
+                <p>مجموعة كبيرة من الناس لهم نظامهم الخاص يحمون بعضهم البعض ويستحلون مناطق نفوذ خاصة بهم.</p>
                 <button class="status-tag not-active job-trigger">أنت لست بمفعل</button>
             </div>
         </div>
@@ -241,246 +244,180 @@
 
     <section id="application-portal">
         <div style="text-align:center; margin-bottom:60px;">
-            <h2 style="font-size:3rem;">ملف الترشيح الرسمي <span class="white-emoji">📑</span></h2>
-            <p style="color:var(--main-blue)" id="welcome-user">يرجى تعبئة كافة البيانات المطلوبة</p>
+            <h2 style="font-size:3.5rem;">ملف الترشيح الرسمي <span class="white-emoji">📑</span></h2>
+            <p style="color:var(--main-blue); font-size:1.2rem;" id="user-greeting"></p>
         </div>
 
-        <form id="grand-form">
+        <form id="grand-request-form">
             <div class="form-grid">
                 <div class="form-input">
-                    <label>القطاع المختار</label>
-                    <input type="text" id="target_job" readonly style="color:var(--main-blue); font-weight:900;">
+                    <label>القطاع المستهدف</label>
+                    <input type="text" id="target_job" readonly style="color:var(--main-blue); font-weight:900; background:rgba(255,255,255,0.02)">
                 </div>
                 <div class="form-input">
-                    <label>اسم الشخصية (ثلاثي)</label>
-                    <input type="text" id="name_ic" placeholder="مثال: ناصر بن خالد" required>
+                    <label>الاسم الثلاثي (IC)</label>
+                    <input type="text" id="name_ic" placeholder="مثال: فهد بن منصور" required>
                 </div>
                 <div class="form-input">
                     <label>العمر الحقيقي (OOC)</label>
-                    <input type="number" id="age_ooc" required>
+                    <input type="number" id="age_ooc" placeholder="يجب أن يكون عمرك فوق 16" required>
                 </div>
                 <div class="form-input">
-                    <label>رابط حساب ستيم</label>
-                    <input type="text" id="steam_url" placeholder="steam:1100001..." required>
+                    <label>رابط ملف ستيم (Steam Hex)</label>
+                    <input type="text" id="steam_hex" placeholder="steam:1100001..." required>
                 </div>
             </div>
             <div class="form-input" style="margin-top:40px;">
-                <label>لماذا تريد الانضمام وماهي خبراتك؟</label>
-                <textarea id="bio" rows="6" placeholder="اكتب سيرة ذاتية مفصلة..." required></textarea>
+                <label>لماذا تعتقد أنك الشخص المناسب وماهي خبراتك السابقة؟</label>
+                <textarea id="experience_text" rows="7" placeholder="اكتب سيرة ذاتية مفصلة تشمل خبراتك في الرول بلاي..." required></textarea>
             </div>
-            <button type="submit" id="submit-btn" class="login-btn" style="width:100%; margin-top:50px; padding:25px; font-size:1.5rem;">إرسال الملف <span class="white-emoji">📤</span></button>
+            <button type="submit" id="final-send-btn" class="login-btn" style="width:100%; margin-top:50px; padding:25px; font-size:1.5rem;">إرسال ملف التوظيف <span class="white-emoji">📤</span></button>
         </form>
     </section>
 
-    <section class="streams-section" id="streams">
-        <h2 style="font-size:3rem; text-align:center;">بثوث مشاهير <span style="color:var(--kick-green)">KICK</span> <span class="white-emoji">🎥</span></h2>
-        <div class="kick-grid">
-            <div class="kick-card">
-                <div class="kick-preview">
-                    <span class="live-badge">LIVE</span>
-                    <img src="https://i.ytimg.com/vi/bXnK2xG-Rxs/maxresdefault.jpg" style="width:100%; height:100%; object-fit:cover;">
-                </div>
-                <div class="kick-info">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
-                    <div>
-                        <h4>Mshary_RP</h4>
-                        <p style="color:#666">مداهمة كبرى لمصنع ممنوعات <span class="white-emoji">🚓</span></p>
-                    </div>
-                </div>
-            </div>
-            <div class="kick-card">
-                <div class="kick-preview">
-                    <span class="live-badge">LIVE</span>
-                    <img src="https://wallpaperaccess.com/full/3794303.jpg" style="width:100%; height:100%; object-fit:cover;">
-                </div>
-                <div class="kick-info">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ahmad">
-                    <div>
-                        <h4>Sultan_Live</h4>
-                        <p style="color:#666">توزيع هدايا على المواطنين <span class="white-emoji">🎁</span></p>
-                    </div>
-                </div>
-            </div>
+    <section class="rules-section" id="rules">
+        <h2 style="margin-bottom:50px; font-size:3rem; text-align:center;">تعليمات إدارية <span class="white-emoji">⚖️</span></h2>
+        <div class="rule-card">
+            <div class="num">01</div>
+            <p>يمنع منعاً باتاً الكذب في البيانات المقدمة، سيتم التحقق من الـ Hex ومطابقته مع رتبك الحالية. <span class="white-emoji">🚫</span></p>
+        </div>
+        <div class="rule-card">
+            <div class="num">02</div>
+            <p>التقديم لقطاعين في نفس الوقت يعرض طلباتك للرفض التلقائي من قبل النظام الذكي. <span class="white-emoji">⚠️</span></p>
         </div>
     </section>
 
     <footer>
-        <span class="logo">RESPECT<span>.SA</span></span>
+        <span class="logo" style="font-size:35px;">RESPECT<span>.SA</span></span>
         <div class="socials">
             <a href="#"><i class="fab fa-discord"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
         </div>
-        <p>© 2026 مدينة ريسبكت. تم التطوير بأعلى تقنيات الحماية والأمان. <span class="white-emoji">🛡️</span></p>
+        <p>© 2026 مدينة ريسبكت RP. جميع الحقوق محفوظة لـ Respect CFW. <br> تم تصميم النظام بأعلى معايير الأمان والخصوصية. <span class="white-emoji">🛡️</span></p>
     </footer>
 
     <script>
-        /* تشفير التوكن للحماية من السرقة
-           الطريقة: تشفير مزدوج بـ Base64
-        */
-        const _0x992 = "WkdWemRHOXJaV05vWlhKdVpXNWtZWFJwYjI0PQ=="; // مثال لتوكن مشفر
-
-        function secureKey(k) {
-            try { return atob(atob(k)); } catch(e) { return ""; }
-        }
-
+        // --- 1. الإعدادات (اربطها مع بوتك بالاستضافة) ---
         const CONFIG = {
-            CLIENT: 'ضـع_ID_الديسكورد',
-            GUILD:  'ضـع_ID_السيرفر',
-            ROLE:   'ضـع_ID_الرتبة',
-            WEB:    'رابط_الويبهوك',
-            BACKEND_URL: 'http://استضافتك_هنا:3000' // إذا فعلت نظام الاستضافة
+            CLIENT_ID: 'ضـع_ID_الـبـوت_هـنـا',
+            // رابط الاستضافة حقك (حيث يعمل البوت)
+            BACKEND_URL: 'http://IP_استـضـافتـك:3000/verify-member', 
+            WEBHOOK_URL: 'ضـع_رابط_الـويـبـهـوك_هـنـا'
         };
 
-        const REDIRECT = window.location.href.split('#')[0];
+        const REDIRECT_URI = window.location.href.split('#')[0];
 
-        // 1. تسجيل الدخول
+        // 2. تفعيل تسجيل الدخول بالديسكورد
         document.getElementById('discord-login-btn').onclick = () => {
-            window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${CONFIG.CLIENT}&redirect_uri=${encodeURIComponent(REDIRECT)}&response_type=token&scope=identify`;
+            window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${CONFIG.CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
         };
 
-        const hash = new URLSearchParams(window.location.hash.slice(1));
-        const accessToken = hash.get('access_token');
+        // 3. معالجة التوكن والتحقق عبر الاستضافة
+        const params = new URLSearchParams(window.location.hash.slice(1));
+        const token = params.get('access_token');
 
-        if (accessToken) {
-            // جلب البيانات الشخصية
-            fetch('https://discord.com/api/users/@me', {
-                headers: { authorization: `Bearer ${accessToken}` }
+        if (token) {
+            // نرسل الطلب لاستضافة البوت (Backend) للتحقق من الرتبة
+            fetch(CONFIG.BACKEND_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ accessToken: token })
             })
             .then(res => res.json())
-            .then(user => {
-                window.currentUser = user;
-                updateNavbar(user);
-                checkRoleOnBackend(user.id);
+            .then(data => {
+                if (data.success) {
+                    window.discordUser = data.user;
+                    initAuthorizedUser(data.user);
+                } else {
+                    alert("❌ نعتذر، يجب أن تملك رتبة [مفعل] في ديسكورد ريسبكت لفتح التقديم.");
+                }
+            })
+            .catch(err => {
+                console.error("Connection Error:", err);
+                alert("⚠️ خطأ في الربط مع استضافة البوت. تأكد أن البوت شغال في الاستضافة.");
             });
         }
 
-        function updateNavbar(u) {
+        // 4. تهيئة واجهة المستخدم للمفعلين
+        function initAuthorizedUser(user) {
+            // تحديث الهيدر
             document.getElementById('auth-area').innerHTML = `
-                <div style="display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:8px 20px; border-radius:50px; border:1px solid var(--main-blue);">
-                    <img src="https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png" style="width:30px; border-radius:50%;">
-                    <span style="font-weight:900; font-size:0.8rem;">${u.username}</span>
+                <div style="display:flex; align-items:center; gap:12px; background:rgba(255,255,255,0.05); padding:8px 20px; border-radius:50px; border:1px solid var(--main-blue);">
+                    <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" style="width:32px; border-radius:50%;">
+                    <span style="font-weight:900; font-size:0.9rem;">${user.username}</span>
                 </div>
             `;
-        }
 
-        // 2. التحقق من الرتبة (الاستضافة أو المباشر)
-        async function checkRoleOnBackend(uid) {
-            const key = secureKey(_0x992);
-            // سنفترض التحقق المباشر من المتصفح لغرض العرض
-            fetch(`https://discord.com/api/guilds/${CONFIG.GUILD}/members/${uid}`, {
-                headers: { "Authorization": `Bot ${key}` }
-            })
-            .then(res => res.json())
-            .then(member => {
-                if (member.roles && member.roles.includes(CONFIG.ROLE)) {
-                    unlockJobs();
-                } else {
-                    alert("🚫 لست بمفعل في سيرفر ريسبكت!");
-                }
-            });
-        }
-
-        function unlockJobs() {
-            const btns = document.querySelectorAll('.job-trigger');
-            btns.forEach(btn => {
+            // تحويل الأزرار من الأحمر (لست بمفعل) إلى الأزرق (تقديم)
+            const triggers = document.querySelectorAll('.job-trigger');
+            triggers.forEach(btn => {
                 btn.innerText = "تقديم الآن";
                 btn.classList.replace('not-active', 'ready-to-apply');
                 btn.style.display = "block";
-                btn.style.background = "#00d2ff";
-                btn.style.color = "#000";
                 
                 btn.onclick = function() {
-                    const job = this.parentElement.querySelector('h3').innerText;
+                    const jobTitle = this.parentElement.querySelector('h3').innerText;
                     document.getElementById('application-portal').style.display = 'block';
-                    document.getElementById('target_job').value = job;
-                    document.getElementById('welcome-user').innerText = `أهلاً بك ${window.currentUser.username}، تقديمك على قطاع ${job}`;
+                    document.getElementById('target_job').value = jobTitle;
+                    document.getElementById('user-greeting').innerText = `أهلاً بك يا ${user.username}، يرجى ملء بياناتك للتقديم على ${jobTitle}`;
                     window.scrollTo({ top: document.getElementById('application-portal').offsetTop - 120, behavior: 'smooth' });
                 };
             });
         }
 
-        // --- إرسال الويب هوك (Webhook Handling) ---
-        document.getElementById('grand-form').onsubmit = (e) => {
+        
+        // 5. إرسال ملف التوظيف للويبهوك
+        document.getElementById('grand-request-form').onsubmit = (e) => {
             e.preventDefault();
-            const btn = document.getElementById('submit-btn');
-            
-            // تغيير حالة الزر أثناء الإرسال لإعطاء طابع احترافي
-            btn.innerText = "جاري تشفير البيانات وإرسال الملف... ⚡";
+            const btn = document.getElementById('final-send-btn');
+            btn.innerText = "جاري تشفير وإرسال الملف... ⚡";
             btn.disabled = true;
-            btn.style.opacity = "0.7";
-            btn.style.cursor = "not-allowed";
 
-            const u = window.currentUser;
-            
-            // بناء محتوى الرسالة (Embed) لتظهر بشكل منسق في الديسكورد
+            const user = window.discordUser;
             const payload = {
-                username: "RESPECT APPLICATIONS",
-                avatar_url: "https://respect.sa/assets/img/logo.png", // شعار المدينة
+                username: "RESPECT SYSTEM",
+                avatar_url: "https://respect.sa/assets/img/logo.png",
                 embeds: [{
-                    title: "🔔 طلب انضمام جديد - بوابة التوظيف",
-                    color: 52479, // اللون الأزرق السماوي الخاص بـ Respect
-                    thumbnail: { 
-                        url: `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png` 
-                    },
+                    title: "📥 طلب توظيف جديد - ريسبكت RP",
+                    color: 52479,
+                    thumbnail: { url: `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` },
                     fields: [
-                        { name: "👤 العضو المتقدم", value: `<@${u.id}> (${u.username})`, inline: true },
-                        { name: "💼 القطاع المستهدف", value: document.getElementById('target_job').value, inline: true },
-                        { name: "🆔 الاسم داخل اللعبة (IC)", value: document.getElementById('name_ic').value, inline: true },
-                        { name: "🎂 العمر الحقيقي (OOC)", value: document.getElementById('age_ooc').value, inline: true },
-                        { name: "🔗 معرف ستيم (Hex)", value: `\`${document.getElementById('steam_url').value}\`` },
-                        { name: "📝 السيرة الذاتية والخبرات", value: `\`\`\`${document.getElementById('bio').value}\`\`\`` }
+                        { name: "👤 العضو المتقدم", value: `<@${user.id}> (${user.username})`, inline: true },
+                        { name: "💼 القطاع المختار", value: document.getElementById('target_job').value, inline: true },
+                        { name: "🆔 الاسم IC", value: document.getElementById('name_ic').value, inline: true },
+                        { name: "🎂 العمر OOC", value: document.getElementById('age_ooc').value, inline: true },
+                        { name: "🔗 ملف الـ Hex", value: `\`${document.getElementById('steam_hex').value}\`` },
+                        { name: "📝 السيرة والخبرات", value: `\`\`\`${document.getElementById('experience_text').value}\`\`\`` }
                     ],
-                    footer: { 
-                        text: "نظام التقديم الاحترافي V8 | RESPECT RP", 
-                        icon_url: "https://respect.sa/assets/img/logo.png" 
-                    },
+                    footer: { text: "نظام التوظيف الذكي V8 | Respect RP" },
                     timestamp: new Date()
                 }]
             };
 
-            // عملية الإرسال الفعلي للويب هوك
-            fetch(CONFIG.WEB, {
+            fetch(CONFIG.WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             })
             .then(() => {
-                // تنبيه النجاح وإعادة تحميل الصفحة لتصفير البيانات
-                alert('✅ تم إرسال ملفك بنجاح! سيتم مراجعته من قبل الإدارة المختصة.');
-                window.location.hash = "";
+                alert('✅ تم إرسال ملفك بنجاح! سيتم مراجعته والرد عليك قريباً.');
                 location.reload();
             })
-            .catch((err) => {
-                alert('❌ حدث خطأ أثناء الإرسال، يرجى التأكد من إعدادات الويب هوك.');
-                console.error(err);
-                btn.innerText = "إعادة المحاولة";
+            .catch(() => {
+                alert('❌ فشل في الإرسال، تواصل مع الإدارة.');
                 btn.disabled = false;
-                btn.style.opacity = "1";
+                btn.innerText = "إعادة المحاولة";
             });
         };
 
-        // --- تحديث عداد اللاعبين الوهمي (للجمالية) ---
+        // تحديث وهمي لعدد اللاعبين
         setInterval(() => {
-            const el = document.getElementById('player-count');
-            if(el) {
-                let current = parseInt(el.innerText);
-                let change = Math.floor(Math.random() * 3) - 1; // زيادة أو نقصان بسيط
-                el.innerText = current + change;
-            }
+            const el = document.getElementById('p-count');
+            let val = parseInt(el.innerText);
+            el.innerText = val + (Math.random() > 0.5 ? 1 : -1);
         }, 5000);
-
-        // --- تأثيرات الظهور عند التمرير (Scroll Animations) ---
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.style.padding = "15px 8%";
-                header.style.background = "rgba(0, 0, 0, 0.95)";
-            } else {
-                header.style.padding = "25px 8%";
-                header.style.background = "rgba(0, 0, 0, 0.6)";
-            }
-        });
     </script>
 </body>
 </html>
