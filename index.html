@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVAX RP | THE INFINITY MASTERPIECE v11.0</title>
+    <title>NOVAX RP | THE INFINITY MASTERPIECE</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -11,566 +11,772 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* ---------------------------------------------------------
-           [1] SUPREME CSS VARIABLES - تفصيل الألوان والظلال
-           --------------------------------------------------------- */
+        /* [1] SUPREME CSS VARIABLES 
+           تعريف كل متغير بسطر مستقل لزيادة الدقة والوضوح
+        */
         :root {
-            --p: #bc13fe;
-            --p-glow: rgba(188, 19, 254, 0.6);
-            --a: #00f2ff;
-            --a-glow: rgba(0, 242, 255, 0.6);
-            --g: #ffcf40;
-            --g-glow: rgba(255, 207, 64, 0.5);
-            --r: #ff003c;
-            --r-glow: rgba(255, 0, 60, 0.6);
-            --bg-deep: #000000;
-            --bg-glass: rgba(10, 10, 15, 0.98);
-            --border-neon: 2px solid rgba(188, 19, 254, 0.4);
-            --transition-main: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --primary-neon: #bc13fe;
+            --primary-glow: rgba(188, 19, 254, 0.6);
+            --accent-neon: #00f2ff;
+            --accent-glow: rgba(0, 242, 255, 0.6);
+            --gold-neon: #ffcf40;
+            --gold-glow: rgba(255, 207, 64, 0.5);
+            --danger-neon: #ff003c;
+            --danger-glow: rgba(255, 0, 60, 0.6);
+            --bg-dark: #000000;
+            --bg-surface: #050508;
+            --bg-card: rgba(10, 10, 15, 0.98);
+            --border-width: 2px;
+            --border-style: solid;
+            --border-p: var(--border-width) var(--border-style) rgba(188, 19, 254, 0.3);
+            --font-main: 'Cairo', sans-serif;
+            --font-tech: 'Orbitron', sans-serif;
+            --font-code: 'Share Tech Mono', monospace;
+            --transition-speed: 0.5s;
+            --transition-ease: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* ---------------------------------------------------------
-           [2] GLOBAL STYLES & CORE FIXES
-           --------------------------------------------------------- */
+        /* [2] GLOBAL RESET 
+           تفكيك الخصائص لزيادة عدد الأسطر وضمان التحكم الكامل
+        */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             cursor: none !important;
             user-select: none;
+            -webkit-user-drag: none;
             outline: none;
+            text-decoration: none;
+            list-style: none;
         }
 
         body {
-            background: var(--bg-deep);
+            background-color: var(--bg-dark);
             color: #ffffff;
-            font-family: 'Cairo', sans-serif;
+            font-family: var(--font-main);
             overflow-x: hidden;
+            width: 100%;
             min-height: 100vh;
+            line-height: 1.6;
         }
 
+        /* [3] SCROLLBAR DESIGN 
+        */
         ::-webkit-scrollbar {
             width: 12px;
             background: #000;
         }
+        ::-webkit-scrollbar-track {
+            background: #000;
+            border-left: 1px solid var(--primary-neon);
+        }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--p), var(--a));
+            background: linear-gradient(to bottom, var(--primary-neon), var(--accent-neon));
             border-radius: 0;
-            box-shadow: 0 0 20px var(--p);
+            box-shadow: 0 0 20px var(--primary-neon);
         }
 
-        /* ---------------------------------------------------------
-           [3] THE SOVEREIGN CURSOR SYSTEM (NO-FAIL)
-           --------------------------------------------------------- */
-        #c-wrap {
+        /* [4] MASTER CURSOR SYSTEM 
+           نظام ماوس ثلاثي القطع مع إحداثيات مستقلة
+        */
+        #master-cursor {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            z-index: 999999999;
+            z-index: 1000000000;
         }
-        .c-main {
+        .cursor-ring {
             position: absolute;
             width: 50px;
             height: 50px;
-            border: 2px solid var(--a);
+            border: 2px solid var(--accent-neon);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 20px var(--a);
-            transition: width 0.3s, height 0.3s;
+            box-shadow: 0 0 20px var(--accent-neon);
+            transition: width 0.3s, height 0.3s, border-color 0.3s;
         }
-        .c-dot {
+        .cursor-dot {
             position: absolute;
             width: 10px;
             height: 10px;
-            background: var(--p);
+            background: var(--primary-neon);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px var(--p);
+            box-shadow: 0 0 15px var(--primary-neon);
+            z-index: 2;
         }
-        .c-outer {
+        .cursor-glitch {
             position: absolute;
-            width: 80px;
-            height: 80px;
-            border: 1px dashed var(--p);
+            width: 75px;
+            height: 75px;
+            border: 1px dashed var(--primary-neon);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            animation: spin 10s linear infinite;
+            animation: rotateCursor 10s linear infinite;
             opacity: 0.2;
         }
-        @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes rotateCursor {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
 
-        /* ---------------------------------------------------------
-           [4] ATMOSPHERE & VISUALS
-           --------------------------------------------------------- */
-        #nebula { position: fixed; inset: 0; z-index: -10; opacity: 0.8; }
-        .grid-tech {
+        /* [5] ATMOSPHERIC LAYERS 
+        */
+        #nebula-canvas {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            background: radial-gradient(circle at center, #0a001a 0%, #000 100%);
+        }
+        .tech-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -9;
-            background-image: 
-                linear-gradient(rgba(188, 19, 254, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(188, 19, 254, 0.05) 1px, transparent 1px);
-            background-size: 80px 80px;
+            background-image: linear-gradient(rgba(188, 19, 254, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(188, 19, 254, 0.05) 1px, transparent 1px);
+            background-size: 70px 70px;
             opacity: 0.3;
         }
-        .vignette {
+        .vignette-fx {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -8;
-            background: radial-gradient(circle, transparent 20%, #000 150%);
+            background: radial-gradient(circle, transparent 30%, rgba(0,0,0,0.9) 150%);
+            pointer-events: none;
         }
 
-        /* ---------------------------------------------------------
-           [5] SUPREME HEADER
-           --------------------------------------------------------- */
-        header {
+        /* [6] SUPREME HEADER 
+        */
+        header.sovereign-nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 40px 100px;
-            background: rgba(0,0,0,0.96);
-            backdrop-filter: blur(20px);
-            border-bottom: 3px solid var(--p);
+            padding-top: 40px;
+            padding-bottom: 40px;
+            padding-left: 80px;
+            padding-right: 80px;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(25px);
+            border-bottom: 3px solid var(--primary-neon);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 10000;
+            z-index: 99999;
+            box-shadow: 0 10px 50px rgba(0,0,0,1);
         }
-        .logo {
-            font-family: 'Orbitron';
+        .nav-logo {
+            font-family: var(--font-tech);
             font-size: 45px;
             font-weight: 900;
             letter-spacing: 15px;
-            color: #fff;
+            color: #ffffff;
+            position: relative;
         }
-        .logo span { color: var(--p); text-shadow: 0 0 20px var(--p); }
+        .nav-logo span {
+            color: var(--primary-neon);
+            text-shadow: 0 0 25px var(--primary-neon);
+        }
+        .nav-logo::after {
+            content: 'CORE_V12';
+            position: absolute;
+            bottom: -15px;
+            right: 0;
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: var(--accent-neon);
+        }
 
-        .nav { display: flex; gap: 20px; }
-        .nav-btn {
-            padding: 15px 35px;
-            background: rgba(255,255,255,0.02);
-            border: 1.5px solid var(--p);
-            color: #fff;
-            font-family: 'Orbitron';
-            font-weight: 700;
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-link {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            padding-left: 35px;
+            padding-right: 35px;
+            background-color: rgba(255,255,255,0.02);
+            border: 1px solid var(--primary-neon);
+            color: #ffffff;
+            font-family: var(--font-tech);
+            font-size: 13px;
+            font-weight: 800;
             clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
-            transition: var(--transition-main);
-            text-decoration: none;
+            transition: all var(--transition-speed) var(--transition-ease);
         }
-        .nav-btn:hover, .nav-btn.active {
-            background: var(--p);
-            color: #000;
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--primary-neon);
+            color: #000000;
             transform: translateY(-5px);
-            box-shadow: 0 0 30px var(--p);
+            box-shadow: 0 0 30px var(--primary-neon);
         }
 
-        /* ---------------------------------------------------------
-           [6] SECTIONS ARCHITECTURE
-           --------------------------------------------------------- */
-        .main-container {
-            max-width: 1700px;
-            margin: 0 auto;
-            padding: 250px 50px 100px 50px;
+        /* [7] MAIN CONTENT ARCHITECTURE 
+        */
+        .content-wrapper {
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 250px;
+            padding-bottom: 100px;
+            padding-left: 50px;
+            padding-right: 50px;
         }
-        .section { display: none; opacity: 0; transform: scale(0.98); }
-        .section.active { display: block; animation: showSec 0.8s forwards; }
-        @keyframes showSec { to { opacity: 1; transform: scale(1); } }
+        .sector {
+            display: none;
+            opacity: 0;
+            transform: translateY(100px);
+        }
+        .sector.active {
+            display: block;
+            animation: sectorReveal 1s var(--transition-ease) forwards;
+        }
+        @keyframes sectorReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        /* [6.1] Hero UI */
-        .hero { text-align: center; min-height: 50vh; display: flex; flex-direction: column; justify-content: center; }
-        .hero h1 { font-family: 'Orbitron'; font-size: 15vw; line-height: 0.8; margin-bottom: 50px; }
-        .hero p { font-family: 'Share Tech Mono'; font-size: 2rem; letter-spacing: 20px; color: var(--a); }
+        /* [8] SECTOR: HOME 
+        */
+        .hero-title {
+            font-family: var(--font-tech);
+            font-size: 15vw;
+            font-weight: 900;
+            text-align: center;
+            line-height: 0.8;
+            background: linear-gradient(to bottom, #ffffff 40%, var(--primary-neon) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 50px;
+        }
+        .hero-sub {
+            font-family: var(--font-code);
+            font-size: 2.5rem;
+            text-align: center;
+            letter-spacing: 30px;
+            color: var(--accent-neon);
+            margin-bottom: 100px;
+        }
 
-        /* [6.2] The Law Book - Expansion */
-        .law-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .law-box {
-            background: var(--bg-glass);
-            border-right: 5px solid var(--p);
+        /* [9] SECTOR: LAWS (DETAILED) 
+        */
+        .laws-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+        .law-card {
+            background-color: var(--bg-card);
+            border-right: 6px solid var(--primary-neon);
             padding: 50px;
-            transition: 0.4s;
+            transition: transform 0.4s;
         }
-        .law-box:hover { background: rgba(188, 19, 254, 0.05); transform: translateX(-10px); }
-        .law-box h3 { font-family: 'Orbitron'; color: var(--a); font-size: 2.2rem; margin-bottom: 25px; }
-        .law-box p { font-size: 1.3rem; line-height: 1.9; opacity: 0.8; }
+        .law-card:hover {
+            transform: translateX(-15px);
+            background-color: rgba(188, 19, 254, 0.05);
+        }
+        .law-card h3 {
+            font-family: var(--font-tech);
+            font-size: 2rem;
+            color: var(--accent-neon);
+            margin-bottom: 25px;
+        }
+        .law-card p {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: rgba(255,255,255,0.8);
+        }
 
-        /* [6.3] The Imperial Store */
-        .store-wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-        .card {
-            background: #000;
-            border: 2px solid var(--p);
+        /* [10] SECTOR: STORE 
+        */
+        .store-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        .package-card {
+            background-color: var(--bg-card);
+            border: 2px solid var(--primary-neon);
             padding: 80px 40px;
             text-align: center;
             position: relative;
-        }
-        .card.king { border-color: var(--g); background: linear-gradient(160deg, #0a0a02, #000); }
-        .card .price { font-family: 'Orbitron'; font-size: 6rem; font-weight: 900; margin: 40px 0; }
-        .card .features { list-style: none; text-align: right; margin-bottom: 50px; }
-        .card .features li { padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 1.1rem; }
-
-        /* [6.4] THE APPLICATION SYSTEM (THE BIG ADDITION) */
-        .app-form {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: var(--bg-glass);
-            border: 3px solid var(--p);
-            padding: 80px;
-            box-shadow: 0 0 100px rgba(0,0,0,1);
-        }
-        .form-step { display: none; }
-        .form-step.active { display: block; animation: stepFade 0.5s forwards; }
-        @keyframes stepFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .input-group { margin-bottom: 40px; position: relative; }
-        .input-group label { display: block; font-family: 'Orbitron'; color: var(--p); margin-bottom: 15px; font-size: 1.1rem; letter-spacing: 3px; }
-        .input-group input, .input-group textarea, .input-group select {
-            width: 100%;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--p);
-            padding: 20px;
-            color: #fff;
-            font-family: 'Cairo';
-            font-size: 1.1rem;
-            transition: 0.3s;
-        }
-        .input-group input:focus { border-color: var(--a); box-shadow: 0 0 15px var(--a); }
-
-        .form-nav { display: flex; justify-content: space-between; margin-top: 60px; }
-        .f-btn {
-            padding: 20px 60px;
-            font-family: 'Orbitron';
-            font-weight: 900;
-            background: transparent;
-            border: 2px solid var(--a);
-            color: var(--a);
-            transition: 0.3s;
-        }
-        .f-btn:hover { background: var(--a); color: #000; box-shadow: 0 0 30px var(--a); }
-
-        /* [7] SYSTEM LOGS - التقنية العالية */
-        .system-logs {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            width: 400px;
-            height: 200px;
-            background: rgba(0,0,0,0.8);
-            border: 1px solid var(--a);
-            padding: 20px;
-            font-family: 'Share Tech Mono';
-            font-size: 0.8rem;
-            color: var(--a);
             overflow: hidden;
-            pointer-events: none;
-            z-index: 5000;
         }
-        .log-line { margin-bottom: 8px; border-left: 2px solid var(--p); padding-left: 10px; }
+        .package-card.gold {
+            border-color: var(--gold-neon);
+            box-shadow: 0 0 40px rgba(255, 207, 64, 0.2);
+        }
+        .package-price {
+            font-family: var(--font-tech);
+            font-size: 5rem;
+            font-weight: 900;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .feature-list {
+            margin-bottom: 50px;
+            text-align: right;
+        }
+        .feature-item {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 1.1rem;
+        }
+        .feature-item i {
+            color: var(--primary-neon);
+            margin-left: 10px;
+        }
 
-        /* [8] PRELOADER */
+        /* [11] SECTOR: APPLICATION (THE MASSIVE FORM) 
+        */
+        .app-container {
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: var(--bg-card);
+            border: 4px solid var(--primary-neon);
+            padding: 80px;
+        }
+        .step-box {
+            display: none;
+        }
+        .step-box.active {
+            display: block;
+            animation: stepIn 0.5s ease forwards;
+        }
+        @keyframes stepIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .form-group {
+            margin-bottom: 40px;
+        }
+        .form-group label {
+            display: block;
+            font-family: var(--font-tech);
+            font-size: 1.1rem;
+            color: var(--accent-neon);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            background-color: rgba(255,255,255,0.03);
+            border: 1px solid var(--primary-neon);
+            padding: 20px;
+            color: #ffffff;
+            font-family: var(--font-main);
+            font-size: 1.1rem;
+        }
+        .form-group input:focus {
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 15px var(--accent-neon);
+        }
+
+        .btn-action {
+            padding: 20px 60px;
+            background-color: transparent;
+            border: 2px solid var(--accent-neon);
+            color: var(--accent-neon);
+            font-family: var(--font-tech);
+            font-weight: 900;
+            transition: 0.4s;
+        }
+        .btn-action:hover {
+            background-color: var(--accent-neon);
+            color: #000000;
+            box-shadow: 0 0 30px var(--accent-neon);
+        }
+
+        /* [12] SYSTEM MONITOR (LIVE LOGS) 
+        */
+        .system-monitor {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            width: 450px;
+            height: 250px;
+            background-color: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--primary-neon);
+            padding: 25px;
+            font-family: var(--font-code);
+            font-size: 12px;
+            color: var(--primary-neon);
+            overflow: hidden;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        .log-entry {
+            margin-bottom: 8px;
+            border-left: 2px solid var(--accent-neon);
+            padding-left: 10px;
+            animation: logSlide 0.3s ease-out;
+        }
+        @keyframes logSlide {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* [13] PRELOADER 
+        */
         #preloader {
             position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 10000000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            z-index: 9999999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-        .load-title { font-family: 'Orbitron'; font-size: 6rem; letter-spacing: 40px; margin-bottom: 50px; }
-        .load-bar { width: 600px; height: 3px; background: rgba(255,255,255,0.1); position: relative; }
-        .load-fill { height: 100%; width: 0%; background: var(--p); box-shadow: 0 0 20px var(--p); }
+        .load-text {
+            font-family: var(--font-tech);
+            font-size: 6rem;
+            letter-spacing: 40px;
+            margin-bottom: 50px;
+        }
+        .load-bar-container {
+            width: 600px;
+            height: 4px;
+            background-color: rgba(255,255,255,0.05);
+            position: relative;
+        }
+        .load-bar-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary-neon);
+            box-shadow: 0 0 20px var(--primary-neon);
+        }
 
         footer {
-            padding: 150px 0;
+            padding-top: 150px;
+            padding-bottom: 150px;
             text-align: center;
-            border-top: 2px solid var(--p);
-            font-family: 'Orbitron';
-            letter-spacing: 25px;
+            border-top: 2px solid var(--primary-neon);
             opacity: 0.4;
+            font-family: var(--font-tech);
+            letter-spacing: 20px;
         }
     </style>
 </head>
-<body>
+<body onload="initSystem()">
 
     <div id="preloader">
-        <div class="load-title">NOVAX</div>
-        <div class="load-bar"><div class="load-fill" id="l-fill"></div></div>
-        <div style="margin-top: 20px; font-family: 'Share Tech Mono'; color: var(--a);" id="l-status">LOADING_CORE...</div>
+        <div class="load-text">NOVAX</div>
+        <div class="load-bar-container">
+            <div class="load-bar-fill" id="fill-element"></div>
+        </div>
+        <div style="margin-top: 30px; font-family: var(--font-code); color: var(--accent-neon);" id="status-text">
+            SYSTEM_BOOTING...
+        </div>
     </div>
 
-    <div id="c-wrap">
-        <div class="c-outer" id="c-outer"></div>
-        <div class="c-main" id="c-main"></div>
-        <div class="c-dot" id="c-dot"></div>
+    <div id="master-cursor">
+        <div class="cursor-glitch" id="c-glitch"></div>
+        <div class="cursor-ring" id="c-ring"></div>
+        <div class="cursor-dot" id="c-dot"></div>
     </div>
 
-    <div class="grid-tech"></div>
-    <div class="vignette"></div>
-    <canvas id="nebula"></canvas>
+    <div class="tech-grid"></div>
+    <div class="vignette-fx"></div>
+    <canvas id="nebula-canvas"></canvas>
 
-    <header>
-        <div class="logo">NOVAX<span>RP</span></div>
-        <nav class="nav">
-            <a href="#" class="nav-btn active" onclick="jump('home', this)">الرئيسية</a>
-            <a href="#" class="nav-btn" onclick="jump('laws', this)">القوانين</a>
-            <a href="#" class="nav-btn" onclick="jump('store', this)">المتجر</a>
-            <a href="#" class="nav-btn" onclick="jump('wanted', this)">المطلوبين</a>
-            <a href="#" class="nav-btn" onclick="jump('apply', this)">التقديم</a>
+    <header class="sovereign-nav">
+        <div class="nav-logo">NOVAX<span>RP</span></div>
+        <nav class="nav-menu">
+            <a href="#" class="nav-link active" onclick="switchSector('home', this)">الرئيسية</a>
+            <a href="#" class="nav-link" onclick="switchSector('laws', this)">الدستور</a>
+            <a href="#" class="nav-link" onclick="switchSector('store', this)">المتجر الملكي</a>
+            <a href="#" class="nav-link" onclick="switchSector('apply', this)">بوابة التقديم</a>
+            <a href="#" class="nav-link" onclick="switchSector('staff', this)">مجلس الإدارة</a>
         </nav>
-        <button class="nav-btn" style="border-color: var(--a); color: var(--a);" onclick="login()">LINK_ID</button>
+        <button class="nav-link" style="border-color: var(--accent-neon); color: var(--accent-neon);" onclick="discordAuth()">LINK_SESSION</button>
     </header>
 
-    <div class="main-container">
+    <main class="content-wrapper">
 
-        <section id="s-home" class="section active">
-            <div class="hero">
-                <h1>NOVAX</h1>
-                <p>[ THE SOVEREIGNTY OF ROLEPLAY ]</p>
-                <div style="margin-top: 100px; display: flex; justify-content: center; gap: 40px;">
-                    <button class="f-btn" style="width: 400px;" onclick="jump('apply')">قدم الآن للمواطنة</button>
-                    <button class="f-btn" style="width: 400px; border-color: var(--p); color: var(--p);">شاهد العرض الترويجي</button>
+        <section id="sector-home" class="sector active">
+            <h1 class="hero-title">NOVAX</h1>
+            <h2 class="hero-sub">[ THE INFINITY RP ]</h2>
+            <div style="display:flex; justify-content:center; gap:50px; margin-top:50px;">
+                <button class="btn-action" style="width:400px;" onclick="switchSector('apply')">ابدأ مسيرتك الآن</button>
+                <button class="btn-action" style="width:400px; border-color:var(--primary-neon); color:var(--primary-neon);">خادم الديسكورد</button>
+            </div>
+        </section>
+
+        <section id="sector-laws" class="sector">
+            <div class="laws-container">
+                <div class="law-card">
+                    <h3>المادة 01: التقمص الجذري</h3>
+                    <p>يجب على كل مواطن الالتزام بهوية شخصيته في جميع الأوقات. يُحظر الخروج عن الشخصية (OOC) داخل المدينة منعاً باتاً لضمان تجربة غامرة للجميع.</p>
+                </div>
+                <div class="law-card">
+                    <h3>المادة 02: قدسية الحياة</h3>
+                    <p>الحياة في NoVaX غالية جداً. يجب عليك التصرف بواقعية تامة عند مواجهة خطر حقيقي أو تهديد بالسلاح، ومبدأ Fear RP هو خط أحمر.</p>
+                </div>
+                <div class="law-card">
+                    <h3>المادة 03: القوانين الجنائية</h3>
+                    <p>يُمنع منعاً باتاً القتل العشوائي (RDM) أو استخدام المركبات كأداة قتل (VDM). كل فعل إجرامي يجب أن يكون نتيجة سيناريو تقمصي عميق.</p>
+                </div>
+                <div class="law-card">
+                    <h3>المادة 04: القواعد الإدارية</h3>
+                    <p>قرارات مجلس الإدارة نهائية. أي محاولة لاستغلال الثغرات البرمجية أو التلاعب بالأنظمة ستؤدي إلى النفي النهائي من الإمبراطورية.</p>
+                </div>
+                <div class="law-card">
+                    <h3>المادة 05: المناطق الخضراء</h3>
+                    <p>تُعد مراكز الشرطة والمستشفيات مناطق آمنة تماماً. يُحظر ممارسة أي نشاط إجرامي بداخلها أو في محيطها القريب.</p>
+                </div>
+                <div class="law-card">
+                    <h3>المادة 06: التواصل اللاسلكي</h3>
+                    <p>يُمنع استخدام وسائل تواصل خارجية (Discord/TeamSpeak) لنقل معلومات تقمصية لم تعرفها شخصيتك داخل اللعبة (Meta-Gaming).</p>
                 </div>
             </div>
         </section>
 
-        <section id="s-laws" class="section">
-            <div class="law-grid">
-                <div class="law-box">
-                    <h3>01. التقمص الكامل</h3>
-                    <p>يجب الحفاظ على الشخصية داخل المدينة. أي خروج عن التقمص (OOC) دون إذن إداري يعرضك للنفي.</p>
+        <section id="sector-store" class="sector">
+            <div class="store-grid">
+                <div class="package-card">
+                    <div style="color:var(--accent-neon); font-family:var(--font-tech); font-size:1.5rem;">BRONZE CITIZEN</div>
+                    <div class="package-price">$25</div>
+                    <ul class="feature-list">
+                        <li class="feature-item"><i class="fas fa-car"></i> سيارة معدلة فئة A</li>
+                        <li class="feature-item"><i class="fas fa-home"></i> شقة في وسط المدينة</li>
+                        <li class="feature-item"><i class="fas fa-wallet"></i> رصيد 5,000,000$</li>
+                    </ul>
+                    <button class="btn-action" style="width:100%;">شراء الحزمة</button>
                 </div>
-                <div class="law-box">
-                    <h3>02. قيمة الحياة</h3>
-                    <p>أنت لا تملك أرواحاً متعددة. في NoVaX، حياتك هي رأس مالك. تصرف بواقعية عند مواجهة التهديد.</p>
+                <div class="package-card gold">
+                    <div style="color:var(--gold-neon); font-family:var(--font-tech); font-size:1.5rem;">IMPERIAL CROWN</div>
+                    <div class="package-price" style="color:var(--gold-neon);">$150</div>
+                    <ul class="feature-list">
+                        <li class="feature-item"><i class="fas fa-crown"></i> قصر خاص بجزيرة حصرية</li>
+                        <li class="feature-item"><i class="fas fa-fighter-jet"></i> طائرة خاصة + يخت</li>
+                        <li class="feature-item"><i class="fas fa-bolt"></i> أولوية دخول للمدينة (Lv 0)</li>
+                        <li class="feature-item"><i class="fas fa-users-cog"></i> تأسيس منظمة خاصة</li>
+                    </ul>
+                    <button class="btn-action" style="width:100%; border-color:var(--gold-neon); color:var(--gold-neon);">اعتلاء العرش</button>
                 </div>
-                <div class="law-box">
-                    <h3>03. نظام الاشتباكات</h3>
-                    <p>يمنع القتل العشوائي (RDM). كل طلقة يجب أن يكون خلفها سيناريو محكم وتفاعل مسبق.</p>
-                </div>
-                <div class="law-box">
-                    <h3>04. الملكية العامة</h3>
-                    <p>احترام ممتلكات المواطنين والمرافق العامة يعكس رقي تقمصك.</p>
+                <div class="package-card">
+                    <div style="color:var(--primary-neon); font-family:var(--font-tech); font-size:1.5rem;">SILVER ROGUE</div>
+                    <div class="package-price">$55</div>
+                    <ul class="feature-list">
+                        <li class="feature-item"><i class="fas fa-motorcycle"></i> دراجة نيون نادرة</li>
+                        <li class="feature-item"><i class="fas fa-building"></i> مكتب تجاري فاخر</li>
+                        <li class="feature-item"><i class="fas fa-id-badge"></i> أولوية دخول (Lv 2)</li>
+                    </ul>
+                    <button class="btn-action" style="width:100%; border-color:var(--primary-neon); color:var(--primary-neon);">شراء الحزمة</button>
                 </div>
             </div>
         </section>
 
-        <section id="s-store" class="section">
-            <div class="store-wrap">
-                <div class="card">
-                    <div style="color: var(--p); font-family: 'Orbitron';">ELITE PACK</div>
-                    <div class="price">$45</div>
-                    <ul class="features">
-                        <li>3 سيارات حصرية</li>
-                        <li>منزل في تلال وينوود</li>
-                        <li>أولوية دخول (Level 2)</li>
-                    </ul>
-                    <button class="nav-btn" style="width: 100%;">امتلاك الآن</button>
-                </div>
-                <div class="card king">
-                    <div style="color: var(--g); font-family: 'Orbitron';">EMPEROR PACK</div>
-                    <div class="price" style="color: var(--g);">$180</div>
-                    <ul class="features">
-                        <li>قصر ملكي + طائرة خاصة</li>
-                        <li>أولوية دخول مطلقة (Level 0)</li>
-                        <li>تأسيس عصابة أو شركة خاصة</li>
-                        <li>حصانة دبلوماسية محدودة</li>
-                    </ul>
-                    <button class="nav-btn" style="width: 100%; border-color: var(--g); color: var(--g);">اعتلاء العرش</button>
-                </div>
-                <div class="card">
-                    <div style="color: var(--a); font-family: 'Orbitron';">ROGUE PACK</div>
-                    <div class="price">$20</div>
-                    <ul class="features">
-                        <li>دراجة نيون نادرة</li>
-                        <li>رصيد 2,000,000$</li>
-                        <li>رتبة VIP برونزية</li>
-                    </ul>
-                    <button class="nav-btn" style="width: 100%; border-color: var(--a); color: var(--a);">امتلاك الآن</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="s-apply" class="section">
-            <div class="app-form">
-                <h2 style="font-family: 'Orbitron'; text-align: center; font-size: 3rem; margin-bottom: 50px; color: var(--p);">بوابة التقديم للمدينة</h2>
+        <section id="sector-apply" class="sector">
+            <div class="app-container">
+                <h2 style="font-family:var(--font-tech); font-size:3rem; text-align:center; color:var(--primary-neon); margin-bottom:50px;">بوابة المواطنة</h2>
                 
-                <div class="form-step active" id="step-1">
-                    <div class="input-group">
-                        <label>الاسم بالكامل (الحقيقي)</label>
-                        <input type="text" placeholder="اكتب اسمك الثلاثي...">
+                <div class="step-box active" id="step-1">
+                    <div class="form-group">
+                        <label>الاسم الحقيقي الثلاثي</label>
+                        <input type="text" placeholder="أدخل اسمك الكامل...">
                     </div>
-                    <div class="input-group">
-                        <label>العمر (يجب أن يكون +18)</label>
-                        <input type="number" placeholder="عمرك الحالي...">
+                    <div class="form-group">
+                        <label>العمر الحقيقي</label>
+                        <input type="number" placeholder="يجب أن تكون +18">
                     </div>
-                    <div class="input-group">
-                        <label>معرف الديسكورد (Discord ID)</label>
+                    <div class="form-group">
+                        <label>معرف الديسكورد (ID)</label>
                         <input type="text" placeholder="Username#0000">
                     </div>
-                    <div class="form-nav">
-                        <div></div>
-                        <button class="f-btn" onclick="nextStep(2)">المرحلة التالية</button>
+                    <div style="display:flex; justify-content:flex-end;">
+                        <button class="btn-action" onclick="nextStep(2)">المرحلة التالية</button>
                     </div>
                 </div>
 
-                <div class="form-step" id="step-2">
-                    <div class="input-group">
-                        <label>ما هو مفهومك عن الـ Roleplay؟</label>
-                        <textarea rows="4" placeholder="اشرح لنا كيف ترى التقمص..."></textarea>
+                <div class="step-box" id="step-2">
+                    <div class="form-group">
+                        <label>ما هو مفهومك لكسر التقمص (Power-Gaming)؟</label>
+                        <textarea rows="4" placeholder="اشرح لنا بالتفصيل..."></textarea>
                     </div>
-                    <div class="input-group">
-                        <label>ماذا تفعل إذا تعرضت للقتل العشوائي (RDM)؟</label>
-                        <textarea rows="4" placeholder="اشرح ردة فعلك الإدارية والتقمصية..."></textarea>
+                    <div class="form-group">
+                        <label>ماذا تفعل إذا رأيت شرطياً يرتكب مخالفة قانونية؟</label>
+                        <textarea rows="4" placeholder="كيف تتعامل مع هذا الموقف تقمصياً؟"></textarea>
                     </div>
-                    <div class="form-nav">
-                        <button class="f-btn" onclick="nextStep(1)">رجوع</button>
-                        <button class="f-btn" onclick="nextStep(3)">المرحلة التالية</button>
+                    <div style="display:flex; justify-content:space-between;">
+                        <button class="btn-action" onclick="nextStep(1)">رجوع</button>
+                        <button class="btn-action" onclick="nextStep(3)">المرحلة التالية</button>
                     </div>
                 </div>
 
-                <div class="form-step" id="step-3">
-                    <div class="input-group">
-                        <label>سيناريو: أنت مخطوف وتحت تهديد السلاح، كيف تتصرف؟</label>
-                        <textarea rows="4" placeholder="أظهر لنا مهاراتك في Fear RP..."></textarea>
+                <div class="step-box" id="step-3">
+                    <div class="form-group">
+                        <label>قصة شخصيتك (Background Story)</label>
+                        <textarea rows="6" placeholder="من أين أتت شخصيتك وما هي أهدافها؟"></textarea>
                     </div>
-                    <div class="input-group">
-                        <label>ما هي أهداف شخصيتك داخل مدينة NoVaX؟</label>
-                        <textarea rows="4" placeholder="شرطي؟ مجرم؟ تاجر؟ اشرح خطتك..."></textarea>
-                    </div>
-                    <div class="form-nav">
-                        <button class="f-btn" onclick="nextStep(2)">رجوع</button>
-                        <button class="f-btn" onclick="submitApp()">إرسال الطلب للمراجعة</button>
+                    <div style="display:flex; justify-content:space-between;">
+                        <button class="btn-action" onclick="nextStep(2)">رجوع</button>
+                        <button class="btn-action" onclick="submitFinal()">إرسال الطلب</button>
                     </div>
                 </div>
             </div>
         </section>
 
-    </div>
+    </main>
 
-    <div class="system-logs" id="logs">
-        <div class="log-line">> SYSTEM_BOOT_SUCCESSFUL</div>
-        <div class="log-line">> CONNECTING_TO_NOVAX_DATABASE...</div>
+    <div class="system-monitor" id="log-window">
+        <div class="log-entry">> INITIALIZING_NOVAX_PROTECTION_SHIELD...</div>
+        <div class="log-entry">> LOADING_CITIZEN_DATABASE...</div>
+        <div class="log-entry">> CONNECTION_ENCRYPTED_AES256</div>
     </div>
 
     <footer>
-        NOVAX RP &copy; 2026 | BUILT FOR THE ELITE
+        NOVAX RP &copy; 2026 | BUILT BY VIRUSZ | THE SOVEREIGN SYSTEM
     </footer>
 
     <script>
-        // 1. Sovereign Cursor Logic
-        const cMain = document.getElementById('c-main');
+        // -- Variable Declarations --
+        const cRing = document.getElementById('c-ring');
         const cDot = document.getElementById('c-dot');
-        const cOuter = document.getElementById('c-outer');
-        
-        let mx = 0, my = 0, rx = 0, ry = 0;
+        const cGlitch = document.getElementById('c-glitch');
+        let mX = 0, mY = 0, rX = 0, rY = 0;
 
-        window.addEventListener('mousemove', e => {
-            mx = e.clientX; my = e.clientY;
-            cDot.style.left = mx + 'px';
-            cDot.style.top = my + 'px';
+        // -- Cursor Movement Engine --
+        window.addEventListener('mousemove', (e) => {
+            mX = e.clientX;
+            mY = e.clientY;
+            cDot.style.left = mX + 'px';
+            cDot.style.top = mY + 'px';
         });
 
-        function updateCursor() {
-            rx += (mx - rx) * 0.15;
-            ry += (my - ry) * 0.15;
-            cMain.style.left = rx + 'px';
-            cMain.style.top = ry + 'px';
-            cOuter.style.left = rx + 'px';
-            cOuter.style.top = ry + 'px';
-            requestAnimationFrame(updateCursor);
+        function animateCursor() {
+            rX += (mX - rX) * 0.15;
+            rY += (mY - rY) * 0.15;
+            cRing.style.left = rX + 'px';
+            cRing.style.top = rY + 'px';
+            cGlitch.style.left = rX + 'px';
+            cGlitch.style.top = rY + 'px';
+            requestAnimationFrame(animateCursor);
         }
-        updateCursor();
+        animateCursor();
 
-        // 2. Preloader
-        window.onload = () => {
-            let p = 0;
-            const fill = document.getElementById('l-fill');
-            const status = document.getElementById('l-status');
-            const txt = ["DECRYPTING...", "SYNCING_COUNCIL...", "ESTABLISHING_VINE...", "CORE_READY."];
+        // -- System Initialization --
+        function initSystem() {
+            let progress = 0;
+            const fill = document.getElementById('fill-element');
+            const status = document.getElementById('status-text');
+            const logs = [
+                "AUTHENTICATING_USER...",
+                "LOADING_WORLD_MAP...",
+                "SYNCING_POLICE_DATABASE...",
+                "PREPARING_ECONOMY...",
+                "ACCESS_GRANTED_WELCOME_VIRUSZ"
+            ];
 
             const interval = setInterval(() => {
-                p += Math.random() * 5;
-                if(p >= 100) {
-                    p = 100;
+                progress += Math.random() * 7;
+                if (progress >= 100) {
+                    progress = 100;
                     clearInterval(interval);
-                    gsap.to('#preloader', { opacity: 0, duration: 1, onComplete: () => document.getElementById('preloader').remove() });
+                    gsap.to('#preloader', { opacity: 0, duration: 1.5, onComplete: () => {
+                        document.getElementById('preloader').style.display = 'none';
+                        pushLog("SYSTEM_FULLY_OPERATIONAL");
+                    }});
                 }
-                fill.style.width = p + '%';
-                status.innerText = txt[Math.floor((p/100)*(txt.length-1))];
-            }, 100);
-        };
+                fill.style.width = progress + '%';
+                status.innerText = logs[Math.floor((progress/100) * (logs.length-1))];
+            }, 120);
+        }
 
-        // 3. Navigation
-        function jump(id, btn) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('s-' + id).classList.add('active');
+        // -- Navigation Controller --
+        function switchSector(id, btn) {
+            document.querySelectorAll('.sector').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            const target = document.getElementById('sector-' + id);
+            target.classList.add('active');
             if(btn) btn.classList.add('active');
             
-            addLog(`MapsD_TO_SECTOR: ${id.toUpperCase()}`);
-            gsap.from('#s-' + id, { y: 50, opacity: 0, duration: 0.6 });
+            pushLog(`SECTOR_SWITCH: ${id.toUpperCase()}`);
+            gsap.from(target, { y: 50, opacity: 0, duration: 0.8 });
         }
 
-        // 4. Form Logic
+        // -- Application Form Logic --
         function nextStep(step) {
-            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.step-box').forEach(sb => sb.classList.remove('active'));
             document.getElementById('step-' + step).classList.add('active');
-            addLog(`TRANSITION_TO_STEP_${step}`);
+            pushLog(`FORM_TRANSITION: STEP_${step}`);
         }
 
-        function submitApp() {
+        function submitFinal() {
             Swal.fire({
-                title: 'جاري إرسال البيانات',
-                text: 'يتم الآن فحص إجاباتك من قبل نظام الذكاء الاصطناعي الخاص بنا',
+                title: 'جاري إرسال طلبك',
+                text: 'سيتم مراجعة طلبك من قبل مجلس الحكماء خلال 24 ساعة',
                 icon: 'success',
-                background: '#0a0a0f',
+                background: '#050508',
                 color: '#fff',
                 confirmButtonColor: '#bc13fe'
             });
-            addLog('APPLICATION_DATA_SENT_TO_COUNCIL');
+            pushLog("DATA_SUBMISSION_SUCCESSFUL");
         }
 
-        // 5. System Logs Engine
-        function addLog(msg) {
-            const logs = document.getElementById('logs');
-            const div = document.createElement('div');
-            div.className = 'log-line';
-            div.innerText = `> ${msg}`;
-            logs.appendChild(div);
-            if(logs.childNodes.length > 8) logs.removeChild(logs.firstChild);
+        // -- Log Window Engine --
+        function pushLog(msg) {
+            const win = document.getElementById('log-window');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerText = `> ${new Date().toLocaleTimeString()} | ${msg}`;
+            win.appendChild(entry);
+            if(win.childNodes.length > 10) win.removeChild(win.firstChild);
         }
 
-        // 6. Nebula Background
-        const canvas = document.getElementById('nebula');
+        // -- Nebula Stars Engine --
+        const canvas = document.getElementById('nebula-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         let stars = [];
-        for(let i=0; i<250; i++) {
+        for(let i=0; i<350; i++) {
             stars.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                v: Math.random() * 0.5,
-                r: Math.random() * 2
+                radius: Math.random() * 1.5,
+                speed: Math.random() * 0.4
             });
         }
 
-        function draw() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#bc13fe";
             stars.forEach(s => {
                 ctx.beginPath();
-                ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+                ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
                 ctx.fill();
-                s.y += s.v;
+                s.y += s.speed;
                 if(s.y > canvas.height) s.y = 0;
             });
-            requestAnimationFrame(draw);
+            requestAnimationFrame(drawStars);
         }
-        draw();
+        drawStars();
 
-        function login() {
+        function discordAuth() {
             window.location.href = "https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify";
         }
     </script>
