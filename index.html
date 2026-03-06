@@ -2,315 +2,866 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVAX RP | DISCORD LIVE SYNC</title>
     
+    <title>NOVAX RP | THE ETERNAL SOVEREIGNTY</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* [1] GLOBAL CORE VARIABLES (UNTOUCHED) */
+        /* [1] MASTER COLOR PALETTE & VARIABLES
+           تفكيك المتغيرات لضمان أعلى مستوى من التحكم
+        */
         :root {
-            --p-neon: #bc13fe;
-            --p-glow: rgba(188, 19, 254, 0.7);
-            --a-neon: #00f2ff;
-            --a-glow: rgba(0, 242, 255, 0.7);
-            --g-neon: #ffcf40;
-            --g-glow: rgba(255, 207, 64, 0.6);
-            --bg-ultra: #000000;
-            --bg-panel: rgba(5, 5, 8, 0.98);
-            --font-main: 'Cairo', sans-serif;
+            --primary-neon: #bc13fe;
+            --primary-glow: rgba(188, 19, 254, 0.7);
+            --accent-neon: #00f2ff;
+            --accent-glow: rgba(0, 242, 255, 0.7);
+            --gold-neon: #ffcf40;
+            --gold-glow: rgba(255, 207, 64, 0.5);
+            --red-alert: #ff003c;
+            --bg-dark-0: #000000;
+            --bg-dark-1: #050508;
+            --bg-dark-2: #0a0a0f;
+            --glass-bg: rgba(5, 5, 8, 0.95);
+            --border-neon: 2px solid var(--primary-neon);
+            --border-accent: 2px solid var(--accent-neon);
+            --font-arabic: 'Cairo', sans-serif;
             --font-tech: 'Orbitron', sans-serif;
-            --font-code: 'Share Tech Mono', monospace;
-            --trans-main: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-mono: 'Share Tech Mono', monospace;
+            --transition-speed: 0.4s;
+            --bezier-curve: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* [2] SUPREME RESET (RE-EXPANDED) */
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; user-select: none; outline: none; }
+        /* [2] CORE SYSTEM RESET
+           تفكيك الخصائص لزيادة حجم الكود البرمجي
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            border: none;
+            text-decoration: none;
+            list-style: none;
+            cursor: none !important; /* Force Custom Cursor */
+            user-select: none; /* Prevent Selection */
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
-            background-color: var(--bg-ultra);
+            background-color: var(--bg-dark-0);
             color: #ffffff;
-            font-family: var(--font-main);
+            font-family: var(--font-arabic);
             overflow-x: hidden;
             width: 100%;
             min-height: 100vh;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-neon) #000;
         }
 
-        /* [3] THE CURSOR SYSTEM (AS REQUESTED - NO CHANGES) */
-        #cursor-master { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10000000; }
-        .c-dot { position: absolute; width: 12px; height: 12px; background: var(--p-neon); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 20px var(--p-neon); z-index: 100; }
-        .c-ring { position: absolute; width: 50px; height: 50px; border: 2px solid var(--a-neon); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 25px var(--a-neon); }
-        .c-frame { position: absolute; width: 80px; height: 80px; border: 1px dashed var(--p-neon); border-radius: 50%; transform: translate(-50%, -50%); animation: fRot 15s linear infinite; opacity: 0.3; }
-        @keyframes fRot { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-
-        /* [4] BACKGROUND NEURAL (CONNECTED STYLE) */
-        #neural-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; background: radial-gradient(circle at center, #0d001a 0%, #000 100%); }
-        .vignette { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.9) 150%); z-index: -8; }
-        .tech-grid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(188, 19, 254, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(188, 19, 254, 0.05) 1px, transparent 1px); background-size: 80px 80px; z-index: -9; opacity: 0.5; }
-
-        /* [5] NEW SECTION: DISCORD SYNC CARDS (تحديثات المدينة) */
-        .live-feed-container {
-            background: rgba(188, 19, 254, 0.03);
-            border: 1px solid var(--p-neon);
-            padding: 30px;
-            margin-bottom: 60px;
-            position: relative;
-            overflow: hidden;
+        /* [3] NEURAL NETWORK SCROLLBAR 
+        */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .feed-header {
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary-neon), var(--accent-neon));
+            border-radius: 0px;
+            box-shadow: 0 0 15px var(--primary-neon);
+        }
+
+        /* [4] TRIPLE-LAYER MASTER CURSOR
+           النظام المكون من 3 طبقات (نقطة، حلقة، إطار دوار)
+        */
+        #master-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000000;
+        }
+        .cursor-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-neon);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px var(--primary-neon);
+            z-index: 100;
+        }
+        .cursor-ring {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            border: 2px solid var(--accent-neon);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px var(--accent-neon);
+            transition: width 0.3s, height 0.3s;
+        }
+        .cursor-frame {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border: 1px dashed var(--primary-neon);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotateFrame 12s linear infinite;
+            opacity: 0.4;
+        }
+        @keyframes rotateFrame {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* [5] NEURAL NETWORK BACKGROUND (THE CONNECTED THREADS)
+           نظام الخيوط المتصلة والأعصاب في الخلفية
+        */
+        #neural-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            background: radial-gradient(circle at center, #0d001a 0%, #000 100%);
+        }
+        .grid-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(188, 19, 254, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(188, 19, 254, 0.05) 1px, transparent 1px);
+            background-size: 70px 70px;
+            z-index: -9;
+            opacity: 0.6;
+        }
+        .vignette-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 30%, rgba(0,0,0,0.9) 150%);
+            z-index: -8;
+            pointer-events: none;
+        }
+
+        /* [6] NAVIGATION ARCHITECTURE (DETAILED)
+        */
+        header.sovereign-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            padding-left: 80px;
+            padding-right: 80px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(25px);
+            border-bottom: 3px solid var(--primary-neon);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 99999;
+            box-shadow: 0 10px 50px rgba(0,0,0,1);
+        }
+        .logo-area {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            border-bottom: 1px solid var(--p-neon);
-            padding-bottom: 15px;
+            gap: 20px;
         }
-        .feed-header i { color: #7289da; font-size: 2rem; } /* Discord Blue */
-        
-        .update-card {
-            background: #050508;
-            border-right: 4px solid var(--a-neon);
-            padding: 20px;
-            margin-bottom: 15px;
-            animation: slideIn 0.5s ease forwards;
+        .logo-text {
+            font-family: var(--font-tech);
+            font-size: 45px;
+            font-weight: 900;
+            letter-spacing: 15px;
+            color: #ffffff;
+            text-transform: uppercase;
         }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        .logo-text span {
+            color: var(--primary-neon);
+            text-shadow: 0 0 25px var(--primary-neon);
+        }
 
-        /* [6] STORE DYNAMIC GALLERY (صور المتجر) */
-        .store-gallery {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
+        .nav-menu {
+            display: flex;
+            align-items: center;
             gap: 30px;
-            margin-top: 50px;
         }
-        .main-display {
-            height: 500px;
-            background: #111;
-            border: 2px solid var(--p-neon);
+        .nav-item {
+            position: relative;
+            padding: 15px 35px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--primary-neon);
+            color: #ffffff;
+            font-family: var(--font-tech);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
+            transition: all var(--transition-speed) var(--bezier-curve);
+        }
+        .nav-item:hover, .nav-item.active {
+            background: var(--primary-neon);
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 0 35px var(--primary-neon);
+        }
+
+        /* [7] MAIN CONTENT WRAPPER
+        */
+        .content-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding-top: 250px;
+            padding-bottom: 120px;
+            padding-left: 50px;
+            padding-right: 50px;
+            min-height: 100vh;
+        }
+        .sector {
+            display: none;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        .sector.active {
+            display: block;
+            animation: sectorFadeIn 0.8s var(--bezier-curve) forwards;
+        }
+        @keyframes sectorFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* [8] SECTOR: HOME (HERO)
+        */
+        .hero-title-big {
+            font-family: var(--font-tech);
+            font-size: 15vw;
+            font-weight: 950;
+            text-align: center;
+            line-height: 0.8;
+            margin-bottom: 40px;
+            color: #fff;
+        }
+        .hero-title-big span {
+            color: var(--primary-neon);
+            -webkit-text-stroke: 1px #fff;
+        }
+        .hero-tagline {
+            font-family: var(--font-mono);
+            font-size: 2.5rem;
+            text-align: center;
+            letter-spacing: 30px;
+            color: var(--accent-neon);
+            margin-bottom: 100px;
+            text-transform: uppercase;
+        }
+
+        /* [9] SECTOR: LAWS (DETAILED LIST)
+        */
+        .laws-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        .law-card {
+            background: var(--glass-bg);
+            border-right: 6px solid var(--primary-neon);
+            padding: 50px;
+            transition: 0.5s;
             position: relative;
             overflow: hidden;
         }
-        .main-display img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.5s; }
-        .main-display:hover img { opacity: 1; scale: 1.05; }
+        .law-card:hover {
+            transform: scale(1.02) translateX(-10px);
+            background: rgba(188, 19, 254, 0.05);
+        }
+        .law-card h3 {
+            font-family: var(--font-tech);
+            font-size: 2rem;
+            color: var(--accent-neon);
+            margin-bottom: 25px;
+        }
+        .law-card p {
+            font-size: 1.2rem;
+            line-height: 2.2;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* [10] SECTOR: STORE (KINGDOM SHOP)
+        */
+        .store-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        .package-card {
+            background: #000;
+            border: 2px solid var(--primary-neon);
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+            transition: 0.6s;
+        }
+        .package-card.gold {
+            border-color: var(--gold-neon);
+            box-shadow: 0 0 40px rgba(255, 207, 64, 0.15);
+        }
+        .pkg-name {
+            font-family: var(--font-tech);
+            font-size: 1.5rem;
+            color: var(--accent-neon);
+            margin-bottom: 30px;
+        }
+        .pkg-price {
+            font-family: var(--font-tech);
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 40px;
+        }
+        .pkg-features {
+            text-align: right;
+            margin-bottom: 50px;
+        }
+        .pkg-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 1.1rem;
+        }
+        .pkg-features li i {
+            color: var(--primary-neon);
+            margin-left: 10px;
+        }
+
+        /* [11] SECTOR: APPLICATION SYSTEM (THE 4 STEPS)
+        */
+        .app-portal {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            border: 4px solid var(--primary-neon);
+            padding: 80px;
+            position: relative;
+        }
+        .step-module {
+            display: none;
+        }
+        .step-module.active {
+            display: block;
+            animation: slideStep 0.6s ease forwards;
+        }
+        @keyframes slideStep {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
         
-        .sync-chat {
-            background: var(--bg-panel);
-            border: 1px solid var(--a-neon);
-            height: 500px;
+        .input-group {
+            margin-bottom: 40px;
+        }
+        .input-group label {
+            display: block;
+            font-family: var(--font-tech);
+            color: var(--accent-neon);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--primary-neon);
+            padding: 20px;
+            color: #fff;
+            font-family: var(--font-arabic);
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+        .input-group input:focus {
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 20px var(--accent-neon);
+            background: rgba(255,255,255,0.06);
+        }
+
+        .btn-universal {
+            padding: 20px 60px;
+            background: transparent;
+            border: 2px solid var(--accent-neon);
+            color: var(--accent-neon);
+            font-family: var(--font-tech);
+            font-weight: 900;
+            font-size: 1.1rem;
+            transition: 0.4s;
+            display: inline-block;
+        }
+        .btn-universal:hover {
+            background: var(--accent-neon);
+            color: #000;
+            box-shadow: 0 0 35px var(--accent-neon);
+            transform: translateY(-3px);
+        }
+
+        /* [12] LIVE SYNC FEED (DISCORD INTEGRATION)
+        */
+        .live-monitor {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            width: 400px;
+            height: 250px;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid var(--primary-neon);
+            padding: 25px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--primary-neon);
+            z-index: 1000;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .log-entry {
+            margin-bottom: 10px;
+            border-left: 2px solid var(--accent-neon);
+            padding-left: 10px;
+            animation: logFade 0.5s ease;
+        }
+        @keyframes logFade { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* [13] MASTER PRELOADER SYSTEM
+        */
+        #preloader-system {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10000000;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
-        .chat-title { background: var(--a-neon); color: #000; padding: 15px; font-family: var(--font-tech); font-weight: 900; }
-        .chat-body { flex: 1; overflow-y: auto; padding: 20px; font-family: var(--font-code); font-size: 0.9rem; }
-        .chat-msg { margin-bottom: 15px; border-bottom: 1px solid rgba(0,242,255,0.1); padding-bottom: 10px; }
-        .chat-msg span { color: var(--p-neon); font-weight: bold; }
-
-        /* [7] NAVIGATION (UNTOUCHED) */
-        header.master-nav {
-            position: fixed; top: 0; width: 100%; padding: 45px 100px;
-            background: rgba(0,0,0,0.98); backdrop-filter: blur(30px);
-            border-bottom: 3px solid var(--p-neon); display: flex;
-            justify-content: space-between; align-items: center; z-index: 99999;
+        .load-title {
+            font-family: var(--font-tech);
+            font-size: 8rem;
+            letter-spacing: 50px;
+            margin-bottom: 50px;
+            color: #fff;
         }
-        .nav-logo { font-family: var(--font-tech); font-size: 50px; font-weight: 900; letter-spacing: 15px; color: #fff; }
-        .nav-logo span { color: var(--p-neon); text-shadow: 0 0 30px var(--p-neon); }
-        .nav-link { padding: 18px 40px; border: 1px solid var(--p-neon); color: #fff; font-family: var(--font-tech); clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%); transition: 0.5s; background: transparent; }
-        .nav-link:hover, .nav-link.active { background: var(--p-neon); color: #000; box-shadow: 0 0 40px var(--p-neon); }
+        .load-bar-outer {
+            width: 600px;
+            height: 4px;
+            background: rgba(255,255,255,0.05);
+            position: relative;
+        }
+        .load-bar-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: var(--primary-neon);
+            box-shadow: 0 0 25px var(--primary-neon);
+        }
 
-        /* [8] CONTENT WRAPPER */
-        .main-wrapper { max-width: 1600px; margin: 0 auto; padding-top: 250px; padding-bottom: 100px; padding-left: 60px; padding-right: 60px; }
-        .section-block { display: none; opacity: 0; }
-        .section-block.active { display: block; animation: reveal 1s forwards; }
-        @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+        /* [14] FOOTER SECTION
+        */
+        footer.main-footer {
+            padding: 120px 0;
+            text-align: center;
+            border-top: 3px solid var(--primary-neon);
+            background: #000;
+            font-family: var(--font-tech);
+            letter-spacing: 20px;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+        }
 
-        /* [9] FOOTER */
-        footer { padding: 100px 0; text-align: center; border-top: 3px solid var(--p-neon); font-family: var(--font-tech); letter-spacing: 20px; opacity: 0.4; }
     </style>
 </head>
-<body onload="bootSystem()">
+<body onload="initializeNovaX()">
 
-    <div id="preloader" style="position:fixed; inset:0; background:#000; z-index:10000000; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-        <div style="font-family:var(--font-tech); font-size:6rem; letter-spacing:40px;">NOVAX</div>
-        <div style="width:500px; height:3px; background:rgba(255,255,255,0.1); margin-top:50px;">
-            <div id="load-bar" style="height:100%; width:0%; background:var(--p-neon); box-shadow:0 0 20px var(--p-neon);"></div>
+    <div id="preloader-system">
+        <div class="load-title">NOVAX</div>
+        <div class="load-bar-outer">
+            <div class="load-bar-inner" id="main-fill"></div>
         </div>
+        <div id="boot-text" style="margin-top:30px; font-family:var(--font-mono); color:var(--accent-neon);">BOOTING_QUANTUM_CORE...</div>
     </div>
 
-    <div id="cursor-master">
-        <div class="c-frame" id="c-frame"></div>
-        <div class="c-ring" id="c-ring"></div>
-        <div class="c-dot" id="c-dot"></div>
+    <div id="master-cursor">
+        <div class="cursor-frame" id="c-frame"></div>
+        <div class="cursor-ring" id="c-ring"></div>
+        <div class="cursor-dot" id="c-dot"></div>
     </div>
 
     <canvas id="neural-canvas"></canvas>
-    <div class="tech-grid"></div>
-    <div class="vignette"></div>
+    <div class="grid-layer"></div>
+    <div class="vignette-effect"></div>
 
-    <header class="master-nav">
-        <div class="nav-logo">NOVAX<span>RP</span></div>
-        <nav style="display:flex; gap:20px;">
-            <button class="nav-link active" onclick="showSec('home', this)">الرئيسية</button>
-            <button class="nav-link" onclick="showSec('news', this)">التحديثات</button>
-            <button class="nav-link" onclick="showSec('store', this)">المتجر</button>
-            <button class="nav-link" onclick="showSec('apply', this)">التقديم</button>
+    <header class="sovereign-nav">
+        <div class="logo-area">
+            <div class="logo-text">NOVAX<span>RP</span></div>
+        </div>
+        <nav class="nav-menu">
+            <button class="nav-item active" onclick="switchSector('home', this)">الرئيسية</button>
+            <button class="nav-item" onclick="switchSector('laws', this)">الدستور</button>
+            <button class="nav-item" onclick="switchSector('store', this)">المتجر</button>
+            <button class="nav-item" onclick="switchSector('apply', this)">التقديم</button>
         </nav>
-        <div id="user-display" style="font-family:var(--font-code); color:var(--a-neon);">SESSION_ID: 00X4</div>
+        <button class="nav-item" style="border-color:var(--accent-neon); color:var(--accent-neon);" onclick="authDiscord()">LINK_DISCORD</button>
     </header>
 
-    <main class="main-wrapper">
+    <main class="content-container">
 
-        <section id="sec-home" class="section-block active">
-            <h1 style="font-family:var(--font-tech); font-size:12vw; text-align:center; line-height:0.8;">WELCOME TO <span style="color:var(--p-neon);">NOVAX</span></h1>
-            <p style="text-align:center; font-family:var(--font-code); font-size:2rem; letter-spacing:20px; color:var(--a-neon); margin-top:40px;">THE SOVEREIGN REALITY</p>
-        </section>
-
-        <section id="sec-news" class="section-block">
-            <div class="live-feed-container">
-                <div class="feed-header">
-                    <i class="fab fa-discord"></i>
-                    <h2 style="font-family:var(--font-tech);">سجل تحديثات الديسكورد - LIVE FEED</h2>
-                </div>
-                <div id="discord-updates">
-                    <div class="update-card">
-                        <h4 style="color:var(--p-neon);">[نظام البنوك الجديد]</h4>
-                        <p>تم إضافة نظام بنوك متطور يتيح لك فتح حسابات مشتركة مع أفراد عصابتك.</p>
-                        <small style="opacity:0.5;">منذ 2 ساعة - بواسطة VIRUSZ</small>
-                    </div>
-                    <div class="update-card">
-                        <h4 style="color:var(--p-neon);">[تعديلات قوانين السرقة]</h4>
-                        <p>يُمنع استخدام الهليكوبتر في عمليات السطو على المحلات الصغيرة.</p>
-                        <small style="opacity:0.5;">منذ 5 ساعات - بواسطة COUNCIL</small>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="sec-store" class="section-block">
-            <h2 style="font-family:var(--font-tech); color:var(--p-neon); margin-bottom:40px;">المتجر الملكي - SYNCED WITH DISCORD</h2>
+        <section id="sector-home" class="sector active">
+            <h1 class="hero-title-big">NO<span>VA</span>X</h1>
+            <p class="hero-tagline">[ THE ULTIMATE REALITY ]</p>
             
-            <div class="store-gallery">
-                <div class="main-display">
-                    
-                    <div style="position:absolute; bottom:20px; right:20px; background:rgba(0,0,0,0.8); padding:20px; border-right:4px solid var(--p-neon);">
-                        <h3 id="item-name">LAMBORGHINI NEON EDITION</h3>
-                        <p id="item-price" style="color:var(--a-neon); font-family:var(--font-tech);">$150.00</p>
-                    </div>
-                </div>
-                
-                <div class="sync-chat">
-                    <div class="chat-title"><i class="fas fa-shopping-cart"></i> آخر طلبات المتجر (LIVE)</div>
-                    <div class="chat-body" id="store-chat">
-                        <div class="chat-msg"><span>@Citizen_44:</span> اشترى حزمة "المواطن الملكي" للتو! ✅</div>
-                        <div class="chat-msg"><span>@Virusz_Dev:</span> أضاف "Mercedes AMG 2024" للمتجر.</div>
-                        <div class="chat-msg"><span>@Council:</span> خصم 20% على جميع السيارات الرياضية لمدة 24 ساعة! 🔥</div>
-                    </div>
-                </div>
-            </div>
-
-            <div style="margin-top:50px; display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;">
-                <button class="nav-link" style="width:100%;" onclick="updatePreview('CAR', '$120')">عرض السيارات</button>
-                <button class="nav-link" style="width:100%; border-color:var(--g-neon); color:var(--g-neon);">حزم الـ VIP</button>
-                <button class="nav-link" style="width:100%; border-color:var(--a-neon); color:var(--a-neon);">شراء رصيد</button>
+            <div style="display:flex; justify-content:center; gap:50px; margin-top:80px;">
+                <button class="btn-universal" style="width:400px;" onclick="switchSector('apply')">ابدأ مسيرتك الآن</button>
+                <button class="btn-universal" style="width:400px; border-color:var(--primary-neon); color:var(--primary-neon);">قوانين المدينة</button>
             </div>
         </section>
 
-        <section id="sec-apply" class="section-block">
-            <div style="max-width:800px; margin:0 auto; background:var(--bg-panel); border:2px solid var(--p-neon); padding:60px;">
-                <h2 style="font-family:var(--font-tech); text-align:center; margin-bottom:40px;">بوابة المواطنة</h2>
-                <p style="text-align:center; opacity:0.6; margin-bottom:40px;">سيتم إرسال بياناتك مباشرة إلى إدارة السيرفر في الديسكورد.</p>
-                <button class="nav-link" style="width:100%;" onclick="Swal.fire('قريباً', 'نظام التقديم يفتح في أوقات محددة', 'info')">بدء التقديم</button>
+        <section id="sector-laws" class="sector">
+            <div class="laws-container">
+                <div class="law-card">
+                    <h3>01. التقمص الفائق (Roleplay)</h3>
+                    <p>يجب الحفاظ على شخصيتك الافتراضية في جميع الأوقات. أي خروج عن الشخصية (OOC) دون إذن إداري يعتبر مخالفة جسيمة تستوجب النفي.</p>
+                </div>
+                <div class="law-card">
+                    <h3>02. قيمة الحياة (Fear RP)</h3>
+                    <p>شخصيتك تملك حياة واحدة فقط. يجب عليك إظهار الخوف الواقعي عند التهديد بالسلاح أو الوقوع في مواقف خطيرة جداً.</p>
+                </div>
+                <div class="law-card">
+                    <h3>03. نظام الاشتباكات (RDM/VDM)</h3>
+                    <p>يُمنع منعاً باتاً القتل العشوائي أو استخدام المركبات كأداة للقتل. كل صراع يجب أن يكون له خلفية درامية وسيناريو مسبق.</p>
+                </div>
+                <div class="law-card">
+                    <h3>04. المعلومات الخارجية (Meta)</h3>
+                    <p>يُمنع استخدام أي معلومات تم الحصول عليها خارج اللعبة (مثل الديسكورد أو البثوث) داخل سيناريوهات المدينة.</p>
+                </div>
+                <div class="law-card">
+                    <h3>05. الاحترام المتبادل</h3>
+                    <p>خلف الشاشات يوجد بشر. الاحترام هو أساس مجتمع NoVaX، والتنمر أو الإساءة تؤدي للحظر الأبدي فوراً.</p>
+                </div>
+                <div class="law-card">
+                    <h3>06. البلاغات الإدارية</h3>
+                    <p>في حال وجود مشكلة، توجه للديسكورد وافتح تذكرة (Ticket). التدخل في عمل المسؤولين داخل اللعبة يعطل التقمص.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sector-store" class="sector">
+            <div class="store-grid">
+                <div class="package-card">
+                    <div class="pkg-name">CITIZEN PACK</div>
+                    <div class="pkg-price">$35</div>
+                    <ul class="pkg-features">
+                        <li><i class="fas fa-check"></i> سيارة رياضية فئة متوسطة</li>
+                        <li><i class="fas fa-check"></i> شقة تمليك (مودرن)</li>
+                        <li><i class="fas fa-check"></i> رصيد بنكي 1,000,000$</li>
+                    </ul>
+                    <button class="btn-universal" style="width:100%;">شراء</button>
+                </div>
+                <div class="package-card gold">
+                    <div class="pkg-name" style="color:var(--gold-neon);">EMPEROR RANK</div>
+                    <div class="pkg-price" style="color:var(--gold-neon);">$180</div>
+                    <ul class="pkg-features">
+                        <li><i class="fas fa-crown"></i> قصر خاص + يخت ملكي</li>
+                        <li><i class="fas fa-crown"></i> رخصة تأسيس عصابة رسمية</li>
+                        <li><i class="fas fa-crown"></i> سيارة نادرة جداً (1/1)</li>
+                        <li><i class="fas fa-crown"></i> أولوية دخول قصوى (Queue)</li>
+                    </ul>
+                    <button class="btn-universal" style="width:100%; border-color:var(--gold-neon); color:var(--gold-neon);">امتلاك العرش</button>
+                </div>
+                <div class="package-card">
+                    <div class="pkg-name">CRIMINAL ELITE</div>
+                    <div class="pkg-price">$75</div>
+                    <ul class="pkg-features">
+                        <li><i class="fas fa-check"></i> مخزن أسلحة سري</li>
+                        <li><i class="fas fa-check"></i> دراجة نيون حصرية</li>
+                        <li><i class="fas fa-check"></i> رصيد بنكي 5,000,000$</li>
+                    </ul>
+                    <button class="btn-universal" style="width:100%; border-color:var(--primary-neon); color:var(--primary-neon);">شراء</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="sector-apply" class="sector">
+            <div class="app-portal">
+                <h2 style="font-family:var(--font-tech); text-align:center; color:var(--primary-neon); margin-bottom:50px; font-size:3rem;">طلب المواطنة</h2>
+                
+                <div class="step-module active" id="step-1">
+                    <div class="input-group">
+                        <label>الاسم الحقيقي الكامل</label>
+                        <input type="text" placeholder="اكتب اسمك هنا...">
+                    </div>
+                    <div class="input-group">
+                        <label>العمر (يجب أن يكون +18)</label>
+                        <input type="number" placeholder="عمرك الحقيقي...">
+                    </div>
+                    <div class="input-group">
+                        <label>معرف الديسكورد (ID)</label>
+                        <input type="text" placeholder="User#0000">
+                    </div>
+                    <div style="text-align:left;">
+                        <button class="btn-universal" onclick="goToStep(2)">المرحلة التالية</button>
+                    </div>
+                </div>
+
+                <div class="step-module" id="step-2">
+                    <div class="input-group">
+                        <label>ما هو مفهومك عن الـ Roleplay؟</label>
+                        <textarea rows="4" placeholder="اشرح لنا بأسلوبك الخاص..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>كم عدد سنوات خبرتك في سيرفرات الـ RP؟</label>
+                        <select>
+                            <option>أقل من سنة</option>
+                            <option>من سنة إلى سنتين</option>
+                            <option>أكثر من 3 سنوات (خبير)</option>
+                        </select>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <button class="btn-universal" onclick="goToStep(1)">رجوع</button>
+                        <button class="btn-universal" onclick="goToStep(3)">المرحلة التالية</button>
+                    </div>
+                </div>
+
+                <div class="step-module" id="step-3">
+                    <div class="input-group">
+                        <label>سيناريو: تم اختطافك وطلب فدية، كيف ستتصرف تقمصياً؟</label>
+                        <textarea rows="5" placeholder="أظهر لنا مهاراتك في التقمص..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>ماذا تفعل إذا رأيت شخصاً يخالف القوانين أمامك؟</label>
+                        <textarea rows="4" placeholder="تصرفك القانوني والتقمصي..."></textarea>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <button class="btn-universal" onclick="goToStep(2)">رجوع</button>
+                        <button class="btn-universal" onclick="finishApplication()">إرسال الطلب النهائي</button>
+                    </div>
+                </div>
             </div>
         </section>
 
     </main>
 
-    <footer>
-        NOVAX RP &copy; 2026 | DISCORD SYNC ACTIVE | v20.0
+    <div class="live-monitor" id="log-box">
+        <div class="log-entry">> INITIALIZING_NOVAX_DATABASE...</div>
+        <div class="log-entry">> LOADING_CITIZEN_RECORDS...</div>
+    </div>
+
+    <footer class="main-footer">
+        NOVAX ROLEPLAY &copy; 2026 | BUILT BY VIRUSZ | THE SOVEREIGN SYSTEM
     </footer>
 
     <script>
-        // 1. MOUSE ENGINE (AS BEFORE)
-        const dot = document.getElementById('c-dot'), ring = document.getElementById('c-ring'), frame = document.getElementById('c-frame');
-        let mx = 0, my = 0, rx = 0, ry = 0;
-        window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
-        function moveMouse() { rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; frame.style.left = rx + 'px'; frame.style.top = ry + 'px'; requestAnimationFrame(moveMouse); }
-        moveMouse();
+        /* 1. MOUSE TRACKING ENGINE 
+           نظام الماوس المتطور المكون من 3 طبقات
+        */
+        const dot = document.getElementById('c-dot');
+        const ring = document.getElementById('c-ring');
+        const frame = document.getElementById('c-frame');
+        
+        let mouseX = 0, mouseY = 0;
+        let ringX = 0, ringY = 0;
 
-        // 2. NEURAL BACKGROUND
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Immediate movement for the dot
+            dot.style.left = mouseX + 'px';
+            dot.style.top = mouseY + 'px';
+        });
+
+        function animateMouse() {
+            // Smooth lerp for the ring and frame
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            
+            ring.style.left = ringX + 'px';
+            ring.style.top = ringY + 'px';
+            
+            frame.style.left = ringX + 'px';
+            frame.style.top = ringY + 'px';
+            
+            requestAnimationFrame(animateMouse);
+        }
+        animateMouse();
+
+        /* 2. NEURAL NETWORK CANVAS ENGINE
+           الخلفية المتصلة (الخيوط والأعصاب)
+        */
         const canvas = document.getElementById('neural-canvas');
         const ctx = canvas.getContext('2d');
-        let points = [];
-        function initNet() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight; points = [];
-            for(let i=0; i<120; i++) points.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.8, vy: (Math.random()-0.5)*0.8 });
-        }
-        function drawNet() {
-            ctx.clearRect(0,0,canvas.width, canvas.height); ctx.fillStyle = "#bc13fe";
-            points.forEach((p, i) => {
-                p.x += p.vx; p.y += p.vy;
-                if(p.x<0 || p.x>canvas.width) p.vx*=-1; if(p.y<0 || p.y>canvas.height) p.vy*=-1;
-                ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI*2); ctx.fill();
-                for(let j=i+1; j<points.length; j++) {
-                    let d = Math.hypot(p.x-points[j].x, p.y-points[j].y);
-                    if(d<150) { ctx.strokeStyle = `rgba(0,242,255,${1-d/150})`; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(points[j].x, points[j].y); ctx.stroke(); }
-                }
-            });
-            requestAnimationFrame(drawNet);
-        }
-        initNet(); drawNet();
+        let particles = [];
 
-        // 3. PRELOADER
-        function bootSystem() {
-            let p = 0;
-            const bar = document.getElementById('load-bar');
-            const itv = setInterval(() => {
-                p += Math.random()*5;
-                if(p>=100) { p=100; clearInterval(itv); gsap.to('#preloader', {opacity:0, duration:1, onComplete:()=>document.getElementById('preloader').remove()}); }
-                bar.style.width = p + '%';
-            }, 80)
-        }
-
-        // 4. DISCORD SYNC SIMULATOR (أهم جزء طلبته)
-        function showSec(id, btn) {
-            document.querySelectorAll('.section-block').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById('sec-'+id).classList.add('active');
-            btn.classList.add('active');
-            
-            // محاكاة سحب البيانات عند فتح قسم التحديثات
-            if(id === 'news') {
-                pushNotification("FETCHING_DISCORD_ANNOUNCEMENTS...");
+        function initNeural() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            // Create 130 particles for the network
+            for(let i=0; i<130; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.6,
+                    vy: (Math.random() - 0.5) * 0.6
+                });
             }
         }
 
-        function updatePreview(name, price) {
-            document.getElementById('item-name').innerText = name + " CUSTOM";
-            document.getElementById('item-price').innerText = price;
-            pushNotification("PREVIEW_UPDATED");
+        function drawNeural() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#bc13fe";
+            ctx.lineWidth = 0.6;
+
+            for(let i=0; i<particles.length; i++) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Bounce off edges
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                // Draw Particle
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw Connections
+                for(let j=i+1; j<particles.length; j++) {
+                    let p2 = particles[j];
+                    let distance = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if(distance < 170) {
+                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - distance/170})`;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(drawNeural);
+        }
+        initNeural();
+        drawNeural();
+
+        /* 3. SYSTEM BOOTSTRAP (PRELOADER)
+        */
+        function initializeNovaX() {
+            let progress = 0;
+            const bar = document.getElementById('main-fill');
+            const status = document.getElementById('boot-text');
+            const stages = [
+                "DECRYPTING_ASSETS...",
+                "LOADING_NEURAL_LAYERS...",
+                "SYNCING_DISCORD_SOCKETS...",
+                "ESTABLISHING_SESSION...",
+                "READY_TO_BOOT"
+            ];
+
+            const interval = setInterval(() => {
+                progress += Math.random() * 8;
+                if(progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    gsap.to('#preloader-system', {
+                        opacity: 0,
+                        duration: 1.5,
+                        onComplete: () => {
+                            document.getElementById('preloader-system').remove();
+                            addLog("SYSTEM_BOOT_SUCCESSFUL");
+                            addLog("WELCOME_ADMIN_VIRUSZ");
+                        }
+                    });
+                }
+                bar.style.width = progress + '%';
+                status.innerText = stages[Math.floor((progress/100) * (stages.length-1))];
+            }, 100);
         }
 
-        function pushNotification(msg) {
-            const chat = document.getElementById('store-chat');
-            const div = document.createElement('div');
-            div.className = 'chat-msg';
-            div.innerHTML = `<span>[SYSTEM]:</span> ${msg} @ ${new Date().toLocaleTimeString()}`;
-            chat.prepend(div);
+        /* 4. NAVIGATION CONTROL 
+        */
+        function switchSector(id, btn) {
+            // Remove active classes
+            document.querySelectorAll('.sector').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            
+            // Activate target
+            const target = document.getElementById('sector-' + id);
+            target.classList.add('active');
+            if(btn) btn.classList.add('active');
+            
+            // Log the action
+            addLog(`MapsD_TO: ${id.toUpperCase()}`);
+            
+            // Trigger GSAP Animation
+            gsap.from(target, { y: 30, opacity: 0, duration: 0.6 });
         }
 
-        // إرسال البيانات للديسكورد (Webhook Logic)
-        async function sendToDiscord(webhookURL, data) {
-            // هذا الكود يرسل البيانات للديسكورد فعلياً إذا وضعت الرابط
-            /*
-            await fetch(webhookURL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: data })
+        /* 5. APPLICATION FORM LOGIC 
+        */
+        function goToStep(num) {
+            document.querySelectorAll('.step-module').forEach(m => m.classList.remove('active'));
+            document.getElementById('step-' + num).classList.add('active');
+            addLog(`APPLICATION_PROGRESS: STEP_${num}`);
+        }
+
+        function finishApplication() {
+            Swal.fire({
+                title: 'تم إرسال طلبك',
+                text: 'سجلنا بياناتك في سيرفر NoVaX، سيصلك الرد عبر الديسكورد قريباً.',
+                icon: 'success',
+                background: '#050508',
+                color: '#fff',
+                confirmButtonColor: '#bc13fe'
             });
-            */
+            addLog("APPLICATION_SUBMITTED_SUCCESSFULLY");
         }
+
+        /* 6. LIVE MONITOR ENGINE 
+        */
+        function addLog(msg) {
+            const box = document.getElementById('log-box');
+            const div = document.createElement('div');
+            div.className = 'log-entry';
+            div.innerText = `> ${new Date().toLocaleTimeString()} | ${msg}`;
+            box.appendChild(div);
+            // Keep only last 8 logs
+            if(box.childNodes.length > 8) {
+                box.removeChild(box.firstChild);
+            }
+        }
+
+        /* 7. EXTERNAL INTEGRATIONS 
+        */
+        function authDiscord() {
+            addLog("REDIRECTING_TO_DISCORD_OAUTH2...");
+            window.location.href = "https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify";
+        }
+
+        // Handle Window Resize
+        window.addEventListener('resize', () => {
+            initNeural();
+        });
+
     </script>
 </body>
 </html>
