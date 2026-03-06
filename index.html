@@ -3,78 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVAX RP | THE INFINITY MASTERPIECE</title>
+    <title>NOVAX RP | THE INFINITY SOVEREIGN CORE v10.0</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* [1] GLOBAL RESET & CORE VARIABLES 
-           تفصيل كامل للمتغيرات لضمان أعلى دقة ألوان النيون
-        */
+        /* [1] GLOBAL VARIABLES - تفصيل الألوان الممل */
         :root {
-            --primary-neon: #bc13fe;
-            --primary-glow: rgba(188, 19, 254, 0.6);
-            --accent-neon: #00f2ff;
-            --accent-glow: rgba(0, 242, 255, 0.6);
-            --gold-neon: #ffcf40;
-            --gold-glow: rgba(255, 207, 64, 0.5);
-            --danger-neon: #ff003c;
-            --danger-glow: rgba(255, 0, 60, 0.6);
-            --success-neon: #39ff14;
-            --bg-deep-black: #000000;
-            --bg-surface: #050508;
-            --bg-card: rgba(10, 10, 15, 0.98);
-            --border-main: 2px solid rgba(188, 19, 254, 0.3);
-            --transition-slow: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            --font-main: 'Cairo', sans-serif;
-            --font-tech: 'Orbitron', sans-serif;
-            --font-code: 'Share Tech Mono', monospace;
+            --p: #bc13fe;
+            --p-g: rgba(188, 19, 254, 0.5);
+            --a: #00f2ff;
+            --a-g: rgba(0, 242, 255, 0.5);
+            --g: #ffcf40;
+            --g-g: rgba(255, 207, 64, 0.5);
+            --r: #ff003c;
+            --r-g: rgba(255, 0, 60, 0.5);
+            --bg: #000000;
+            --surface: #050508;
+            --card-bg: rgba(10, 10, 15, 0.98);
+            --nav-bg: rgba(0, 0, 0, 0.95);
+            --border-color: rgba(188, 19, 254, 0.3);
+            --text-main: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.7);
         }
 
-        /* منع أي حركة عشوائية وتحسين جودة العرض */
+        /* [2] CORE RESET - تصفير الإعدادات */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none !important;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+            outline: none;
+            cursor: none !important; /* إخفاء الماوس الأصلي إجبارياً */
+            -webkit-user-drag: none;
         }
 
-        html, body {
-            width: 100%;
-            min-height: 100vh;
-            background-color: var(--bg-deep-black);
-            color: #ffffff;
-            font-family: var(--font-main);
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Cairo', sans-serif;
             overflow-x: hidden;
-            scroll-behavior: smooth;
+            min-height: 100vh;
+            line-height: 1.6;
         }
 
-        /* سكرول بار إمبراطوري طويل ومفصل */
+        /* [3] SCROLLBAR - سكرول بار إجرامي طويل */
         ::-webkit-scrollbar {
             width: 10px;
             background: #000;
         }
         ::-webkit-scrollbar-track {
             background: #000;
-            border-left: 1px solid var(--primary-neon);
+            border-left: 1px solid var(--border-color);
         }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--primary-neon), var(--accent-neon));
-            border-radius: 0px;
-            box-shadow: 0 0 15px var(--primary-neon);
+            background: linear-gradient(to bottom, var(--p), var(--a));
+            box-shadow: 0 0 15px var(--p);
         }
 
-        /* [2] THE APEX CURSOR SYSTEM 
-           نظام ماوس ثلاثي الطبقات لا يمكن أن يختفي أو يعلق
-        */
-        #master-cursor {
+        /* [4] CUSTOM CURSOR - الماوس الذي لا يختفي */
+        #cursor-layer {
             position: fixed;
             top: 0;
             left: 0;
@@ -85,619 +75,630 @@
         }
         .c-ring {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            border: 2px solid var(--accent-neon);
+            width: 45px;
+            height: 45px;
+            border: 2px solid var(--a);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: var(--accent-glow);
+            box-shadow: 0 0 20px var(--a);
             transition: width 0.3s, height 0.3s, border-color 0.3s;
         }
         .c-dot {
             position: absolute;
             width: 8px;
             height: 8px;
-            background: var(--primary-neon);
+            background: var(--p);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: var(--primary-glow);
+            box-shadow: 0 0 15px var(--p);
         }
-        .c-glitch {
+        .c-trail {
             position: absolute;
-            width: 70px;
-            height: 70px;
-            border: 1px dashed var(--primary-neon);
+            width: 60px;
+            height: 60px;
+            border: 1px dashed var(--p);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            animation: rotateCursor 10s linear infinite;
+            animation: rotateCursor 8s linear infinite;
             opacity: 0.3;
         }
-        @keyframes rotateCursor { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes rotateCursor { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        /* [3] CINEMATIC ATMOSPHERE 
-           تأثيرات بصرية فائقة العمق (Parallax Starfield)
-        */
-        #canvas-nebula {
+        /* [5] ATMOSPHERE & BACKGROUNDS */
+        canvas#space-engine {
             position: fixed;
             inset: 0;
             z-index: -10;
-            background: radial-gradient(circle at center, #0a001a 0%, #000 100%);
+            opacity: 0.8;
         }
-        .vignette-overlay {
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 999999;
+            pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 4px;
+            opacity: 0.15;
+        }
+        .grid-overlay {
             position: fixed;
             inset: 0;
             z-index: -9;
-            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.9) 150%);
-            pointer-events: none;
-        }
-        .cyber-grid {
-            position: fixed;
-            inset: 0;
-            z-index: -8;
             background-image: 
                 linear-gradient(rgba(188, 19, 254, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(188, 19, 254, 0.05) 1px, transparent 1px);
-            background-size: 80px 80px;
-            perspective: 1000px;
-            transform: rotateX(45deg);
-            transform-origin: top;
-            opacity: 0.2;
+            background-size: 60px 60px;
+            opacity: 0.4;
         }
 
-        /* [4] SUPREME HEADER & NAVIGATION 
-           تصميم هيدر ضخم يليق بملك السيرفرات
-        */
-        header.supreme-nav {
+        /* [6] SUPREME HEADER NAVIGATION */
+        header {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 40px 100px;
+            padding: 40px 80px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(25px);
+            border-bottom: 3px solid var(--p);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 4px solid var(--primary-neon);
-            z-index: 999999;
-            box-shadow: 0 10px 50px rgba(0,0,0,1);
+            z-index: 10000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
         }
-        .nav-logo {
-            font-family: var(--font-tech);
-            font-size: 50px;
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .brand-logo {
+            font-family: 'Orbitron';
+            font-size: 45px;
             font-weight: 900;
-            letter-spacing: 15px;
+            letter-spacing: 12px;
             color: #fff;
-            text-transform: uppercase;
             position: relative;
         }
-        .nav-logo span {
-            color: var(--primary-neon);
-            text-shadow: 0 0 30px var(--primary-neon);
-        }
-        .nav-logo::after {
-            content: 'PREMIUM_CORE';
+        .brand-logo span { color: var(--p); text-shadow: 0 0 20px var(--p); }
+        .brand-logo::before {
+            content: 'SYSTEM_V.10';
             position: absolute;
             bottom: -15px;
             right: 0;
-            font-size: 10px;
+            font-size: 0.6rem;
+            color: var(--a);
             letter-spacing: 3px;
-            color: var(--accent-neon);
         }
 
-        .menu-container { display: flex; gap: 25px; }
-        .menu-item {
-            position: relative;
-            padding: 20px 40px;
+        .nav-links { display: flex; gap: 15px; }
+        .nav-item {
+            padding: 18px 35px;
             background: rgba(255,255,255,0.02);
-            border: 2px solid rgba(188, 19, 254, 0.3);
-            font-family: var(--font-tech);
-            font-size: 14px;
-            font-weight: 800;
+            border: 1px solid var(--border-color);
             color: #fff;
             text-decoration: none;
+            font-family: 'Orbitron';
+            font-size: 0.85rem;
+            font-weight: 700;
             clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
-            transition: var(--transition-slow);
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .menu-item:hover, .menu-item.active {
-            background: var(--primary-neon);
+        .nav-item:hover, .nav-item.active {
+            background: var(--p);
             color: #000;
             border-color: #fff;
-            transform: translateY(-10px) scale(1.1);
-            box-shadow: var(--glow-p);
+            transform: translateY(-8px);
+            box-shadow: 0 0 30px var(--p);
         }
 
-        /* [5] SECTIONS ARCHITECTURE 
-           بناء الصفحات بشكل مفصل جداً
-        */
-        .content-main {
-            padding-top: 250px;
-            padding-bottom: 100px;
-            width: 90%;
+        /* [7] MAIN CONTENT WRAPPERS */
+        .wrapper {
+            max-width: 1600px;
             margin: 0 auto;
+            padding: 220px 40px 100px 40px;
         }
-        .page-sector {
+        .section {
             display: none;
             opacity: 0;
-            transform: translateY(100px);
+            transform: translateY(80px);
         }
-        .page-sector.active {
+        .section.active {
             display: block;
-            animation: sectorReveal 1s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            animation: sectionIn 1s ease forwards;
         }
-        @keyframes sectorReveal {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes sectionIn { to { opacity: 1; transform: translateY(0); } }
 
-        /* Hero Page Specifics */
-        .hero-title-giant {
-            font-family: var(--font-tech);
-            font-size: 16vw;
-            font-weight: 900;
-            line-height: 0.8;
+        /* [8] HERO SECTION - THE ENTRANCE */
+        .hero-box {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            background: linear-gradient(to bottom, #fff 50%, var(--primary-neon) 100%);
+        }
+        .hero-box h1 {
+            font-family: 'Orbitron';
+            font-size: 15vw;
+            font-weight: 900;
+            line-height: 0.7;
+            letter-spacing: -10px;
+            background: linear-gradient(to bottom, #fff, var(--p));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 50px rgba(188, 19, 254, 0.4));
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
-
-        /* [6] THE STORE - ULTRA DETAILED 
-           كل كرت له تفاصيله الخاصة
-        */
-        .store-flex {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 60px;
-        }
-        .store-card {
-            background: var(--bg-card);
-            border: 3px solid var(--primary-neon);
-            padding: 100px 50px;
-            position: relative;
-            transition: var(--transition-slow);
-            overflow: hidden;
-            text-align: center;
-        }
-        .store-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: 0.5s;
-        }
-        .store-card:hover::before { left: 100%; }
-        .store-card:hover {
-            transform: translateY(-40px);
-            border-color: var(--accent-neon);
-            box-shadow: 0 30px 100px rgba(0,0,0,1), var(--accent-glow);
-        }
-        .card-category {
-            font-family: var(--font-code);
-            color: var(--accent-neon);
-            letter-spacing: 10px;
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-        .card-price {
-            font-family: var(--font-tech);
-            font-size: 7rem;
-            font-weight: 900;
-            margin: 40px 0;
-            color: #fff;
-            text-shadow: 0 0 40px var(--primary-neon);
-        }
-        .card-features {
-            text-align: right;
-            list-style: none;
+        .hero-box h2 {
+            font-family: 'Orbitron';
+            font-size: 5rem;
+            color: var(--a);
+            text-shadow: 0 0 30px var(--a);
             margin-bottom: 60px;
         }
-        .card-features li {
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 1.3rem;
+        .stats-row {
             display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .card-features li i { color: var(--success-neon); }
-
-        .btn-supreme {
-            width: 100%;
-            padding: 30px;
-            background: transparent;
-            border: 4px solid var(--primary-neon);
-            color: #fff;
-            font-family: var(--font-tech);
+            gap: 100px;
+            font-family: 'Share Tech Mono';
             font-size: 1.5rem;
-            font-weight: 900;
-            clip-path: polygon(0 0, 100% 0, 100% 70%, 80% 100%, 0 100%);
-            transition: 0.4s;
-        }
-        .btn-supreme:hover {
-            background: var(--primary-neon);
-            color: #000;
-            letter-spacing: 10px;
-            box-shadow: var(--glow-p);
+            color: var(--p);
+            letter-spacing: 5px;
         }
 
-        /* [7] WANTED SYSTEM - THE DARK FILES 
-        */
-        .wanted-entry {
+        /* [9] STORE SYSTEM - DETAILED CARDS */
+        .store-grid {
             display: grid;
-            grid-template-columns: 500px 1fr;
-            gap: 80px;
-            background: #000;
-            border: 5px solid var(--danger-neon);
-            padding: 60px;
-            margin-bottom: 100px;
-            position: relative;
-        }
-        .wanted-entry img {
-            width: 100%;
-            height: 600px;
-            object-fit: cover;
-            border: 4px solid var(--danger-neon);
-            filter: contrast(1.2) grayscale(0.2);
-        }
-        .wanted-info h2 {
-            font-family: var(--font-tech);
-            font-size: 5rem;
-            color: var(--danger-neon);
-            margin-bottom: 40px;
-        }
-        .wanted-info p {
-            font-size: 1.8rem;
-            line-height: 1.8;
-            opacity: 0.9;
-            margin-bottom: 50px;
-        }
-        .reward-amount {
-            font-family: var(--font-tech);
-            font-size: 6rem;
-            color: #fff;
-            text-shadow: 0 0 30px var(--danger-neon);
-        }
-
-        /* [8] CONSTITUTION (RULES) - THE LAW SECTOR 
-        */
-        .law-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 40px;
         }
-        .law-card {
-            background: rgba(188, 19, 254, 0.05);
-            border-right: 8px solid var(--primary-neon);
-            padding: 60px;
+        .package {
+            background: var(--card-bg);
+            border: 3px solid var(--border-color);
+            padding: 80px 40px;
+            text-align: center;
+            transition: 0.6s;
+            position: relative;
+            overflow: hidden;
+        }
+        .package:hover {
+            transform: translateY(-20px);
+            border-color: var(--a);
+            box-shadow: 0 0 60px rgba(0, 242, 255, 0.2);
+        }
+        .package.gold {
+            border-color: var(--g);
+            background: linear-gradient(145deg, #101005 0%, #000 100%);
+        }
+        .price {
+            font-family: 'Orbitron';
+            font-size: 6rem;
+            font-weight: 900;
+            color: var(--a);
+            margin: 40px 0;
+            text-shadow: 0 0 20px var(--a);
+        }
+        .features {
+            list-style: none;
+            text-align: right;
+            margin-bottom: 60px;
+        }
+        .features li {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 1.1rem;
+            color: var(--text-dim);
+        }
+        .features li i { color: var(--p); margin-left: 10px; }
+
+        .buy-btn {
+            width: 100%;
+            padding: 25px;
+            background: transparent;
+            border: 3px solid var(--p);
+            color: #fff;
+            font-family: 'Orbitron';
+            font-weight: 900;
+            font-size: 1.2rem;
+            clip-path: polygon(0 0, 100% 0, 100% 75%, 85% 100%, 0 100%);
+            transition: 0.4s;
+        }
+        .buy-btn:hover {
+            background: var(--p);
+            color: #000;
+            box-shadow: 0 0 40px var(--p);
+            letter-spacing: 5px;
+        }
+
+        /* [10] CONSTITUTION - THE LAW SECTOR (تفصيل ممل) */
+        .law-book {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            padding: 80px;
+        }
+        .law-chapter {
+            margin-bottom: 80px;
+        }
+        .law-chapter h3 {
+            font-family: 'Orbitron';
+            font-size: 3rem;
+            color: var(--p);
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--p);
+            display: inline-block;
+        }
+        .law-item {
+            margin-bottom: 30px;
+            padding: 30px;
+            background: rgba(255,255,255,0.02);
+            border-right: 5px solid var(--a);
+        }
+        .law-item h4 { color: var(--a); font-size: 1.6rem; margin-bottom: 10px; }
+        .law-item p { font-size: 1.2rem; color: var(--text-dim); line-height: 2; }
+
+        /* [11] MOST WANTED - CRIMINAL ARCHIVE */
+        .wanted-card {
+            display: grid;
+            grid-template-columns: 450px 1fr;
+            gap: 60px;
+            border: 4px solid var(--r);
+            padding: 50px;
+            background: #000;
+            position: relative;
+        }
+        .wanted-img {
+            width: 100%;
+            height: 550px;
+            object-fit: cover;
+            border: 4px solid var(--r);
+            filter: contrast(1.3) grayscale(0.5);
+        }
+        .wanted-tag {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            background: var(--r);
+            padding: 10px 40px;
+            font-family: 'Orbitron';
+            font-weight: 900;
+            transform: rotate(-5deg);
+        }
+        .wanted-info h2 { font-family: 'Orbitron'; font-size: 5rem; color: var(--r); margin-bottom: 20px; }
+        .wanted-details {
+            font-family: 'Share Tech Mono';
+            font-size: 1.4rem;
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* [12] STAFF - THE COUNCIL */
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 50px;
+        }
+        .member-card {
+            background: rgba(255,255,255,0.02);
+            padding: 60px 40px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%);
             transition: 0.5s;
         }
-        .law-card:hover { background: rgba(188, 19, 254, 0.1); transform: scale(1.02); }
-        .law-card h3 { font-family: var(--font-tech); font-size: 2.5rem; color: var(--accent-neon); margin-bottom: 30px; }
-        .law-card p { font-size: 1.4rem; opacity: 0.8; line-height: 2; }
-
-        /* [9] STAFF COUNCIL - THE ELITE 
-        */
-        .staff-wrap {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 60px;
-        }
-        .staff-member {
-            background: var(--bg-card);
-            padding: 80px;
-            text-align: center;
-            border: 2px solid var(--primary-neon);
-            clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
-        }
-        .staff-avatar {
-            width: 250px;
-            height: 250px;
+        .member-card:hover { border-color: var(--a); transform: translateY(-10px); }
+        .member-img {
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
-            border: 8px solid var(--accent-neon);
-            margin-bottom: 40px;
+            border: 6px solid var(--p);
+            margin-bottom: 30px;
             object-fit: cover;
-            box-shadow: var(--accent-glow);
+            box-shadow: 0 0 30px var(--p);
         }
 
-        /* [10] BOOT LOADER - THE ULTIMATE STARTUP 
-        */
-        #preloader {
+        /* [13] BOOT LOADER - THE 1000-LINE FEELING */
+        #loader {
             position: fixed;
             inset: 0;
             background: #000;
-            z-index: 99999999;
+            z-index: 10000000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-        .load-bar-outer {
-            width: 800px;
-            height: 6px;
-            background: rgba(255,255,255,0.05);
-            margin-top: 50px;
-            position: relative;
-            overflow: hidden;
-        }
-        .load-bar-inner {
-            position: absolute;
-            left: 0; top: 0;
-            width: 0%;
-            height: 100%;
-            background: var(--primary-neon);
-            box-shadow: var(--glow-p);
-        }
-        .load-status {
-            font-family: var(--font-code);
-            color: var(--accent-neon);
-            margin-top: 30px;
-            font-size: 1.5rem;
-            letter-spacing: 15px;
-        }
+        .loader-title { font-family: 'Orbitron'; font-size: 6rem; letter-spacing: 30px; margin-bottom: 50px; }
+        .bar-wrap { width: 600px; height: 4px; background: rgba(255,255,255,0.05); position: relative; }
+        .bar-fill { height: 100%; width: 0%; background: var(--p); box-shadow: 0 0 20px var(--p); }
+        .loader-status { font-family: 'Share Tech Mono'; color: var(--a); margin-top: 30px; font-size: 1.2rem; letter-spacing: 5px; }
 
         footer {
-            padding: 200px 0;
+            padding: 150px 0;
             text-align: center;
-            border-top: 5px solid var(--primary-neon);
-            font-family: var(--font-tech);
+            border-top: 2px solid var(--border-color);
             opacity: 0.5;
-            letter-spacing: 30px;
-            font-size: 1rem;
+            font-family: 'Orbitron';
+            letter-spacing: 20px;
         }
     </style>
 </head>
-<body onload="igniteSystem()">
+<body>
 
-    <div id="preloader">
-        <div style="font-family: var(--font-tech); font-size: 6rem; letter-spacing: 40px; font-weight: 900;">NOVAX</div>
-        <div class="load-bar-outer"><div class="load-bar-inner" id="loader-fill"></div></div>
-        <div class="load-status" id="loader-text">ESTABLISHING_CONNECTION...</div>
+    <div id="loader">
+        <div class="loader-title">NOVAX</div>
+        <div class="bar-wrap"><div class="bar-fill" id="b-fill"></div></div>
+        <div class="loader-status" id="b-status">INITIALIZING_ENCRYPTION_PROTOCOLS...</div>
     </div>
 
-    <div id="master-cursor">
-        <div class="c-glitch" id="c-glitch"></div>
+    <div id="cursor-layer">
+        <div class="c-trail" id="c-trail"></div>
         <div class="c-ring" id="c-ring"></div>
         <div class="c-dot" id="c-dot"></div>
     </div>
 
-    <div class="cyber-grid"></div>
-    <div class="vignette-overlay"></div>
-    <canvas id="canvas-nebula"></canvas>
+    <div class="scanlines"></div>
+    <div class="grid-overlay"></div>
+    <canvas id="space-engine"></canvas>
 
-    <header class="supreme-nav">
-        <a href="#" class="nav-logo">NOVAX<span>RP</span></a>
-        <nav class="menu-container">
-            <a href="#" class="menu-item active" onclick="switchSector('home', this)">الرئيسية</a>
-            <a href="#" class="menu-item" onclick="switchSector('rules', this)">الدستور</a>
-            <a href="#" class="menu-item" onclick="switchSector('store', this)">المتجر الملكي</a>
-            <a href="#" class="menu-item" onclick="switchSector('wanted', this)">المطلوبين</a>
-            <a href="#" class="menu-item" onclick="switchSector('staff', this)">مجلس الإدارة</a>
-            <a href="#" class="menu-item" onclick="switchSector('apply', this)">بوابة المواطنة</a>
+    <header>
+        <div class="brand-container">
+            <div class="brand-logo">NOVAX<span>RP</span></div>
+        </div>
+        <nav class="nav-links">
+            <a href="#" class="nav-item active" onclick="nav('home', this)">الرئيسية</a>
+            <a href="#" class="nav-item" onclick="nav('laws', this)">دستور المدينة</a>
+            <a href="#" class="nav-item" onclick="nav('store', this)">المتجر الملكي</a>
+            <a href="#" class="nav-item" onclick="nav('wanted', this)">سجل المطلوبين</a>
+            <a href="#" class="nav-item" onclick="nav('staff', this)">مجلس الإدارة</a>
+            <a href="#" class="nav-item" onclick="nav('apply', this)">بوابة التقديم</a>
         </nav>
-        <button class="menu-item" style="border-color: var(--accent-neon); color: var(--accent-neon);" onclick="discordLogin()">LINK_ID</button>
+        <button class="nav-item" style="border-color: var(--a); color: var(--a);" onclick="login()">IDENTIFY_CITIZEN</button>
     </header>
 
-    <main class="content-main">
+    <div class="wrapper">
 
-        <section id="sector-home" class="page-sector active">
-            <h1 class="hero-title-giant">NOVAX</h1>
-            <h2 style="font-family: var(--font-tech); font-size: 7rem; text-align:center; color: var(--primary-neon); margin-top: -50px; text-shadow: var(--glow-p);">THE SOVEREIGN</h2>
-            <p style="text-align:center; font-family: var(--font-code); font-size: 2.5rem; letter-spacing: 35px; color: var(--accent-neon); margin-top: 80px;">[ BEYOND_REALITY ]</p>
-            
-            <div style="display:flex; justify-content:center; gap:50px; margin-top:150px;">
-                <button class="btn-supreme" style="width: 500px;" onclick="switchSector('apply')">ابدأ مسيرتك الآن</button>
-                <button class="btn-supreme" style="width: 500px; border-color: var(--accent-neon); color: var(--accent-neon);" onclick="window.open('https://discord.gg')">مركز العمليات (ديسكورد)</button>
-            </div>
-        </section>
-
-        <section id="sector-rules" class="page-sector">
-            <h2 style="font-family: var(--font-tech); font-size: 5rem; color: var(--primary-neon); margin-bottom: 80px;">دستور المملكة العليا</h2>
-            <div class="law-grid">
-                <div class="law-card">
-                    <h3>المادة 01: قوانين التقمص (RP)</h3>
-                    <p>يجب على كل مواطن الحفاظ على هويته داخل المدينة تحت أي ظرف. الخروج عن الشخصية (OOC) يعتبر انتهاكاً صارخاً للدستور.</p>
+        <section id="p-home" class="section active">
+            <div class="hero-box">
+                <h1>NOVAX</h1>
+                <h2>THE NEW ERA</h2>
+                <div class="stats-row">
+                    <span>[ CITIZENS: 14,204 ]</span>
+                    <span>[ STATUS: ONLINE ]</span>
+                    <span>[ REGION: MIDDLE_EAST ]</span>
                 </div>
-                <div class="law-card">
-                    <h3>المادة 02: قيمة الحياة (Fear RP)</h3>
-                    <p>حياتك هي أثمن ما تملك. عند مواجهة خطر محقق أو تهديد بالسلاح، يجب عليك الخضوع تماماً لضمان سلامتك.</p>
-                </div>
-                <div class="law-card">
-                    <h3>المادة 03: الاعتداءات المسلحة</h3>
-                    <p>يمنع منعاً باتاً القتل العشوائي (RDM) أو الصدم المتعمد (VDM). كل جريمة يجب أن يكون لها دافع تقمصي قوي وموثق.</p>
-                </div>
-                <div class="law-card">
-                    <h3>المادة 04: القواعد الإدارية</h3>
-                    <p>كلمة مجلس الحكماء هي العليا. أي محاولة للتلاعب بالأنظمة أو استغلال الثغرات ستؤدي إلى النفي النهائي من NOVAX.</p>
+                <div style="margin-top: 100px; display: flex; gap: 40px;">
+                    <button class="buy-btn" style="width: 400px;" onclick="nav('apply')">ابدأ حياتك الجديدة</button>
+                    <button class="buy-btn" style="width: 400px; border-color: var(--a); color: var(--a);" onclick="window.open('https://discord.gg')">الدخول للديسكورد</button>
                 </div>
             </div>
         </section>
 
-        <section id="sector-store" class="page-sector">
-            <div class="store-flex">
-                <div class="store-card">
-                    <div class="card-category">CYBER CITIZEN</div>
-                    <div class="card-price">$40</div>
-                    <ul class="card-features">
-                        <li><i class="fas fa-check"></i> أسطول سيارات فئة (S-Class)</li>
-                        <li><i class="fas fa-check"></i> منزل بنتهاوس في وسط المدينة</li>
-                        <li><i class="fas fa-check"></i> رتبة VIP البرونزية</li>
-                    </ul>
-                    <button class="btn-supreme">تفعيل الحزمة</button>
+        <section id="p-laws" class="section">
+            <div class="law-book">
+                <div class="law-chapter">
+                    <h3>الباب الأول: المبادئ الأساسية</h3>
+                    <div class="law-item">
+                        <h4>المادة 1: قدسية التقمص (Roleplay)</h4>
+                        <p>يعد التقمص هو الركيزة الأساسية في NoVaX. يمنع منعاً باتاً التحدث بما لا يخص الشخصية أو استخدام معلومات خارج التقمص (Meta-Gaming).</p>
+                    </div>
+                    <div class="law-item">
+                        <h4>المادة 2: قيمة الحياة (Value of Life)</h4>
+                        <p>يجب على المواطن أن يمثل شعور الخوف والقلق عند وقوعه تحت تهديد السلاح أو الخطر، وحياته هي أغلى ما يملك في هذا العالم.</p>
+                    </div>
                 </div>
-                <div class="store-card" style="border-color: var(--gold-neon); border-width: 5px;">
-                    <div class="card-category" style="color: var(--gold-neon);">EMPEROR STATUS</div>
-                    <div class="card-price" style="text-shadow: 0 0 50px var(--gold-neon);">$250</div>
-                    <ul class="card-features">
-                        <li><i class="fas fa-crown" style="color: var(--gold-neon);"></i> قصر إمبراطوري بجزيرة خاصة</li>
-                        <li><i class="fas fa-crown" style="color: var(--gold-neon);"></i> طائرة جيت خاصة + يخت ملكي</li>
-                        <li><i class="fas fa-crown" style="color: var(--gold-neon);"></i> أولوية دخول مطلقة (LEVEL 0)</li>
-                        <li><i class="fas fa-crown" style="color: var(--gold-neon);"></i> إدارة منظمة إجرامية أو قانونية</li>
-                    </ul>
-                    <button class="btn-supreme" style="border-color: var(--gold-neon); color: var(--gold-neon);">اعتلاء العرش</button>
-                </div>
-                <div class="store-card">
-                    <div class="card-category">NEON ROGUE</div>
-                    <div class="card-price">$25</div>
-                    <ul class="card-features">
-                        <li><i class="fas fa-check"></i> دراجة نارية نيون معدلة</li>
-                        <li><i class="fas fa-check"></i> ترخيص أسلحة خفيفة</li>
-                        <li><i class="fas fa-check"></i> رصيد بنكي 5,000,000$</li>
-                    </ul>
-                    <button class="btn-supreme">تفعيل الحزمة</button>
+                <div class="law-chapter">
+                    <h3>الباب الثاني: الجرائم والعقوبات</h3>
+                    <div class="law-item">
+                        <h4>المادة 5: القتل العشوائي (RDM)</h4>
+                        <p>يمنع القتل بدون سبب تقمصي واضح أو سيناريو مسبق. العقوبة: النفي المؤقت من المدينة لمدة لا تقل عن 7 أيام.</p>
+                    </div>
+                    <div class="law-item">
+                        <h4>المادة 6: الصدم العمد (VDM)</h4>
+                        <p>استخدام المركبة كأداة قتل أو صدم عشوائي يعتبر خرقاً كبيراً لقوانين المدينة.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="sector-wanted" class="page-sector">
-            <div class="wanted-entry">
-                <div style="position:absolute; top:40px; right:40px; background:var(--danger-neon); padding:15px 50px; font-family:var(--font-tech); font-weight:900; transform:rotate(5deg); box-shadow:0 0 30px var(--danger-neon);">خطر جداً</div>
-                <img src="https://i.pravatar.cc/800?u=wanted1">
+        <section id="p-store" class="section">
+            <div class="store-grid">
+                <div class="package">
+                    <div style="color: var(--p); font-family: 'Share Tech Mono';">TIER I: ELITE</div>
+                    <div class="price">$35</div>
+                    <ul class="features">
+                        <li><i class="fas fa-car"></i> 3 سيارات حصرية معدلة</li>
+                        <li><i class="fas fa-home"></i> منزل في منطقة روكفورد هيلز</li>
+                        <li><i class="fas fa-id-card"></i> أولوية دخول للمدينة (Lv 3)</li>
+                        <li><i class="fas fa-coins"></i> 1,000,000$ نقداً</li>
+                    </ul>
+                    <button class="buy-btn">شراء الحزمة</button>
+                </div>
+                <div class="package gold">
+                    <div style="color: var(--g); font-family: 'Share Tech Mono';">TIER III: EMPEROR</div>
+                    <div class="price" style="color: var(--g);">$200</div>
+                    <ul class="features">
+                        <li><i class="fas fa-crown"></i> قصر إمبراطوري + يخت خاص</li>
+                        <li><i class="fas fa-fighter-jet"></i> طائرة خاصة مسجلة باسمك</li>
+                        <li><i class="fas fa-infinity"></i> أولوية دخول مطلقة (Lv 1)</li>
+                        <li><i class="fas fa-briefcase"></i> تأسيس شركة تجارية خاصة</li>
+                        <li><i class="fas fa-user-shield"></i> حصانة دبلوماسية في بعض السيناريوهات</li>
+                    </ul>
+                    <button class="buy-btn" style="border-color: var(--g); color: var(--g);">امتلك العرش</button>
+                </div>
+                <div class="package">
+                    <div style="color: var(--a); font-family: 'Share Tech Mono';">TIER II: LEGEND</div>
+                    <div class="price">$80</div>
+                    <ul class="features">
+                        <li><i class="fas fa-car-side"></i> سيارة سوبر سبورت فريدة</li>
+                        <li><i class="fas fa-building"></i> مكتب تجاري في برج البنك</li>
+                        <li><i class="fas fa-id-badge"></i> أولوية دخول للمدينة (Lv 2)</li>
+                    </ul>
+                    <button class="buy-btn">شراء الحزمة</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="p-wanted" class="section">
+            <div class="wanted-card">
+                <div class="wanted-tag">خطر جداً (S-RANK)</div>
+                <img src="https://i.pravatar.cc/800?u=wanted99" class="wanted-img">
                 <div class="wanted-info">
-                    <h2>"V_ARCHITECT"</h2>
-                    <p>المطلوب الأول في قائمة الاستخبارات المركزية. المسؤول عن اختراق بيانات وزارة الدفاع وتصفية 3 وكلاء سريين في منطقة باليتو باي.</p>
-                    <div style="font-family: var(--font-code); color: var(--accent-neon); margin-bottom: 20px;">آخر ظهور: ملهى باهاما ماماز - 04:20 AM</div>
-                    <div class="reward-amount">المكافأة: $20,000,000</div>
+                    <h2>"V_DECRYPTER"</h2>
+                    <p>العقل المدبر لعملية السطو الكبرى على خزينة البنك الفيدرالي. مطلوب حياً أو ميتاً بتهمة الإرهاب الرقمي وتصفية رجال أمن.</p>
+                    <div class="wanted-details">
+                        <div>[ الجرائم: خيانة عظمى، قتل، سرقة ]</div>
+                        <div>[ آخر موقع: صحراء ساندي شورز ]</div>
+                        <div>[ المكافأة: 25,000,000$ ]</div>
+                        <div>[ الحالة: مسلح بأسلحة ثقيلة ]</div>
+                    </div>
+                    <div style="margin-top: 60px; font-family: 'Orbitron'; font-size: 5rem; color: var(--r);">REWARD: $25,000,000</div>
                 </div>
             </div>
         </section>
 
-        <section id="sector-staff" class="page-sector">
-            <div class="staff-wrap">
-                <div class="staff-member">
-                    <img src="https://i.imgur.com/8Q9Z5X9.jpeg" class="staff-avatar">
-                    <h3 style="font-family: var(--font-tech); font-size: 3rem;">VIRUSZ</h3>
-                    <p style="color: var(--primary-neon); font-weight: 900; letter-spacing: 8px; margin-top: 20px;">الـمؤسـس الـعام</p>
+        <section id="p-staff" class="section">
+            <div class="staff-grid">
+                <div class="member-card">
+                    <img src="https://i.imgur.com/8Q9Z5X9.jpeg" class="member-img">
+                    <h3 style="font-family: 'Orbitron'; font-size: 2.5rem;">VIRUSZ</h3>
+                    <p style="color: var(--p); letter-spacing: 5px; font-weight: 900; margin-top: 10px;">THE FOUNDER</p>
                 </div>
-                <div class="staff-member">
-                    <img src="https://i.pravatar.cc/500?u=staff2" class="staff-avatar" style="border-color: var(--accent-neon);">
-                    <h3 style="font-family: var(--font-tech); font-size: 3rem;">NEXUS</h3>
-                    <p style="color: var(--accent-neon); font-weight: 900; letter-spacing: 8px; margin-top: 20px;">مدير العمليات</p>
+                <div class="member-card">
+                    <img src="https://i.pravatar.cc/400?u=nexus" class="member-img" style="border-color: var(--a);">
+                    <h3 style="font-family: 'Orbitron'; font-size: 2.5rem;">NEXUS</h3>
+                    <p style="color: var(--a); letter-spacing: 5px; font-weight: 900; margin-top: 10px;">OPERATIONS DIRECTOR</p>
                 </div>
             </div>
         </section>
 
-    </main>
+    </div>
 
     <footer>
-        <p>NOVAX RP &copy; 2026 | ALL RIGHTS RESERVED TO THE EMPIRE</p>
-        <div style="margin-top: 40px; font-family: var(--font-code); color: var(--primary-neon); letter-spacing: 5px;">SECURITY_STATUS: OPTIMAL | SERVER_LOAD: 12%</div>
+        <p>NOVAX RP &copy; 2026 | DOMINATION THROUGH SUPERIORITY</p>
+        <p style="font-size: 0.6rem; margin-top: 20px; letter-spacing: 10px; color: var(--p);">ENCRYPTION: AES-1024-X64 | DATABASE_CONNECTED</p>
     </footer>
 
     <script>
-        // 1. Mouse Follower Engine (Ultra Smooth)
-        const cRing = document.getElementById('c-ring');
-        const cDot = document.getElementById('c-dot');
-        const cGlitch = document.getElementById('c-glitch');
+        // 1. الماوس السيادي (Hard Fixed Engine)
+        const ring = document.getElementById('c-ring');
+        const dot = document.getElementById('c-dot');
+        const trail = document.getElementById('c-trail');
+        
+        // التحريك باستخدام RequestAnimationFrame لضمان عدم التقطيع
+        let mouseX = 0, mouseY = 0;
+        let ringX = 0, ringY = 0;
+        let trailX = 0, trailY = 0;
 
         window.addEventListener('mousemove', (e) => {
-            gsap.to(cRing, { x: e.clientX, y: e.clientY, duration: 0.2, ease: "power2.out" });
-            gsap.to(cDot, { x: e.clientX, y: e.clientY, duration: 0.05 });
-            gsap.to(cGlitch, { x: e.clientX, y: e.clientY, duration: 0.3, ease: "power3.out" });
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // تحريك النقطة فوراً
+            dot.style.left = mouseX + 'px';
+            dot.style.top = mouseY + 'px';
         });
 
-        // Hover Effect for Cursor
-        document.querySelectorAll('a, button, .store-card').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                gsap.to(cRing, { width: 80, height: 80, borderColor: '#bc13fe', duration: 0.3 });
-            });
-            el.addEventListener('mouseleave', () => {
-                gsap.to(cRing, { width: 50, height: 50, borderColor: '#00f2ff', duration: 0.3 });
-            });
+        function animateCursor() {
+            // تنعيم حركة الحلقة (Lerp)
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            ring.style.left = ringX + 'px';
+            ring.style.top = ringY + 'px';
+
+            // تنعيم حركة الذيل
+            trailX += (mouseX - trailX) * 0.1;
+            trailY += (mouseY - trailY) * 0.1;
+            trail.style.left = trailX + 'px';
+            trail.style.top = trailY + 'px';
+
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // تأثيرات الضغط
+        window.addEventListener('mousedown', () => {
+            gsap.to(ring, { width: 80, height: 80, borderColor: '#bc13fe', duration: 0.2 });
+        });
+        window.addEventListener('mouseup', () => {
+            gsap.to(ring, { width: 45, height: 45, borderColor: '#00f2ff', duration: 0.2 });
         });
 
-        // 2. System Ignition (Preloader)
-        function igniteSystem() {
-            let progress = 0;
-            const fill = document.getElementById('loader-fill');
-            const text = document.getElementById('loader-text');
-            const logs = ["LOADING_NEURAL_ASSETS...", "DECRYPTING_DATABASE...", "SYNCING_WORLD_DATA...", "BYPASSING_FIREWALLS...", "ACCESS_GRANTED."];
+        // 2. نظام التحميل (Deep Boot)
+        window.addEventListener('load', () => {
+            let p = 0;
+            const fill = document.getElementById('b-fill');
+            const status = document.getElementById('b-status');
+            const logs = ["LOADING_ASSETS...", "DECRYPTING_WORLD...", "CONNECTING_DB...", "AUTH_USER...", "CORE_READY."];
 
-            const interval = setInterval(() => {
-                progress += Math.random() * 10;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    gsap.to('#preloader', { opacity: 0, duration: 1.5, onComplete: () => {
-                        document.getElementById('preloader').style.display = 'none';
+            const timer = setInterval(() => {
+                p += Math.random() * 8;
+                if(p >= 100) {
+                    p = 100;
+                    clearInterval(timer);
+                    gsap.to('#loader', { opacity: 0, duration: 1.5, onComplete: () => {
+                        document.getElementById('loader').style.display = 'none';
                     }});
                 }
-                fill.style.width = progress + '%';
-                text.innerText = logs[Math.floor((progress/100) * (logs.length-1))];
+                fill.style.width = p + '%';
+                status.innerText = logs[Math.floor((p/100)*(logs.length-1))];
             }, 150);
-        }
+        });
 
-        // 3. Sector Switching Logic
-        function switchSector(id, btn) {
-            // Audio Feedback (Optional)
-            const audio = new Audio('https://www.soundjay.com/buttons/button-16.mp3');
-            audio.play().catch(() => {});
-
-            // Update Menu UI
-            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-            if(btn) btn.classList.add('active');
-
-            // Switch Sections
-            document.querySelectorAll('.page-sector').forEach(s => s.classList.remove('active'));
-            const target = document.getElementById('sector-' + id);
+        // 3. التنقل السلس (Seamless Navigation)
+        function nav(id, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            const target = document.getElementById('p-' + id);
             target.classList.add('active');
-
-            // Section Internal Animation
-            gsap.from(target.children, {
-                y: 50,
-                opacity: 0,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: "power4.out"
-            });
+            if(btn) btn.classList.add('active');
+            
+            gsap.from(target, { y: 100, opacity: 0, duration: 1, ease: "expo.out" });
         }
 
-        // 4. Starfield Background Engine
-        const canvas = document.getElementById('canvas-nebula');
+        // 4. محرك خلفية النجوم
+        const canvas = document.getElementById('space-engine');
         const ctx = canvas.getContext('2d');
         let stars = [];
 
-        function resize() {
+        function initStars() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-        }
-        window.onresize = resize;
-        resize();
-
-        for(let i=0; i<400; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 2,
-                speed: Math.random() * 0.5 + 0.1,
-                opacity: Math.random()
-            });
+            stars = [];
+            for(let i=0; i<300; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    r: Math.random() * 2
+                });
+            }
         }
 
         function drawStars() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            stars.forEach(s => {
-                ctx.fillStyle = `rgba(188, 19, 254, ${s.opacity})`;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
-                ctx.fill();
-                s.y += s.speed;
-                if(s.y > canvas.height) s.y = 0;
+            ctx.fillStyle = "rgba(188, 19, 254, 0.8)";
+            stars.forEach((s, i) => {
+                s.x += s.vx; s.y += s.vy;
+                if(s.x < 0 || s.x > canvas.width) s.vx *= -1;
+                if(s.y < 0 || s.y > canvas.height) s.vy *= -1;
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
+                
+                for(let j=i+1; j<stars.length; j++) {
+                    let d = Math.hypot(s.x - stars[j].x, s.y - stars[j].y);
+                    if(d < 150) {
+                        ctx.strokeStyle = `rgba(0, 242, 255, ${0.1 * (1 - d/150)})`;
+                        ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(stars[j].x, stars[j].y); ctx.stroke();
+                    }
+                }
             });
             requestAnimationFrame(drawStars);
         }
-        drawStars();
+        initStars(); drawStars();
 
-        function discordLogin() {
-            Swal.fire({
-                title: 'جاري الربط مع ديسكورد',
-                text: 'سيتم تحويلك إلى بوابة التحقق الآمنة',
-                icon: 'info',
-                background: '#050508',
-                color: '#fff',
-                confirmButtonColor: '#bc13fe'
-            });
+        function login() {
+            window.location.href = "https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify";
         }
     </script>
 </body>
