@@ -3,262 +3,591 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoVaX RP | ULTIMATE ANIMATION EDITION</title>
+    <title>NoVaX RP | THE IMPERIAL PORTAL</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
         :root {
-            --p: #a246f0; 
-            --p-glow: rgba(162, 70, 240, 0.5);
-            --bg: #050508;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
+            --primary: #a246f0;
+            --primary-rgb: 162, 70, 240;
+            --accent: #00f2ff;
             --kick: #53fc18;
+            --bg-dark: #050508;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-dim: #b0b0b0;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* فلتر الإيموجي الأبيض */
-        .w-e { filter: grayscale(1) brightness(10); display: inline-block; width: 22px; vertical-align: middle; margin: 0 5px; transition: 0.3s; }
-        .nav-sq:hover .w-e { transform: rotate(20deg) scale(1.2); }
+        /* --- White Emoji Filter (The Master Key) --- */
+        .w-e { 
+            filter: grayscale(1) brightness(10) contrast(1.2); 
+            display: inline-block; 
+            width: 22px; 
+            vertical-align: middle; 
+            margin: 0 6px; 
+            transition: var(--transition);
+        }
 
+        /* --- Base Reset --- */
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: #fff; overflow-x: hidden; scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0c; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
-        /* خلفية الأنيميشن المتطورة */
-        .bg-vibe {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #130a24 0%, #050508 100%);
-            z-index: -2;
-        }
-        .particle {
-            position: fixed; background: var(--p); border-radius: 50%;
-            opacity: 0.3; filter: blur(5px); z-index: -1;
-            animation: float 20s infinite linear;
-        }
-        @keyframes float {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            50% { opacity: 0.5; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.8;
+            background-attachment: fixed;
         }
 
-        /* هيدر */
+        /* --- Animated Background Elements --- */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; opacity: 0.4; }
+        .glow-sphere {
+            position: fixed; width: 500px; height: 500px; border-radius: 50%;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            z-index: -1; filter: blur(100px); pointer-events: none; opacity: 0.2;
+            animation: float-sphere 20s infinite alternate;
+        }
+        @keyframes float-sphere { 
+            0% { transform: translate(-10%, -10%); } 
+            100% { transform: translate(40%, 40%); } 
+        }
+
+        /* --- Top Bar Ticker --- */
+        .ticker-wrap {
+            background: rgba(162, 70, 240, 0.1);
+            border-bottom: 1px solid var(--border);
+            height: 40px; display: flex; align-items: center; overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        .ticker-move { display: flex; white-space: nowrap; animation: ticker 40s linear infinite; }
+        .ticker-item { padding: 0 40px; font-size: 0.85rem; font-weight: 700; color: var(--accent); }
+
+        @keyframes ticker { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+
+        /* --- Header --- */
         header {
-            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(30px);
-            border-bottom: 2px solid var(--p); position: sticky; top: 0; z-index: 2000;
+            padding: 20px 8%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(30px);
+            border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000;
         }
-        .logo { font-size: 28px; font-weight: 900; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { text-shadow: 0 0 10px var(--p-glow); } 50% { text-shadow: 0 0 30px var(--p); } 100% { text-shadow: 0 0 10px var(--p-glow); } }
+        .logo-area { font-size: 32px; font-weight: 900; letter-spacing: 3px; cursor: pointer; }
+        .logo-area span { color: var(--primary); text-shadow: 0 0 20px var(--primary); }
 
-        /* المربعات المتحركة */
-        .nav-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; padding: 25px; background: rgba(0,0,0,0.5); }
-        .nav-sq {
-            background: var(--glass); border: 1px solid var(--border);
-            padding: 14px 28px; border-radius: 15px; cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-weight: 800; text-align: center; min-width: 140px;
-            position: relative; overflow: hidden;
+        .auth-btn {
+            background: linear-gradient(45deg, var(--primary), #6a1b9a);
+            color: #fff; padding: 12px 28px; border-radius: 12px; border: none;
+            font-weight: 900; cursor: pointer; transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(162, 70, 240, 0.3);
         }
-        .nav-sq::after {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            transform: scale(0); transition: 0.5s;
+        .auth-btn:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 10px 25px var(--primary); }
+
+        /* --- Navigation Grid --- */
+        .nav-grid {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; padding: 30px;
+            background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--border);
         }
-        .nav-sq:hover::after { transform: scale(1); }
-        .nav-sq:hover { border-color: var(--p); transform: translateY(-8px) scale(1.05); background: rgba(162, 70, 240, 0.15); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
-        .nav-sq.active { background: var(--p); box-shadow: 0 0 40px var(--p-glow); border-color: #fff; animation: bounceIn 0.5s; }
-
-        .container { max-width: 1400px; margin: 40px auto; padding: 0 25px; display: grid; grid-template-columns: 1fr 320px; gap: 35px; }
-        @media (max-width: 1000px) { .container { grid-template-columns: 1fr; } }
-
-        .page { display: none; }
-        .page.active { display: block; animation: fadeInUp 0.8s; }
-
-        /* كروت KICK بنظام النبض */
-        .kick-card {
-            background: rgba(0,0,0,0.6); border: 1px solid rgba(83, 252, 24, 0.2);
-            padding: 30px; border-radius: 25px; text-align: center;
-            transition: 0.4s; position: relative;
+        .nav-item {
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 18px 30px; border-radius: 16px; cursor: pointer; transition: var(--transition);
+            font-weight: 800; min-width: 160px; text-align: center;
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
         }
-        .kick-card:hover { border-color: var(--kick); transform: rotate(1deg); box-shadow: 0 0 40px rgba(83, 252, 24, 0.15); }
-        .kick-avatar { width: 90px; height: 90px; border-radius: 50%; border: 4px solid var(--kick); margin-bottom: 20px; transition: 0.5s; }
-        .kick-card:hover .kick-avatar { transform: rotate(-10deg) scale(1.1); }
-        
-        .live-tag {
+        .nav-item:hover { 
+            background: rgba(162, 70, 240, 0.1); border-color: var(--primary);
+            transform: translateY(-5px); 
+        }
+        .nav-item.active { 
+            background: var(--primary); color: white; border-color: #fff;
+            box-shadow: 0 15px 30px rgba(162, 70, 240, 0.4);
+        }
+        .nav-item i { font-size: 1.2rem; margin-bottom: 5px; }
+
+        /* --- Main Layout --- */
+        .wrapper { max-width: 1500px; margin: 50px auto; padding: 0 30px; display: grid; grid-template-columns: 1fr 350px; gap: 40px; }
+        @media (max-width: 1100px) { .wrapper { grid-template-columns: 1fr; } }
+
+        .page-content { animation: fadeIn 0.8s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* --- Common Card Style --- */
+        .glass-card {
+            background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid var(--border);
+            padding: 40px; border-radius: 35px; margin-bottom: 40px; position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: ""; position: absolute; top: 0; right: 0; width: 6px; height: 100%;
+            background: var(--primary);
+        }
+
+        /* --- Rules Section --- */
+        .rules-category { margin-bottom: 30px; }
+        .rules-category h3 { 
+            color: var(--primary); font-size: 1.8rem; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .rule-list { list-style: none; }
+        .rule-item {
+            background: rgba(255,255,255,0.02); padding: 15px 25px; border-radius: 15px;
+            margin-bottom: 12px; border-right: 3px solid transparent; transition: 0.3s;
+        }
+        .rule-item:hover { background: rgba(255,255,255,0.05); border-right-color: var(--primary); padding-right: 35px; }
+        .rule-item b { color: var(--accent); margin-left: 5px; }
+
+        /* --- KICK Streams Grid --- */
+        .kick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .kick-streamer {
+            background: linear-gradient(180deg, rgba(83, 252, 24, 0.05) 0%, rgba(0,0,0,0.8) 100%);
+            border: 1px solid rgba(83, 252, 24, 0.2); border-radius: 25px; padding: 30px;
+            text-align: center; transition: var(--transition); position: relative;
+        }
+        .kick-streamer:hover { transform: scale(1.05) rotate(1deg); border-color: var(--kick); }
+        .k-avatar { 
+            width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--kick);
+            margin-bottom: 15px; box-shadow: 0 0 20px rgba(83, 252, 24, 0.3);
+        }
+        .live-pulse {
             position: absolute; top: 20px; left: 20px; background: var(--kick); color: #000;
-            padding: 3px 12px; border-radius: 50px; font-size: 11px; font-weight: 900;
-            animation: flash 1.5s infinite;
+            font-size: 10px; font-weight: 900; padding: 3px 12px; border-radius: 50px;
+            animation: pulse-kick 1.5s infinite;
         }
-        @keyframes flash { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        @keyframes pulse-kick { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        /* كروت القوانين */
-        .card { 
-            background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--border);
-            border-radius: 30px; padding: 35px; margin-bottom: 30px;
-            transition: 0.4s;
+        /* --- Sidebar Stats --- */
+        .sidebar { position: sticky; top: 120px; height: fit-content; }
+        .stat-box {
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 25px; border-radius: 25px; margin-bottom: 25px;
         }
-        .card:hover { border-color: var(--p-glow); transform: translateY(-5px); }
+        .stat-line { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 600; }
+        .stat-line span:last-child { color: var(--primary); }
         
-        /* زر الإرسال المتوهج */
-        .btn-glow {
-            background: var(--p); color: #fff; padding: 20px; border-radius: 15px;
-            border: none; font-weight: 900; cursor: pointer; width: 100%;
-            transition: 0.4s; font-size: 1.1rem; text-transform: uppercase;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        .progress-bar { width: 100%; height: 6px; background: #1a1a1c; border-radius: 10px; overflow: hidden; margin-top: 5px; }
+        .progress-fill { height: 100%; background: var(--primary); width: 65%; animation: fill-anim 2s ease-out; }
+        @keyframes fill-anim { from { width: 0; } }
+
+        /* --- Store --- */
+        .package-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .pack-card {
+            background: #0a0a0f; border: 1px solid var(--border); border-radius: 30px;
+            padding: 40px; text-align: center; transition: var(--transition);
         }
-        .btn-glow:hover { letter-spacing: 2px; box-shadow: 0 0 30px var(--p); }
+        .pack-card:hover { border-color: var(--primary); transform: translateY(-10px); }
+        .pack-price { font-size: 3rem; font-weight: 900; color: var(--accent); margin: 20px 0; }
+        .pack-features { list-style: none; text-align: right; margin-bottom: 30px; }
+        .pack-features li { margin-bottom: 10px; font-size: 0.9rem; color: var(--text-dim); }
+        .pack-features li i { color: var(--primary); margin-left: 10px; }
+
+        /* --- Staff --- */
+        .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .staff-card {
+            background: var(--glass); padding: 25px; border-radius: 20px; text-align: center;
+            border: 1px solid var(--border);
+        }
+        .staff-card img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 15px; }
+
+        /* --- Apply Form --- */
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 10px; font-weight: 700; color: var(--primary); }
+        input, select, textarea {
+            width: 100%; background: #000; border: 1px solid var(--border);
+            padding: 18px; color: #fff; border-radius: 15px; font-family: 'Cairo';
+        }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
+        .btn-send {
+            background: var(--primary); color: #fff; border: none; padding: 20px;
+            width: 100%; border-radius: 15px; font-weight: 900; font-size: 1.1rem;
+            cursor: pointer; transition: var(--transition);
+        }
+        .btn-send:hover { letter-spacing: 2px; box-shadow: 0 0 30px var(--primary); }
+
+        /* --- Footer --- */
+        footer { 
+            text-align: center; padding: 60px; border-top: 1px solid var(--border);
+            color: var(--text-dim); margin-top: 50px;
+        }
 
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div class="bg-vibe"></div>
+    <div class="glow-sphere"></div>
+    
+    <div class="ticker-wrap">
+        <div class="ticker-move">
+            <div class="ticker-item">📢 تحديث جديد: إضافة نظام العقارات المطور</div>
+            <div class="ticker-item">💎 خصم 20% على باقة VIP الملكية لفترة محدودة</div>
+            <div class="ticker-item">⚖️ قوانين جديدة للشرطة والمحاماة تم اعتمادها</div>
+            <div class="ticker-item">👑 كن أسطورة في NoVaX RP وابدأ قصتك اليوم</div>
+        </div>
+    </div>
+
     <header>
-        <div class="logo">NoVaX<span>.SA</span></div>
-        <div id="authArea">
-            <button class="nav-sq active" onclick="login()">ربط الهوية <span class="w-e">🔑</span></button>
+        <div class="logo-area" onclick="location.reload()">NoVaX<span>.SA</span></div>
+        <div id="user-area">
+            <button class="auth-btn" onclick="login()">ربط الحساب <span class="w-e">🔑</span></button>
         </div>
     </header>
 
     <div class="nav-grid">
-        <div class="nav-sq active" onclick="nav('home', this)">الرئيسية <span class="w-e">🏠</span></div>
-        <div class="nav-sq" onclick="nav('kick', this)">بثوث كيك <span class="w-e">🎥</span></div>
-        <div class="nav-sq" onclick="nav('rules', this)">القوانين <span class="w-e">📜</span></div>
-        <div class="nav-sq" onclick="nav('apply', this)">التقديم <span class="w-e">📝</span></div>
-        <div class="nav-sq" onclick="nav('store', this)">المتجر <span class="w-e">💎</span></div>
+        <div class="nav-item active" onclick="navigate('home', this)">
+            <span class="w-e">🏠</span> الرئيسية
+        </div>
+        <div class="nav-item" onclick="navigate('rules', this)">
+            <span class="w-e">📜</span> القوانين
+        </div>
+        <div class="nav-item" onclick="navigate('kick', this)">
+            <span class="w-e">🎥</span> البثوث
+        </div>
+        <div class="nav-item" onclick="navigate('apply', this)">
+            <span class="w-e">📝</span> التقديم
+        </div>
+        <div class="nav-item" onclick="navigate('store', this)">
+            <span class="w-e">💎</span> المتجر
+        </div>
+        <div class="nav-item" onclick="navigate('staff', this)">
+            <span class="w-e">👑</span> الإدارة
+        </div>
+        <div id="admin-tab" class="nav-item hidden" onclick="navigate('admin', this)" style="border-color: var(--accent);">
+            <span class="w-e">⚙️</span> التحكم
+        </div>
     </div>
 
-    <div class="container">
+    <div class="wrapper">
         
-        <main>
-            <section id="home-page" class="page active">
-                <div class="card" style="text-align:center; padding:100px 20px;">
-                    <h1 id="typewriter" style="font-size:4rem; font-weight:900;"></h1>
-                    <p class="animate__animated animate__fadeInUp animate__delay-1s" style="color:#bbb; font-size:1.4rem; margin-top:20px;">حيث تُصنع الأساطير وتُعاش الواقعية.</p>
-                </div>
-            </section>
-
-            <section id="kick-page" class="page">
-                <div class="card">
-                    <h2 style="margin-bottom:30px;">بثوث كيك المباشرة <span class="w-e" style="filter:none;">🟢</span></h2>
-                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:25px;">
-                        <div class="kick-card animate__animated animate__zoomIn">
-                            <div class="live-tag">LIVE</div>
-                            <img src="https://i.pravatar.cc/150?u=v" class="kick-avatar">
-                            <h3>Virusz_Kick</h3>
-                            <p style="color:var(--kick); font-size:0.9rem;">سيناريو مداهمة كبرى 🔥</p>
-                            <button class="btn-glow" style="background:var(--kick); color:#000; margin-top:20px;" onclick="window.open('https://kick.com')">مشاهدة الآن</button>
-                        </div>
-                        <div class="kick-card animate__animated animate__zoomIn animate__delay-1s">
-                            <div class="live-tag">LIVE</div>
-                            <img src="https://i.pravatar.cc/150?u=a" class="kick-avatar">
-                            <h3>NoVaX_Stream</h3>
-                            <p style="color:var(--kick); font-size:0.9rem;">يوميات مواطن بسيط 🚗</p>
-                            <button class="btn-glow" style="background:var(--kick); color:#000; margin-top:20px;" onclick="window.open('https://kick.com')">مشاهدة الآن</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="rules-page" class="page">
-                <div class="card animate__animated animate__fadeInLeft">
-                    <h2>قوانين المدينة <span class="w-e">📜</span></h2>
-                    <div style="margin-top:20px;">
-                        <div class="card" style="background:rgba(255,255,255,0.01); border-left:4px solid var(--p);">
-                            <h4>RDM (Random Death Match)</h4>
-                            <p style="font-size:0.9rem; color:#aaa;">يمنع قتل أي لاعب بدون سيناريو مسبق واضح.</p>
-                        </div>
-                        <div class="card" style="background:rgba(255,255,255,0.01); border-left:4px solid var(--p);">
-                            <h4>Fear RP</h4>
-                            <p style="font-size:0.9rem; color:#aaa;">يجب عليك تقدير حياتك عندما يكون السلاح موجه لرأسك.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="apply-page" class="page">
-                <div class="card">
-                    <div id="lock" style="text-align:center; padding:50px;">
-                        <i class="fas fa-lock animate__animated animate__infinite animate__pulse" style="font-size:4rem; color:var(--p);"></i>
-                        <h2 style="margin-top:20px;">يرجى تسجيل الدخول</h2>
-                        <button class="btn-glow" style="width:auto; padding:15px 40px; margin-top:20px;" onclick="login()">ربط الديسكورد</button>
-                    </div>
-                    <form id="applyForm" class="hidden">
-                        </form>
-                </div>
-            </section>
-        </main>
-
-        <aside>
-            <div class="card animate__animated animate__fadeInRight">
-                <h3 style="color:var(--p)">إحصائيات <span class="w-e">📊</span></h3>
-                <div style="display:flex; justify-content:space-between; margin-top:15px;">
-                    <span>السيرفر:</span> <span style="color:#00ff88;">متصل ✅</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; margin-top:10px;">
-                    <span>اللاعبين:</span> <span>185 / 300</span>
-                </div>
-            </div>
+        <div class="page-content">
             
-            <div class="card animate__animated animate__fadeInRight animate__delay-1s">
-                <h3 style="color:var(--p)">أحدث عضو <span class="w-e">👤</span></h3>
-                <div style="text-align:center; margin-top:15px;">
-                    <img src="https://i.pravatar.cc/150?u=9" style="width:60px; border-radius:50%; border:2px solid var(--p);">
-                    <p style="margin-top:5px;">King_Roleplay</p>
+            <section id="home-section" class="section active">
+                <div class="glass-card animate__animated animate__zoomIn" style="text-align: center; padding: 100px 20px;">
+                    <h1 style="font-size: 4.5rem; font-weight: 900; line-height: 1;">NOVAX <span style="color:var(--primary)">COMMUNITY</span></h1>
+                    <p style="font-size: 1.5rem; color: var(--text-dim); margin-top: 20px;">أهلاً بك في البوابة الرسمية لأكبر تجمع رول بلاي عربي متطور.</p>
+                    <div style="margin-top: 40px; display: flex; justify-content: center; gap: 20px;">
+                        <button class="auth-btn" style="padding: 15px 40px;">دليل المبتدئين</button>
+                        <button class="auth-btn" style="padding: 15px 40px; background: transparent; border: 1px solid var(--primary);">تواصل معنا</button>
+                    </div>
                 </div>
+                
+                <div class="glass-card">
+                    <h2>آخر الأخبار <span class="w-e">📢</span></h2>
+                    <div class="rule-item">
+                        <small style="color:var(--primary)">2026/03/06</small>
+                        <p>تم إطلاق الموقع الرسمي بحلته الجديدة لدعم أنظمة الربط التلقائي.</p>
+                    </div>
+                    <div class="rule-item">
+                        <small style="color:var(--primary)">2026/03/01</small>
+                        <p>تغييرات جذرية في قوانين السرقات الكبرى والمناطق الآمنة.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="rules-section" class="section">
+                <div class="glass-card">
+                    <div class="rules-category">
+                        <h3>قوانين اللعب الأساسية <span class="w-e">⚖️</span></h3>
+                        <ul class="rule-list">
+                            <li class="rule-item"><b>RDM:</b> يمنع قتل أي مواطن دون سبب درامي أو قصة واضحة. العقوبة: باند 3 أيام.</li>
+                            <li class="rule-item"><b>VDM:</b> استخدام المركبة للقتل أو الصدم العمد ممنوع تماماً.</li>
+                            <li class="rule-item"><b>Combat Log:</b> الخروج أثناء السيناريو أو القتال يعتبر Fail RP ويؤدي للباند.</li>
+                            <li class="rule-item"><b>Meta Gaming:</b> يمنع استخدام معلومات عرفتها خارج اللعبة (OOC) لتطبيقها داخلها (IC).</li>
+                            <li class="rule-item"><b>Power Gaming:</b> يمنع القيام بأفعال غير بشرية (مثل القفز بسيارة من جبل والكمال كأن شيئاً لم يكن).</li>
+                        </ul>
+                    </div>
+
+                    <div class="rules-category">
+                        <h3>المناطق الآمنة (Safe Zones) <span class="w-e">🛡️</span></h3>
+                        <ul class="rule-list">
+                            <li class="rule-item"><b>المستشفيات:</b> يمنع الخطف أو القتل أو افتعال المشاكل داخل المستشفى أو بوابته.</li>
+                            <li class="rule-item"><b>مركز الشرطة الرئيسي:</b> يمنع أي عمل إجرامي في محيط المركز.</li>
+                            <li class="rule-item"><b>نقاط الرسباون:</b> يمنع قتل اللاعبين فور دخولهم للمدينة.</li>
+                        </ul>
+                    </div>
+
+                    <div class="rules-category">
+                        <h3>قوانين السرقات والمداهمات <span class="w-e">💰</span></h3>
+                        <ul class="rule-list">
+                            <li class="rule-item"><b>البنك الصغير:</b> يتطلب وجود عسكريين (2) في الخدمة.</li>
+                            <li class="rule-item"><b>البنك المركزي:</b> يتطلب وجود (5) عساكر ومفاوض من رتبة عليا.</li>
+                            <li class="rule-item"><b>سرقة المواطنين:</b> يمنع سرقة مبالغ تزيد عن 5,000$ من جيب المواطن.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="kick-section" class="section">
+                <div class="glass-card">
+                    <h2 style="margin-bottom: 30px;">بثوث المجتمع على Kick <span class="w-e" style="filter:none">🟢</span></h2>
+                    <div class="kick-grid">
+                        <div class="kick-streamer">
+                            <div class="live-pulse">LIVE</div>
+                            <img src="https://i.pravatar.cc/150?u=v1" class="k-avatar">
+                            <h4>Virusz_Official</h4>
+                            <p style="color:var(--kick); font-size: 0.8rem;">بث رول بلاي - مداهمات 🚓</p>
+                            <button class="btn-send" style="background:var(--kick); color:#000; margin-top:15px; padding:10px;" onclick="window.open('https://kick.com')">مشاهدة</button>
+                        </div>
+                        <div class="kick-streamer">
+                            <div class="live-pulse">LIVE</div>
+                            <img src="https://i.pravatar.cc/150?u=v2" class="k-avatar">
+                            <h4>King_Nova</h4>
+                            <p style="color:var(--kick); font-size: 0.8rem;">تطوير وتعديل المدينة 🛠️</p>
+                            <button class="btn-send" style="background:var(--kick); color:#000; margin-top:15px; padding:10px;" onclick="window.open('https://kick.com')">مشاهدة</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="apply-section" class="section">
+                <div class="glass-card">
+                    <div id="lock-msg" style="text-align:center; padding:50px;">
+                        <i class="fas fa-id-card-alt" style="font-size:4rem; color:var(--primary); margin-bottom:20px;"></i>
+                        <h2>التقديم مغلق مؤقتاً</h2>
+                        <p>يجب عليك تسجيل الدخول عبر الديسكورد للتحقق من هويتك.</p>
+                        <button class="btn-send" style="width:auto; padding:15px 40px; margin-top:20px;" onclick="login()">سجل دخولك الآن</button>
+                    </div>
+                    <form id="wl-form" class="hidden" onsubmit="handleApply(event)">
+                        <h2 style="margin-bottom:30px;">استمارة الوايت ليست الرسمية <span class="w-e">📝</span></h2>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                            <div class="form-group"><label>الاسم IC (داخل اللعبة)</label><input type="text" id="ic_name" required></div>
+                            <div class="form-group"><label>العمر الحقيقي</label><input type="number" id="ooc_age" required></div>
+                            <div class="form-group"><label>قانون الـ Fear RP</label><input type="text" id="q1" placeholder="اشرح القانون بأسلوبك" required></div>
+                            <div class="form-group"><label>قانون الـ Metagaming</label><input type="text" id="q2" required></div>
+                        </div>
+                        <div class="form-group">
+                            <label>قصة شخصيتك (لا تقل عن 5 أسطر)</label>
+                            <textarea id="story" rows="6" placeholder="تكلم عن طفولة شخصيتك وكيف وصلت للمدينة..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-send">إرسال الطلب للمراجعة <span class="w-e">📤</span></button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="store-section" class="section">
+                <div class="package-grid">
+                    <div class="pack-card">
+                        <h3>VIP الفضية</h3>
+                        <div class="pack-price">$15</div>
+                        <ul class="pack-features">
+                            <li><i class="fas fa-check"></i> سيارة رياضية من اختيارك</li>
+                            <li><i class="fas fa-check"></i> منزل في ضواحي المدينة</li>
+                            <li><i class="fas fa-check"></i> رتبة ديسكورد خاصة</li>
+                        </ul>
+                        <button class="btn-send">شراء الباقة</button>
+                    </div>
+                    <div class="pack-card" style="border-color: var(--primary); transform: scale(1.05);">
+                        <h3 style="color:var(--primary)">VIP الملكية</h3>
+                        <div class="pack-price">$45</div>
+                        <ul class="pack-features">
+                            <li><i class="fas fa-star"></i> 3 سيارات نادرة جداً</li>
+                            <li><i class="fas fa-star"></i> قصر خاص مع مهبط مروحية</li>
+                            <li><i class="fas fa-star"></i> سلاح ذهبي محفور</li>
+                            <li><i class="fas fa-star"></i> أولوية الدخول (Priority)</li>
+                        </ul>
+                        <button class="btn-send">شراء الباقة</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="staff-section" class="section">
+                <div class="glass-card">
+                    <h2 style="margin-bottom:30px;">طاقم الإدارة العليا <span class="w-e">👑</span></h2>
+                    <div class="staff-grid">
+                        <div class="staff-card">
+                            <img src="https://i.imgur.com/8Q9Z5X9.jpeg">
+                            <h4>Virusz</h4>
+                            <p style="color:var(--primary); font-size:0.8rem;">OWNER / FOUNDER</p>
+                        </div>
+                        <div class="staff-card">
+                            <img src="https://i.pravatar.cc/150?u=mod1">
+                            <h4>Legend</h4>
+                            <p style="color:var(--primary); font-size:0.8rem;">TECHNICAL MANAGER</p>
+                        </div>
+                        <div class="staff-card">
+                            <img src="https://i.pravatar.cc/150?u=mod2">
+                            <h4>Sky</h4>
+                            <p style="color:var(--primary); font-size:0.8rem;">COMMUNITY LEAD</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <aside class="sidebar">
+            <div class="stat-box animate__animated animate__fadeInRight">
+                <h3>حالة الخادم <span class="w-e">📊</span></h3>
+                <div class="stat-line"><span>اللاعبين:</span> <span>185 / 300</span></div>
+                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <div class="stat-line" style="margin-top: 20px;"><span>الديسكورد:</span> <span style="color:var(--kick)">متصل ✅</span></div>
+                <div class="stat-line"><span>إصدار المدينة:</span> <span>V3.8.0</span></div>
+            </div>
+
+            <div class="stat-box animate__animated animate__fadeInRight animate__delay-1s">
+                <h3>تواصل سريع <span class="w-e">📱</span></h3>
+                <button class="btn-send" style="background:#7289da; margin-bottom:10px;" onclick="window.open('https://discord.gg')">
+                    <i class="fab fa-discord"></i> ديسكورد السيرفر
+                </button>
+                <button class="btn-send" style="background:#ff0000;" onclick="window.open('https://youtube.com')">
+                    <i class="fab fa-youtube"></i> قناة اليوتيوب
+                </button>
             </div>
         </aside>
 
     </div>
 
+    <footer>
+        <p>جميع الحقوق محفوظة لمدينة NoVaX Roleplay &copy; 2026</p>
+        <p style="font-size: 0.7rem; color: #444; margin-top: 10px;">Developed with Passion for the RP Community</p>
+    </footer>
+
     <script>
-        // 1. توليد الجزيئات الطائرة في الخلفية
-        for (let i = 0; i < 15; i++) {
-            let p = document.createElement('div');
-            p.className = 'particle';
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.width = p.style.height = Math.random() * 15 + 5 + 'px';
-            p.style.animationDelay = Math.random() * 20 + 's';
-            p.style.animationDuration = Math.random() * 10 + 10 + 's';
-            document.body.appendChild(p);
-        }
+        // Configuration
+        const CONFIG = {
+            WEBHOOK: "ضع_رابط_الويبهوك_هنا",
+            GUILD_ID: "1325063245471420498",
+            ADMIN_ROLE: "1354015622182211587"
+        };
 
-        // 2. أنيميشن كتابة العنوان
-        const text = "WELCOME TO NOVAX";
-        let index = 0;
-        function type() {
-            if (index < text.length) {
-                document.getElementById("typewriter").innerHTML += text.charAt(index);
-                index++;
-                setTimeout(type, 100);
-            }
-        }
-        window.onload = () => { type(); checkLogin(); };
-
-        // 3. نظام التنقل الاحترافي
-        function nav(id, btn) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-sq').forEach(n => n.classList.remove('active'));
-            document.getElementById(id + '-page').classList.add('active');
+        // Navigation Engine
+        function navigate(pageId, btn) {
+            // Hide all pages
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            // Show target page
+            document.getElementById(pageId + '-section').classList.add('active');
             btn.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // GSAP Animation
+            gsap.from('#' + pageId + '-section', { duration: 0.6, y: 30, opacity: 0, ease: "power2.out" });
         }
 
+        // Discord Login Logic
         async function login() {
             window.location.href = "https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify+guilds+guilds.members.read";
         }
 
-        function checkLogin() {
+        window.onload = async () => {
             const token = new URLSearchParams(window.location.hash.slice(1)).get('access_token');
             if(token) {
-                document.getElementById('authArea').innerHTML = `<div class="nav-sq active">تم الدخول ✅</div>`;
-                document.getElementById('lock').classList.add('hidden');
-                document.getElementById('applyForm').classList.remove('hidden');
+                const res = await fetch('https://discord.com/api/users/@me', { headers: { Authorization: `Bearer ${token}` } });
+                const user = await res.json();
+                window.currentUser = user;
+                
+                // Update UI
+                document.getElementById('user-area').innerHTML = `
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-weight:900;">${user.username}</span>
+                        <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" style="width:40px; border-radius:50%; border:2px solid var(--primary);">
+                    </div>
+                `;
+                document.getElementById('lock-msg').classList.add('hidden');
+                document.getElementById('wl-form').classList.remove('hidden');
+
+                // Check Admin Access
+                try {
+                    const gRes = await fetch(`https://discord.com/api/users/@me/guilds/${CONFIG.GUILD_ID}/member`, { headers: { Authorization: `Bearer ${token}` } });
+                    const member = await gRes.json();
+                    if(member.roles && member.roles.includes(CONFIG.ADMIN_ROLE)) {
+                        document.getElementById('admin-tab').classList.remove('hidden');
+                    }
+                } catch(e) { console.log("Admin check failed"); }
+            }
+        };
+
+        // Form Submission
+        async function handleApply(e) {
+            e.preventDefault();
+            const data = {
+                embeds: [{
+                    title: "📥 طلب انضمام جديد (وايت ليست)",
+                    color: 10634992,
+                    thumbnail: { url: `https://cdn.discordapp.com/avatars/${window.currentUser.id}/${window.currentUser.avatar}.png` },
+                    fields: [
+                        { name: "المتقدم", value: `<@${window.currentUser.id}> (${window.currentUser.username})` },
+                        { name: "الاسم IC", value: document.getElementById('ic_name').value },
+                        { name: "العمر", value: document.getElementById('ooc_age').value },
+                        { name: "القصة", value: "```" + document.getElementById('story').value + "```" }
+                    ],
+                    footer: { text: "نظام طلبات NoVaX" },
+                    timestamp: new Date()
+                }]
+            };
+
+            await fetch(CONFIG.WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
+            Swal.fire({
+                title: 'تم الإرسال بنجاح!',
+                text: 'سيتم مراجعة طلبك من قبل اللجنة الإدارية، تابع النتائج في الديسكورد.',
+                icon: 'success',
+                background: '#0a0a0c',
+                color: '#fff',
+                confirmButtonColor: '#a246f0'
+            });
+            document.getElementById('wl-form').reset();
+        }
+
+        // Particle Background Logic (Simple JS implementation)
+        const canvas = document.createElement('canvas');
+        canvas.id = "bg-canvas";
+        document.body.prepend(canvas);
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if(this.x > canvas.width) this.x = 0;
+                if(this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(162, 70, 240, 0.5)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
+
+        for(let i=0; i<100; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        
+        initCanvas();
+        animateParticles();
+        window.addEventListener('resize', initCanvas);
+
     </script>
 </body>
 </html>
