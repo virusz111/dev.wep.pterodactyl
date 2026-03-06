@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoVaX RP | THE INFINITY ULTIMATE</title>
+    <title>NoVaX RP | THE INFINITY ULTIMATE v2</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -12,201 +12,197 @@
 
     <style>
         :root {
-            --p: #a246f0;         /* البنفسجي الأساسي */
-            --a: #00f2ff;         /* السماوي */
+            --p: #a246f0;         /* نيون بنفسجي */
+            --a: #00f2ff;         /* نيون سماوي */
             --k: #53fc18;         /* أخضر كيك */
-            --g: #ffcf40;         /* الذهبي */
-            --r: #ff003c;         /* الأحمر للأحداث */
-            --bg: #020205;
-            --border: rgba(162, 70, 240, 0.3);
-            --glass: rgba(255, 255, 255, 0.01);
+            --g: #ffcf40;         /* ذهبي ملكي */
+            --r: #ff003c;         /* أحمر إجرامي */
+            --bg: #020205;        /* أسود عميق */
+            --border: rgba(162, 70, 240, 0.5); /* حدود أوضح */
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
-        /* --- التحسينات الأساسية --- */
+        /* --- تحسينات عامة --- */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
-        body { background: var(--bg); color: #fff; font-family: 'Cairo', sans-serif; overflow-x: hidden; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: var(--p); box-shadow: 0 0 15px var(--p); }
-
-        /* --- شاشة التحميل المعقدة --- */
-        #pre {
-            position: fixed; inset: 0; background: #000; z-index: 10000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        body { 
+            background: var(--bg); 
+            color: #fff; 
+            font-family: 'Cairo', sans-serif; 
+            overflow-x: hidden;
+            line-height: 1.6;
         }
-        .pre-terminal {
-            font-family: 'Share Tech Mono'; color: var(--p); font-size: 0.8rem;
-            margin-top: 20px; width: 300px; height: 100px; overflow: hidden;
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--p); box-shadow: 0 0 15px var(--p); border-radius: 10px; }
+
+        /* --- الماوس المطور (Fixed & Visible) --- */
+        #c { 
+            width: 30px; height: 30px; 
+            border: 2px solid var(--a); 
+            border-radius: 50%; 
+            position: fixed; 
+            pointer-events: none; 
+            z-index: 1000000; /* أعلى شيء في الصفحة */
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease-out;
+            box-shadow: 0 0 15px var(--a);
         }
-        .pre-bar { width: 300px; height: 2px; background: rgba(255,255,255,0.05); margin-top: 10px; position: relative; }
-        .pre-fill { width: 0%; height: 100%; background: var(--p); box-shadow: 0 0 20px var(--p); }
+        #c-dot { 
+            width: 6px; height: 6px; 
+            background: var(--p); 
+            border-radius: 50%; 
+            position: fixed; 
+            pointer-events: none; 
+            z-index: 1000001; 
+            box-shadow: 0 0 10px var(--p);
+        }
 
-        /* --- الطبقات البصرية --- */
-        canvas#space { position: fixed; inset: 0; z-index: -2; opacity: 0.5; }
-        .scanlines { position: fixed; inset: 0; z-index: 5000; pointer-events: none; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%); background-size: 100% 4px; }
-        .vignette { position: fixed; inset: 0; background: radial-gradient(circle, transparent 20%, #000 120%); z-index: -1; }
+        /* --- الخلفية والوضوح --- */
+        canvas#space { position: fixed; inset: 0; z-index: -2; opacity: 0.6; }
+        .vignette { 
+            position: fixed; inset: 0; 
+            background: radial-gradient(circle, transparent 20%, #000 130%); 
+            z-index: -1; pointer-events: none;
+        }
+        .scanlines { 
+            position: fixed; inset: 0; 
+            z-index: 9999; pointer-events: none; 
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%); 
+            background-size: 100% 4px; 
+            opacity: 0.3;
+        }
 
-        /* --- الماوس المخصص --- */
-        #c { width: 25px; height: 25px; border: 1px solid var(--a); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; }
-        #c-dot { width: 5px; height: 5px; background: var(--p); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; }
-
-        /* --- الهيدر (Nav) --- */
+        /* --- الهيدر (Navigation) --- */
         header {
-            padding: 20px 4%; display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; z-index: 1000;
+            padding: 20px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(25px); 
+            border-bottom: 2px solid var(--border); 
+            position: sticky; top: 0; z-index: 5000;
         }
-        .logo { font-family: 'Orbitron'; font-size: 28px; font-weight: 900; letter-spacing: 2px; }
-        .logo span { color: var(--p); text-shadow: 0 0 15px var(--p); }
+        .logo { font-family: 'Orbitron'; font-size: 30px; font-weight: 900; letter-spacing: 3px; }
+        .logo span { color: var(--p); text-shadow: 0 0 20px var(--p); }
 
-        nav { display: flex; gap: 8px; }
+        nav { display: flex; gap: 10px; }
         .t {
-            padding: 12px 20px; background: var(--glass); border: 1px solid var(--border);
-            font-size: 0.75rem; font-weight: 900; transition: 0.3s;
+            padding: 12px 22px; background: rgba(162, 70, 240, 0.05); border: 1px solid var(--border);
+            font-size: 0.8rem; font-weight: 900; color: #fff; transition: 0.4s;
             clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+            text-transform: uppercase;
         }
-        .t:hover, .t.active { background: var(--p); color: #fff; border-color: #fff; transform: translateY(-3px); box-shadow: 0 0 20px var(--p); }
+        .t:hover, .t.active { 
+            background: var(--p); 
+            border-color: #fff; 
+            transform: translateY(-3px) scale(1.05); 
+            box-shadow: 0 0 25px var(--p); 
+        }
 
-        /* --- الحاوية الرئيسية --- */
-        .container { max-width: 1500px; margin: 50px auto; padding: 0 30px; position: relative; }
+        /* --- الحاوية والوضوح --- */
+        .container { max-width: 1400px; margin: 60px auto; padding: 0 40px; position: relative; }
         .section { display: none; }
-        .section.active { display: block; animation: sectionIn 0.8s ease forwards; }
-        @keyframes sectionIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .section.active { display: block; animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
 
-        /* --- البانلات (اللوحات) --- */
+        /* --- اللوحات (Panels) --- */
         .pnl {
-            background: rgba(255,255,255,0.01); border: 1px solid var(--border);
-            padding: 40px; border-radius: 4px; position: relative;
-            backdrop-filter: blur(15px); margin-bottom: 30px;
+            background: rgba(10, 10, 15, 0.8); border: 1.5px solid var(--border);
+            padding: 45px; border-radius: 5px; position: relative;
+            backdrop-filter: blur(20px); margin-bottom: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
-        .pnl::before { content: 'SYSTEM_LOG'; position: absolute; top: -10px; left: 20px; background: var(--p); color: #000; font-size: 0.6rem; padding: 2px 10px; font-family: 'Orbitron'; }
-        .pnl::after { content: ''; position: absolute; bottom: 0; right: 0; width: 40px; height: 40px; border-bottom: 2px solid var(--a); border-right: 2px solid var(--a); }
+        .pnl::before { 
+            content: 'NOVAX_PROTOCOL_SECURED'; position: absolute; top: -12px; left: 30px; 
+            background: var(--p); color: #000; font-size: 0.65rem; padding: 3px 15px; 
+            font-family: 'Orbitron'; font-weight: 900;
+        }
 
-        /* --- المتجر --- */
-        .store-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        /* --- المتجر الإمبراطوري --- */
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 35px; }
         .pack {
-            background: #050508; border: 1px solid var(--border); padding: 50px 30px;
-            text-align: center; transition: 0.5s; position: relative; overflow: hidden;
+            background: rgba(5, 5, 10, 0.9); border: 1.5px solid var(--border); 
+            padding: 60px 30px; text-align: center; transition: 0.5s; 
+            position: relative; overflow: hidden;
         }
-        .pack:hover { transform: scale(1.03); border-color: var(--p); box-shadow: 0 0 40px rgba(162, 70, 240, 0.1); }
-        .pack h3 { font-family: 'Orbitron'; letter-spacing: 2px; margin-bottom: 20px; }
-        .price { font-family: 'Orbitron'; font-size: 3.5rem; color: var(--a); margin: 25px 0; }
-        .features { list-style: none; text-align: right; margin-bottom: 30px; font-size: 0.85rem; color: #aaa; }
-        .features li { margin-bottom: 12px; }
-        .features li i { color: var(--p); margin-left: 10px; }
+        .pack:hover { transform: translateY(-10px); border-color: var(--a); box-shadow: 0 0 40px rgba(0, 242, 255, 0.2); }
+        .pack.gold { border-color: var(--g); background: linear-gradient(145deg, #0a0a05, #000); }
+        .pack.gold:hover { box-shadow: 0 0 50px rgba(255, 207, 64, 0.2); }
+        
+        .price { font-family: 'Orbitron'; font-size: 4rem; color: var(--a); margin: 30px 0; text-shadow: 0 0 20px var(--a); }
+        .features { list-style: none; text-align: right; margin-bottom: 40px; font-size: 0.95rem; }
+        .features li { margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
+        .features li i { color: var(--p); margin-left: 12px; }
 
         .btn-buy {
-            width: 100%; padding: 18px; background: transparent; border: 1px solid var(--p);
-            color: #fff; font-family: 'Orbitron'; font-weight: 900; transition: 0.3s;
-            clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+            width: 100%; padding: 20px; background: transparent; border: 2px solid var(--p);
+            color: #fff; font-family: 'Orbitron'; font-weight: 900; 
+            transition: 0.4s; clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
         }
-        .btn-buy:hover { background: var(--p); box-shadow: 0 0 20px var(--p); letter-spacing: 4px; }
+        .btn-buy:hover { background: var(--p); color: #fff; box-shadow: 0 0 30px var(--p); letter-spacing: 5px; }
 
-        /* --- المطلوبين (Wanted) --- */
-        .wanted-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        /* --- الإدارة والمطلوبين --- */
         .w-card {
-            background: linear-gradient(45deg, #1a0505, #050505); border: 1px solid #ff003c;
-            padding: 20px; text-align: center; position: relative;
+            background: #000; border: 2px solid var(--r); padding: 20px; text-align: center;
+            transition: 0.3s;
         }
-        .w-card img { width: 100%; height: 250px; object-fit: cover; filter: grayscale(1) contrast(1.2); border: 1px solid #ff003c; margin-bottom: 15px; }
-        .w-card .reward { font-family: 'Orbitron'; color: #ff003c; font-size: 1.5rem; font-weight: 900; }
+        .w-card img { width: 100%; height: 300px; object-fit: cover; filter: grayscale(0.5) contrast(1.2); border-bottom: 2px solid var(--r); }
+        .w-reward { font-family: 'Orbitron'; color: var(--r); font-size: 2rem; margin-top: 15px; font-weight: 900; }
 
-        /* --- الإدارة --- */
-        .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .member {
-            background: var(--glass); padding: 30px; text-align: center; border: 1px solid var(--border);
-            clip-path: polygon(0 15%, 15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%); transition: 0.3s;
+        .staff-card {
+            background: var(--glass); padding: 40px; text-align: center; border: 1.5px solid var(--border);
+            clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%);
         }
-        .member:hover { border-color: var(--a); background: rgba(0, 242, 255, 0.02); }
-        .member img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--p); margin-bottom: 15px; }
+        .staff-card img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--a); margin-bottom: 20px; box-shadow: 0 0 20px var(--a); }
 
-        /* --- الإشعارات الجانبية --- */
-        .side-alerts {
-            position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
-            z-index: 500; display: flex; flex-direction: column; gap: 15px;
+        /* --- شاشة التحميل --- */
+        #pre {
+            position: fixed; inset: 0; background: #000; z-index: 2000000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        .alert-box {
-            background: rgba(0,0,0,0.8); border: 1px solid var(--border);
-            padding: 10px 20px; font-family: 'Share Tech Mono'; font-size: 0.7rem;
-            color: var(--a); border-left: 3px solid var(--a);
-        }
+        .pre-fill { width: 0%; height: 3px; background: var(--a); box-shadow: 0 0 20px var(--a); margin-top: 20px; transition: width 0.5s; }
 
-        /* --- الفوتر --- */
-        footer { padding: 60px; text-align: center; border-top: 1px solid var(--border); opacity: 0.4; }
+        footer { padding: 80px; text-align: center; border-top: 2px solid var(--border); opacity: 0.6; font-size: 0.8rem; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
     <div id="pre">
-        <h1 style="font-family: 'Orbitron'; letter-spacing: 10px;">NOVAX<span>.SYS</span></h1>
-        <div class="pre-bar"><div class="pre-fill"></div></div>
-        <div class="pre-terminal" id="pre-term"></div>
+        <h1 style="font-family: 'Orbitron'; color: #fff; letter-spacing: 15px;">LOADING NOVAX</h1>
+        <div style="width: 300px; height: 3px; background: rgba(255,255,255,0.1);">
+            <div class="pre-fill" id="fill"></div>
+        </div>
     </div>
 
-    <div id="c"></div><div id="c-dot"></div>
+    <div id="c"></div>
+    <div id="c-dot"></div>
+
     <div class="scanlines"></div>
     <canvas id="space"></canvas>
     <div class="vignette"></div>
 
     <header>
-        <div class="logo">NOVAX<span>.WORLD</span></div>
+        <div class="logo">NOVAX<span>.SA</span></div>
         <nav>
             <div class="t active" onclick="nav('home', this)">الرئيسية</div>
             <div class="t" onclick="nav('rules', this)">الدستور</div>
-            <div class="t" onclick="nav('kick', this)">البثوث</div>
             <div class="t" onclick="nav('store', this)">المتجر</div>
             <div class="t" onclick="nav('wanted', this)">المطلوبين</div>
             <div class="t" onclick="nav('staff', this)">الإدارة</div>
-            <div class="t" onclick="nav('apply', this)">بوابة المواطنة</div>
+            <div class="t" onclick="nav('apply', this)">بوابة التقديم</div>
         </nav>
-        <button class="t" style="border-color: var(--a); color: var(--a);" onclick="login()">IDENTITY LINK</button>
+        <button class="t" style="border-color: var(--a); color: var(--a);" onclick="login()">IDENTIFY LOGIN</button>
     </header>
-
-    <div class="side-alerts">
-        <div class="alert-box">> SERVER: ONLINE</div>
-        <div class="alert-box" style="border-color: var(--p); color: var(--p);">> VERSION: 4.0.2</div>
-        <div class="alert-box" style="border-color: var(--k); color: var(--k);">> PING: 18MS</div>
-    </div>
 
     <div class="container">
         
         <section id="home-page" class="section active">
-            <div style="text-align: center; padding: 120px 0;">
-                <h1 style="font-family: 'Orbitron'; font-size: 8rem; line-height: 0.8; margin-bottom: 20px; color: #fff;">NOVAX</h1>
-                <h2 style="font-family: 'Orbitron'; font-size: 3rem; color: var(--p); margin-top: -10px;">UNIVERSE</h2>
-                <p style="font-family: 'Share Tech Mono'; color: var(--a); letter-spacing: 10px; margin-top: 30px;">[ REWRITING THE REALITY ]</p>
-                <div style="margin-top: 50px; display: flex; justify-content: center; gap: 20px;">
-                    <button class="btn-buy" style="width: 280px;" onclick="nav('apply', document.querySelectorAll('.t')[6])">انضم إلينا الآن</button>
-                    <button class="btn-buy" style="width: 280px; border-color: var(--a);" onclick="window.open('https://discord.gg')">سيرفر الديسكورد</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="rules-page" class="section">
-            <div class="pnl">
-                <h2 style="font-family: 'Orbitron'; color: var(--p); margin-bottom: 30px;">CITY PROTOCOLS v4.0</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px;">
-                    <div class="pnl" style="margin-bottom: 0;">
-                        <h4 style="color: var(--a); margin-bottom: 15px;">1. الميثاق الأمني (NLR)</h4>
-                        <p style="font-size: 0.85rem; line-height: 1.8; opacity: 0.8;">في حال تعرضك لتصفية جسدية، يتم مسح ذاكرة الـ 15 دقيقة الماضية من سجلاتك العصبية. يمنع العودة لموقع الحادثة تماماً.</p>
-                    </div>
-                    <div class="pnl" style="margin-bottom: 0;">
-                        <h4 style="color: var(--a); margin-bottom: 15px;">2. تثمين الحياة (Fear RP)</h4>
-                        <p style="font-size: 0.85rem; line-height: 1.8; opacity: 0.8;">أنت لست بطلاً خارقاً. عند تعرضك لتهديد مباشر بسلاح ناري، يجب عليك الانصياع وحماية حياتك الافتراضية.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="kick-page" class="section">
-            <div class="pnl">
-                <h2 style="color: var(--k); margin-bottom: 30px;">KICK LIVE STREAMS <i class="fas fa-satellite-dish"></i></h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
-                    <div class="pack" style="padding: 20px; border-color: var(--k);">
-                        <div style="width:100%; height:180px; background:#111; margin-bottom:15px; border:1px solid #222;"></div>
-                        <h4 style="font-family:'Orbitron'">VIRUSZ_TV</h4>
-                        <p style="font-size: 0.7rem; color: var(--k);">LIVE NOW: الهروب الكبير</p>
-                        <button class="btn-buy" style="margin-top:15px; border-color:var(--k); color:var(--k);">دخول البث</button>
-                    </div>
+            <div style="text-align: center; padding: 150px 0;">
+                <h1 style="font-family:'Orbitron'; font-size: 9rem; font-weight: 900; line-height: 0.8;">NOVAX</h1>
+                <h2 style="font-family:'Orbitron'; font-size: 4rem; color: var(--p); margin-top: 10px;">REMASTERED</h2>
+                <p style="font-family:'Share Tech Mono'; color: var(--a); letter-spacing: 15px; margin-top: 40px; font-weight: 900;">WELCOME TO THE ULTIMATE REALITY</p>
+                <div style="margin-top: 60px;">
+                    <button class="btn-buy" style="width: 300px;" onclick="nav('store', document.querySelectorAll('.t')[2])">استكشف المتجر الآن</button>
                 </div>
             </div>
         </section>
@@ -214,54 +210,54 @@
         <section id="store-page" class="section">
             <div class="store-grid">
                 <div class="pack">
-                    <h3>ELITE PASS</h3>
-                    <div class="price">$15</div>
+                    <h3>ELITE PACKAGE</h3>
+                    <div class="price">$20</div>
                     <ul class="features">
-                        <li><i class="fas fa-check"></i> سيارة رياضية فئة A</li>
-                        <li><i class="fas fa-check"></i> منزل فاخر في Vinewood</li>
-                        <li><i class="fas fa-check"></i> رتبة ELITE في الديسكورد</li>
+                        <li><i class="fas fa-car"></i> سيارة رياضية فئة S</li>
+                        <li><i class="fas fa-home"></i> شقة فاخرة وسط المدينة</li>
+                        <li><i class="fas fa-id-card"></i> رتبة ELITE ديسكورد</li>
                     </ul>
-                    <button class="btn-buy">شراء الحزمة</button>
+                    <button class="btn-buy">شراء الآن</button>
                 </div>
-                <div class="pack" style="border-color: var(--g);">
+                <div class="pack gold">
                     <h3 style="color: var(--g);">ROYAL EMPEROR</h3>
-                    <div class="price" style="color: var(--g);">$60</div>
+                    <div class="price" style="color: var(--g);">$75</div>
                     <ul class="features">
-                        <li><i class="fas fa-crown"></i> طائرة مروحية خاصة</li>
-                        <li><i class="fas fa-crown"></i> قصر مؤمن بنظام حماية</li>
-                        <li><i class="fas fa-crown"></i> أولوية دخول قصوى (No Queue)</li>
-                        <li><i class="fas fa-crown"></i> لوحة سيارة باسمك</li>
+                        <li><i class="fas fa-crown"></i> طائرة خاصة + يخت ملكي</li>
+                        <li><i class="fas fa-fort-awesome"></i> قصر مؤمن في تلال وينوود</li>
+                        <li><i class="fas fa-bolt"></i> تجاوز طابور الدخول (Bypass)</li>
+                        <li><i class="fas fa-user-shield"></i> سلاح ذهبي محفور باسمك</li>
                     </ul>
                     <button class="btn-buy" style="border-color: var(--g); color: var(--g);">امتلاك العرش</button>
                 </div>
                 <div class="pack">
-                    <h3>STARTER KIT</h3>
-                    <div class="price">$5</div>
+                    <h3>STARTER PACK</h3>
+                    <div class="price">$10</div>
                     <ul class="features">
-                        <li><i class="fas fa-check"></i> رصيد 100,000$</li>
-                        <li><i class="fas fa-check"></i> مسدس مرخص</li>
-                        <li><i class="fas fa-check"></i> دراجة نارية سريعة</li>
+                        <li><i class="fas fa-money-bill-wave"></i> 250,000$ كاش</li>
+                        <li><i class="fas fa-motorcycle"></i> دراجة نارية سريعة</li>
+                        <li><i class="fas fa-briefcase"></i> مجموعة أسلحة خفيفة</li>
                     </ul>
-                    <button class="btn-buy">شراء الحزمة</button>
+                    <button class="btn-buy">شراء الآن</button>
                 </div>
             </div>
         </section>
 
         <section id="wanted-page" class="section">
             <div class="pnl">
-                <h2 style="color: var(--r); font-family: 'Orbitron'; margin-bottom: 30px;">MOST WANTED <span style="font-size:0.8rem; color:#fff;">(DEAD OR ALIVE)</span></h2>
-                <div class="wanted-grid">
+                <h2 style="font-family:'Orbitron'; color: var(--r); margin-bottom: 40px; text-align: center;">قائمة المطلوبين للعدالة</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px;">
                     <div class="w-card">
-                        <img src="https://i.pravatar.cc/300?u=1">
-                        <h4>"THE BUTCHER"</h4>
-                        <p style="font-size:0.7rem; margin:10px 0;">الجريمة: سرقة بنك الفليكا</p>
-                        <div class="reward">$500,000</div>
+                        <img src="https://i.pravatar.cc/400?u=crime1" alt="Wanted">
+                        <h4 style="margin-top: 15px; color: #fff;">"THE SHADOW"</h4>
+                        <p style="font-size: 0.8rem; opacity: 0.7;">الجريمة: تفجير المقر الرئيسي</p>
+                        <div class="w-reward">$1,500,000</div>
                     </div>
                     <div class="w-card">
-                        <img src="https://i.pravatar.cc/300?u=2">
-                        <h4>"SILENT GHOST"</h4>
-                        <p style="font-size:0.7rem; margin:10px 0;">الجريمة: اغتيال قيادات أمنية</p>
-                        <div class="reward">$1,200,000</div>
+                        <img src="https://i.pravatar.cc/400?u=crime2" alt="Wanted">
+                        <h4 style="margin-top: 15px; color: #fff;">"BLACK FOX"</h4>
+                        <p style="font-size: 0.8rem; opacity: 0.7;">الجريمة: سرقة البنك المركزي</p>
+                        <div class="w-reward">$800,000</div>
                     </div>
                 </div>
             </div>
@@ -269,124 +265,103 @@
 
         <section id="staff-page" class="section">
             <div class="pnl">
-                <h2 style="font-family: 'Orbitron'; margin-bottom: 40px; text-align: center;">THE ARCHITECTS</h2>
-                <div class="staff-grid">
-                    <div class="member">
-                        <img src="https://i.imgur.com/8Q9Z5X9.jpeg">
-                        <h4 style="font-family: 'Orbitron';">VIRUSZ</h4>
-                        <p style="font-size: 0.6rem; color: var(--a); font-weight: 900;">FOUNDER & OWNER</p>
+                <h2 style="font-family:'Orbitron'; text-align: center; margin-bottom: 50px;">مجلس إدارة نوفاكس</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
+                    <div class="staff-card">
+                        <img src="https://i.imgur.com/8Q9Z5X9.jpeg" alt="Admin">
+                        <h4 style="font-family: 'Orbitron'; color: var(--a);">VIRUSZ</h4>
+                        <p style="font-size: 0.7rem; letter-spacing: 2px;">FOUNDER & CEO</p>
                     </div>
-                    <div class="member">
-                        <img src="https://i.pravatar.cc/100?u=s1">
-                        <h4 style="font-family: 'Orbitron';">RAZOR</h4>
-                        <p style="font-size: 0.6rem; color: var(--p); font-weight: 900;">HEAD OF ADMINS</p>
-                    </div>
-                    <div class="member">
-                        <img src="https://i.pravatar.cc/100?u=s2">
-                        <h4 style="font-family: 'Orbitron';">NEXA</h4>
-                        <p style="font-size: 0.6rem; color: var(--k); font-weight: 900;">DEVELOPER</p>
+                    <div class="staff-card">
+                        <img src="https://i.pravatar.cc/200?u=staff1" alt="Admin">
+                        <h4 style="font-family: 'Orbitron'; color: var(--p);">NEXUS</h4>
+                        <p style="font-size: 0.7rem; letter-spacing: 2px;">HEAD OF STAFF</p>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="apply-page" class="section">
-            <div class="pnl" style="max-width: 800px; margin: 0 auto;">
-                <h2 style="font-family: 'Orbitron'; margin-bottom: 30px;">CITIZENSHIP PORTAL</h2>
-                <p style="margin-bottom: 25px; font-size: 0.9rem; opacity: 0.7;">أجب بصدق، اللجنة الأمنية تراقب كل حرف.</p>
-                <form onsubmit="event.preventDefault(); Swal.fire('تم الإرسال', 'ملفك قيد المراجعة الأمنية', 'success')">
-                    <input type="text" placeholder="الاسم الرباعي (داخل المدينة)" style="width:100%; padding:15px; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:#fff; margin-bottom:15px; font-family:'Cairo';">
-                    <input type="number" placeholder="العمر الحقيقي" style="width:100%; padding:15px; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:#fff; margin-bottom:15px;">
-                    <textarea placeholder="ما هو هدفك الأساسي في نوفاكس؟" rows="5" style="width:100%; padding:15px; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:#fff; margin-bottom:20px; font-family:'Cairo';"></textarea>
-                    <button type="submit" class="btn-buy">إرسال بيانات الهوية</button>
-                </form>
             </div>
         </section>
 
     </div>
 
     <footer>
-        <p style="font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 2px;">NOVAX RP &copy; 2026 | ALL SYSTEMS ARE NOMINAL</p>
-        <div style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.6rem; color: var(--p);">ENCRYPTION ACTIVE: AES-256 BIT</div>
+        <p style="font-family: 'Orbitron';">NOVAX RP &copy; 2026 | THE ABSOLUTE REALITY</p>
+        <p style="font-size: 0.6rem; color: var(--a); margin-top: 10px;">DESIGNED BY AI FOR THE TOP 1%</p>
     </footer>
 
     <script>
-        // 1. شاشة التحميل المعقدة
-        const term = document.getElementById('pre-term');
-        const logs = [
-            "> INITIALIZING NOVAX KERNEL...",
-            "> LOADING SECURITY PROTOCOLS...",
-            "> ESTABLISHING DISCORD LINK...",
-            "> SYNCING DATABASE...",
-            "> LOADING ASSETS...",
-            "> SYSTEM READY."
-        ];
+        // 1. الماوس (تصحيح البرمجة للظهور في كل مكان)
+        const c = document.getElementById('c');
+        const d = document.getElementById('c-dot');
         
-        let logIdx = 0;
-        const logInterval = setInterval(() => {
-            if(logIdx < logs.length) {
-                term.innerHTML += logs[logIdx] + "<br>";
-                logIdx++;
-            } else {
-                clearInterval(logInterval);
-            }
-        }, 300);
-
-        gsap.to('.pre-fill', { width: '100%', duration: 2.5, ease: 'power2.inOut', onComplete: () => {
-            gsap.to('#pre', { opacity: 0, duration: 1, onComplete: () => document.getElementById('pre').style.display='none' });
-        }});
-
-        // 2. الماوس
-        const cur = document.getElementById('c');
-        const dot = document.getElementById('c-dot');
-        document.addEventListener('mousemove', e => {
-            gsap.to(cur, { x: e.clientX-12, y: e.clientY-12, duration: 0.1 });
-            gsap.to(dot, { x: e.clientX-2, y: e.clientY-2, duration: 0.05 });
+        window.addEventListener('mousemove', e => {
+            gsap.to(c, { x: e.clientX - 15, y: e.clientY - 15, duration: 0.15, ease: "power2.out" });
+            gsap.to(d, { x: e.clientX - 3, y: e.clientY - 3, duration: 0.05 });
         });
 
-        // 3. الخلفية التفاعلية
-        const canvas = document.getElementById('space');
-        const ctx = canvas.getContext('2d');
-        let dots = [];
-        function init() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            dots = [];
-            for(let i=0; i<100; i++) dots.push({
-                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-                vx: (Math.random()-0.5)*0.3, vy: (Math.random()-0.5)*0.3
-            });
-        }
-        function draw() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(162, 70, 240, 0.4)";
-            dots.forEach((d, i) => {
-                d.x += d.vx; d.y += d.vy;
-                if(d.x<0 || d.x>canvas.width) d.vx*=-1;
-                if(d.y<0 || d.y>canvas.height) d.vy*=-1;
-                ctx.beginPath(); ctx.arc(d.x, d.y, 1, 0, Math.PI*2); ctx.fill();
-                for(let j=i+1; j<dots.length; j++) {
-                    let dist = Math.hypot(d.x-dots[j].x, d.y-dots[j].y);
-                    if(dist<150) {
-                        ctx.strokeStyle = `rgba(0, 242, 255, ${0.1 * (1 - dist/150)})`;
-                        ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(dots[j].x, dots[j].y); ctx.stroke();
-                    }
-                }
-            });
-            requestAnimationFrame(draw);
-        }
-        init(); draw(); window.onresize = init;
+        // 2. التحميل (Preloader)
+        window.addEventListener('load', () => {
+            const fill = document.getElementById('fill');
+            fill.style.width = '100%';
+            setTimeout(() => {
+                gsap.to('#pre', { opacity: 0, duration: 1, onComplete: () => document.getElementById('pre').style.display='none' });
+            }, 1000);
+        });
 
-        // 4. التنقل بين الصفحات
+        // 3. التنقل (Navigation)
         function nav(id, btn) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.t').forEach(t => t.classList.remove('active'));
             document.getElementById(id + '-page').classList.add('active');
             btn.classList.add('active');
             
-            gsap.from('#'+id+'-page .pnl', {
-                opacity: 0, y: 30, duration: 0.6, stagger: 0.2, ease: 'expo.out'
-            });
+            // أنيميشن عند الدخول للقسم
+            gsap.from('#' + id + '-page', { y: 50, opacity: 0, duration: 0.8, ease: "expo.out" });
         }
+
+        // 4. خلفية الفضاء (Canvas)
+        const canvas = document.getElementById('space');
+        const ctx = canvas.getContext('2d');
+        let dots = [];
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            dots = [];
+            for(let i=0; i<120; i++) {
+                dots.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4
+                });
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(162, 70, 240, 0.7)";
+            dots.forEach((dot, i) => {
+                dot.x += dot.vx;
+                dot.y += dot.vy;
+                if(dot.x < 0 || dot.x > canvas.width) dot.vx *= -1;
+                if(dot.y < 0 || dot.y > canvas.height) dot.vy *= -1;
+                ctx.beginPath();
+                ctx.arc(dot.x, dot.y, 1.2, 0, Math.PI*2);
+                ctx.fill();
+                
+                for(let j=i+1; j<dots.length; j++) {
+                    let dist = Math.hypot(dot.x - dots[j].x, dot.y - dots[j].y);
+                    if(dist < 150) {
+                        ctx.strokeStyle = `rgba(0, 242, 255, ${0.15 * (1 - dist/150)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath(); ctx.moveTo(dot.x, dot.y); ctx.lineTo(dots[j].x, dots[j].y); ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+        init(); animate();
+        window.onresize = init;
 
         function login() {
             window.location.href = "https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify";
