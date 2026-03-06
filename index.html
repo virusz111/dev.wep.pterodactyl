@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVAX RP | THE ULTIMATE SOVEREIGN</title>
+    <title>NOVAX RP | THE INFINITY MASTERPIECE</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -11,29 +11,30 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* [1] GLOBAL ROOT VARIABLES 
-           تفكيك كل متغير لضمان أقصى تحكم وطول للكود
+        /* [1] GLOBAL CORE VARIABLES 
+           تفكيك المتغيرات لضمان أقصى سعة برمجية
         */
         :root {
-            --p-color: #bc13fe;
-            --p-glow: rgba(188, 19, 254, 0.6);
-            --a-color: #00f2ff;
-            --a-glow: rgba(0, 242, 255, 0.6);
-            --g-color: #ffcf40;
-            --g-glow: rgba(255, 207, 64, 0.5);
-            --r-color: #ff003c;
-            --bg-deep: #000000;
-            --bg-glass: rgba(5, 5, 8, 0.98);
-            --border-p: 2px solid var(--p-color);
-            --border-a: 2px solid var(--a-color);
+            --p-neon: #bc13fe;
+            --p-glow: rgba(188, 19, 254, 0.7);
+            --a-neon: #00f2ff;
+            --a-glow: rgba(0, 242, 255, 0.7);
+            --g-neon: #ffcf40;
+            --g-glow: rgba(255, 207, 64, 0.6);
+            --r-neon: #ff003c;
+            --r-glow: rgba(255, 0, 60, 0.6);
+            --bg-ultra: #000000;
+            --bg-panel: rgba(5, 5, 8, 0.98);
+            --border-thk: 2px;
+            --border-style: solid;
             --font-main: 'Cairo', sans-serif;
             --font-tech: 'Orbitron', sans-serif;
             --font-code: 'Share Tech Mono', monospace;
-            --trans-fast: 0.3s ease;
-            --trans-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            --trans-main: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* [2] CORE RESET PROTOCOL 
+        /* [2] SUPREME RESET 
+           كل سطر خاصية مستقلة لزيادة حجم الكود
         */
         * {
             margin: 0;
@@ -42,85 +43,99 @@
             cursor: none !important;
             user-select: none;
             outline: none;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-user-drag: none;
         }
 
         body {
-            background-color: var(--bg-deep);
+            background-color: var(--bg-ultra);
             color: #ffffff;
             font-family: var(--font-main);
             overflow-x: hidden;
             width: 100%;
             min-height: 100vh;
+            line-height: 1.8;
         }
 
-        /* [3] CUSTOM SCROLLBAR 
+        /* [3] THE NEURAL SCROLLBAR 
         */
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 12px;
         }
         ::-webkit-scrollbar-track {
             background: #000;
+            border-left: 1px solid var(--p-neon);
         }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, var(--p-color), var(--a-color));
-            box-shadow: 0 0 15px var(--p-color);
+            background: linear-gradient(to bottom, var(--p-neon), var(--a-neon));
+            box-shadow: 0 0 20px var(--p-neon);
+            border-radius: 0;
         }
 
-        /* [4] MOUSE SYSTEM - TRIPLE LAYER 
+        /* [4] TRIPLE-LAYER MASTER CURSOR 
         */
-        #cursor-layer {
+        #cursor-master {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 99999999;
-        }
-        .c-main {
-            position: absolute;
-            width: 45px;
-            height: 45px;
-            border: 2px solid var(--a-color);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 20px var(--a-color);
-            transition: width 0.3s, height 0.3s;
+            z-index: 10000000;
         }
         .c-dot {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--p-color);
+            width: 12px;
+            height: 12px;
+            background: var(--p-neon);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px var(--p-color);
+            box-shadow: 0 0 20px var(--p-neon);
+            z-index: 100;
         }
-        .c-outer {
+        .c-ring {
             position: absolute;
-            width: 70px;
-            height: 70px;
-            border: 1px dashed var(--p-color);
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--a-neon);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            animation: c-spin 12s linear infinite;
+            box-shadow: 0 0 25px var(--a-neon);
+            transition: width 0.3s, height 0.3s, border-color 0.3s;
+        }
+        .c-frame {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 1px dashed var(--p-neon);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: frameRotate 15s linear infinite;
             opacity: 0.3;
         }
-        @keyframes c-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes frameRotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        /* [5] BACKGROUND NETWORK ENGINE 
+        /* [5] THE NEURAL NETWORK BACKGROUND (CONNECTED STYLE)
         */
-        #net-canvas {
+        #neural-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -10;
-            background: radial-gradient(circle at center, #0a001a 0%, #000 100%);
+            background: radial-gradient(circle at center, #0d001a 0%, #000 100%);
         }
-        .grid-overlay {
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.9) 150%);
+            z-index: -8;
+            pointer-events: none;
+        }
+        .tech-grid {
             position: fixed;
             top: 0;
             left: 0;
@@ -128,328 +143,457 @@
             height: 100%;
             background-image: linear-gradient(rgba(188, 19, 254, 0.05) 1px, transparent 1px),
                               linear-gradient(90deg, rgba(188, 19, 254, 0.05) 1px, transparent 1px);
-            background-size: 60px 60px;
+            background-size: 80px 80px;
             z-index: -9;
-            opacity: 0.4;
+            opacity: 0.5;
         }
 
-        /* [6] HEADER ARCHITECTURE 
+        /* [6] SOVEREIGN HEADER 
         */
-        header.top-nav {
+        header.master-nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 40px 80px;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(25px);
-            border-bottom: 3px solid var(--p-color);
+            padding-top: 45px;
+            padding-bottom: 45px;
+            padding-left: 100px;
+            padding-right: 100px;
+            background-color: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(30px);
+            border-bottom: 3px solid var(--p-neon);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 10000;
+            z-index: 99999;
+            box-shadow: 0 10px 60px rgba(0,0,0,1);
         }
-        .brand-logo {
+        .nav-logo {
             font-family: var(--font-tech);
-            font-size: 45px;
+            font-size: 50px;
             font-weight: 900;
-            letter-spacing: 12px;
-            color: #fff;
-        }
-        .brand-logo span { color: var(--p-color); text-shadow: 0 0 20px var(--p-color); }
-
-        .nav-wrapper { display: flex; gap: 20px; }
-        .nav-btn {
-            padding: 15px 35px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--p-color);
-            color: #fff;
-            font-family: var(--font-tech);
-            font-size: 13px;
-            font-weight: 700;
-            clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
-            transition: var(--trans-slow);
-        }
-        .nav-btn:hover, .nav-btn.active {
-            background: var(--p-color);
-            color: #000;
-            box-shadow: 0 0 30px var(--p-color);
-            transform: translateY(-5px);
-        }
-
-        /* [7] MAIN CONTENT SYSTEM 
-        */
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding-top: 250px;
-            padding-bottom: 100px;
-            padding-left: 50px;
-            padding-right: 50px;
-        }
-        .sector { display: none; opacity: 0; }
-        .sector.active { display: block; animation: sector-in 1s forwards; }
-        @keyframes sector-in { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* [8] SECTOR: HOME 
-        */
-        .hero-block { text-align: center; }
-        .hero-block h1 { font-family: var(--font-tech); font-size: 15vw; line-height: 0.8; margin-bottom: 60px; }
-        .hero-block h1 span { color: var(--p-color); -webkit-text-stroke: 1px #fff; }
-        .hero-tag { font-family: var(--font-code); font-size: 2.5rem; letter-spacing: 25px; color: var(--a-color); }
-
-        /* [9] SECTOR: LAWS 
-        */
-        .laws-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .law-card {
-            background: var(--bg-glass);
-            border-right: 5px solid var(--p-color);
-            padding: 50px;
-            transition: 0.4s;
-        }
-        .law-card:hover { transform: translateX(-15px); background: rgba(188,19,254,0.05); }
-        .law-card h3 { font-family: var(--font-tech); color: var(--a-color); font-size: 2rem; margin-bottom: 25px; }
-        .law-card p { font-size: 1.2rem; line-height: 2; opacity: 0.8; }
-
-        /* [10] SECTOR: STORE 
-        */
-        .store-flex { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-        .package {
-            background: #000;
-            border: 2px solid var(--p-color);
-            padding: 70px 40px;
-            text-align: center;
+            letter-spacing: 15px;
+            color: #ffffff;
             position: relative;
         }
-        .package.vip { border-color: var(--g-color); box-shadow: 0 0 40px rgba(255,207,64,0.1); }
-        .package-price { font-family: var(--font-tech); font-size: 5rem; margin: 40px 0; color: #fff; }
-        .package-features { list-style: none; text-align: right; margin-bottom: 50px; }
-        .package-features li { padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .nav-logo span {
+            color: var(--p-neon);
+            text-shadow: 0 0 30px var(--p-neon);
+        }
 
-        /* [11] SECTOR: APPLICATION SYSTEM (DETAILED) 
+        .nav-items {
+            display: flex;
+            gap: 25px;
+        }
+        .nav-link {
+            padding: 18px 40px;
+            background-color: rgba(255,255,255,0.02);
+            border: 1px solid var(--p-neon);
+            color: #ffffff;
+            font-family: var(--font-tech);
+            font-size: 14px;
+            font-weight: 800;
+            clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
+            transition: all var(--trans-main);
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--p-neon);
+            color: #000;
+            transform: translateY(-8px);
+            box-shadow: 0 0 40px var(--p-neon);
+        }
+
+        /* [7] MAIN CONTENT ARCHITECTURE 
         */
-        .app-portal {
-            max-width: 900px;
+        .main-wrapper {
+            max-width: 1600px;
             margin: 0 auto;
-            background: var(--bg-glass);
-            border: 3px solid var(--p-color);
+            padding-top: 280px;
+            padding-bottom: 150px;
+            padding-left: 60px;
+            padding-right: 60px;
+        }
+        .section-block {
+            display: none;
+            opacity: 0;
+            transform: translateY(80px);
+        }
+        .section-block.active {
+            display: block;
+            animation: sectionReveal 1.2s var(--trans-main) forwards;
+        }
+        @keyframes sectionReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* [8] SECTOR: HOME (MAXIMIZED)
+        */
+        .hero-title {
+            font-family: var(--font-tech);
+            font-size: 16vw;
+            font-weight: 900;
+            text-align: center;
+            line-height: 0.8;
+            background: linear-gradient(to bottom, #ffffff 40%, var(--p-neon) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 60px;
+        }
+        .hero-subtitle {
+            font-family: var(--font-code);
+            font-size: 3rem;
+            text-align: center;
+            letter-spacing: 35px;
+            color: var(--a-neon);
+            margin-bottom: 120px;
+        }
+
+        /* [9] SECTOR: STATS (NEW CONTENT)
+        */
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 100px;
+            background: var(--bg-panel);
             padding: 80px;
+            border: 1px solid var(--p-neon);
         }
-        .form-step { display: none; }
-        .form-step.active { display: block; animation: step-fade 0.6s forwards; }
-        @keyframes step-fade { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        .stat-item { text-align: center; }
+        .stat-value { font-family: var(--font-tech); font-size: 4rem; color: var(--p-neon); }
+        .stat-label { font-size: 1.2rem; color: var(--a-neon); letter-spacing: 5px; }
 
-        .f-group { margin-bottom: 40px; }
-        .f-group label { display: block; font-family: var(--font-tech); color: var(--a-color); margin-bottom: 15px; font-size: 1.1rem; }
-        .f-group input, .f-group textarea, .f-group select {
+        /* [10] SECTOR: LAWS (DETAILED) 
+        */
+        .laws-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 50px;
+        }
+        .law-card {
+            background-color: var(--bg-panel);
+            border-right: 8px solid var(--p-neon);
+            padding: 60px;
+            transition: 0.5s;
+        }
+        .law-card:hover { transform: translateX(-20px); border-color: var(--a-neon); }
+        .law-card h3 { font-family: var(--font-tech); font-size: 2.2rem; color: var(--a-neon); margin-bottom: 30px; }
+        .law-card p { font-size: 1.3rem; line-height: 2.2; color: rgba(255,255,255,0.85); }
+
+        /* [11] SECTOR: STORE (EXTENDED) 
+        */
+        .store-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 50px;
+        }
+        .pkg-card {
+            background-color: var(--bg-panel);
+            border: 2px solid var(--p-neon);
+            padding: 90px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: 0.5s;
+        }
+        .pkg-card.ultra { border-color: var(--g-neon); box-shadow: 0 0 50px rgba(255, 207, 64, 0.2); }
+        .pkg-price { font-family: var(--font-tech); font-size: 6rem; font-weight: 900; margin: 40px 0; color: #fff; }
+        .pkg-features { text-align: right; margin-bottom: 60px; }
+        .pkg-item { padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 1.2rem; }
+        .pkg-item i { color: var(--p-neon); margin-left: 15px; }
+
+        /* [12] SECTOR: STAFF (NEW CONTENT)
+        */
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        .staff-card {
+            background: #000;
+            border: 1px solid var(--a-neon);
+            padding: 40px;
+            text-align: center;
+            transition: 0.4s;
+        }
+        .staff-card:hover { transform: translateY(-15px); border-color: var(--p-neon); }
+        .staff-img { width: 120px; height: 120px; border-radius: 50%; background: var(--p-neon); margin: 0 auto 20px; border: 3px solid var(--a-neon); }
+        .staff-name { font-family: var(--font-tech); font-size: 1.5rem; margin-bottom: 10px; }
+        .staff-rank { color: var(--p-neon); font-family: var(--font-code); }
+
+        /* [13] SECTOR: APPLICATION SYSTEM 
+        */
+        .app-box {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--bg-panel);
+            border: 5px solid var(--p-neon);
+            padding: 100px;
+        }
+        .step-container { display: none; }
+        .step-container.active { display: block; animation: stepSlide 0.6s ease forwards; }
+        @keyframes stepSlide { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+        
+        .form-row { margin-bottom: 45px; }
+        .form-row label { display: block; font-family: var(--font-tech); color: var(--a-neon); margin-bottom: 20px; font-size: 1.2rem; }
+        .form-row input, .form-row textarea, .form-row select {
             width: 100%;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--p-color);
-            padding: 20px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--p-neon);
+            padding: 25px;
             color: #fff;
-            font-family: var(--font-main);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
-        .f-group input:focus { border-color: var(--a-color); box-shadow: 0 0 15px var(--a-color); }
+        .form-row input:focus { border-color: var(--a-neon); box-shadow: 0 0 20px var(--a-neon); }
 
-        .btn-core {
-            padding: 20px 60px;
+        .btn-action {
+            padding: 25px 80px;
             background: transparent;
-            border: 2px solid var(--a-color);
-            color: var(--a-color);
+            border: 3px solid var(--a-neon);
+            color: var(--a-neon);
             font-family: var(--font-tech);
             font-weight: 900;
-            transition: 0.3s;
+            font-size: 1.2rem;
+            transition: 0.5s;
         }
-        .btn-core:hover { background: var(--a-color); color: #000; box-shadow: 0 0 30px var(--a-color); }
+        .btn-action:hover { background: var(--a-neon); color: #000; box-shadow: 0 0 40px var(--a-neon); }
 
-        /* [12] SYSTEM MONITOR (LIVE LOGS) 
+        /* [14] LIVE SYSTEM MONITOR 
         */
-        .sys-monitor {
+        .monitor-win {
             position: fixed;
-            bottom: 40px;
-            left: 40px;
-            width: 400px;
-            height: 220px;
-            background: rgba(0,0,0,0.9);
-            border: 1px solid var(--p-color);
-            padding: 25px;
+            bottom: 50px;
+            left: 50px;
+            width: 450px;
+            height: 280px;
+            background: rgba(0,0,0,0.95);
+            border: 1px solid var(--p-neon);
+            padding: 30px;
             font-family: var(--font-code);
-            font-size: 12px;
-            color: var(--p-color);
-            overflow: hidden;
+            font-size: 13px;
+            color: var(--p-neon);
             z-index: 1000;
+            overflow: hidden;
+            pointer-events: none;
         }
-        .log-line { margin-bottom: 8px; border-left: 2px solid var(--a-color); padding-left: 10px; }
+        .log-row { margin-bottom: 10px; border-left: 3px solid var(--a-neon); padding-left: 15px; }
 
-        /* [13] PRELOADER SYSTEM 
+        /* [15] MASTER PRELOADER 
         */
         #preloader {
             position: fixed;
             inset: 0;
             background: #000;
-            z-index: 9999999;
+            z-index: 10000000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-        .load-title { font-family: var(--font-tech); font-size: 6rem; letter-spacing: 35px; }
-        .load-progress { width: 500px; height: 3px; background: rgba(255,255,255,0.05); margin-top: 50px; position: relative; }
-        .load-fill { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: var(--p-color); box-shadow: 0 0 20px var(--p-color); }
+        .loader-txt { font-family: var(--font-tech); font-size: 7rem; letter-spacing: 50px; margin-bottom: 60px; }
+        .loader-bar-bg { width: 600px; height: 5px; background: rgba(255,255,255,0.05); position: relative; }
+        .loader-bar-fill { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: var(--p-neon); box-shadow: 0 0 30px var(--p-neon); }
 
         footer {
-            padding: 120px 0;
+            padding: 150px 0;
             text-align: center;
-            border-top: 2px solid var(--p-color);
+            border-top: 3px solid var(--p-neon);
             font-family: var(--font-tech);
-            letter-spacing: 15px;
-            opacity: 0.3;
+            letter-spacing: 25px;
+            opacity: 0.4;
+            background: #000;
         }
     </style>
 </head>
-<body onload="initApp()">
+<body onload="initSovereign()">
 
     <div id="preloader">
-        <div class="load-title">NOVAX</div>
-        <div class="load-progress"><div class="load-fill" id="fill-bar"></div></div>
-        <div id="status-msg" style="margin-top:25px; font-family:var(--font-code); color:var(--a-color);">BOOTING_CORE...</div>
+        <div class="loader-txt">NOVAX</div>
+        <div class="loader-bar-bg"><div class="loader-bar-fill" id="fill-id"></div></div>
+        <div id="boot-status" style="margin-top:40px; font-family:var(--font-code); color:var(--a-neon); font-size:1.2rem;">INITIALIZING_QUANTUM_CORE...</div>
     </div>
 
-    <div id="cursor-layer">
-        <div class="c-outer" id="c-outer"></div>
-        <div class="c-main" id="c-main"></div>
+    <div id="cursor-master">
+        <div class="c-frame" id="c-frame"></div>
+        <div class="c-ring" id="c-ring"></div>
         <div class="c-dot" id="c-dot"></div>
     </div>
 
-    <canvas id="net-canvas"></canvas>
-    <div class="grid-overlay"></div>
+    <canvas id="neural-canvas"></canvas>
+    <div class="tech-grid"></div>
+    <div class="vignette"></div>
 
-    <header class="top-nav">
-        <div class="brand-logo">NOVAX<span>RP</span></div>
-        <nav class="nav-wrapper">
-            <button class="nav-btn active" onclick="switchTab('home', this)">الرئيسية</button>
-            <button class="nav-btn" onclick="switchTab('laws', this)">الدستور</button>
-            <button class="nav-btn" onclick="switchTab('store', this)">المتجر</button>
-            <button class="nav-btn" onclick="switchTab('apply', this)">التقديم</button>
+    <header class="master-nav">
+        <div class="nav-logo">NOVAX<span>RP</span></div>
+        <nav class="nav-items">
+            <button class="nav-link active" onclick="goto('home', this)">الرئيسية</button>
+            <button class="nav-link" onclick="goto('laws', this)">الدستور</button>
+            <button class="nav-link" onclick="goto('store', this)">المتجر الملكي</button>
+            <button class="nav-link" onclick="goto('staff', this)">مجلس الإدارة</button>
+            <button class="nav-link" onclick="goto('apply', this)">التقديم</button>
         </nav>
-        <button class="nav-btn" style="border-color:var(--a-color); color:var(--a-color);" onclick="auth()">LINK_SESSION</button>
+        <button class="nav-link" style="border-color:var(--a-neon); color:var(--a-neon);" onclick="discordLogin()">AUTH_SESSION</button>
     </header>
 
-    <main class="container">
+    <main class="main-wrapper">
 
-        <section id="sector-home" class="sector active">
-            <div class="hero-block">
-                <h1>NO<span>VA</span>X</h1>
-                <p class="hero-tag">[ THE SOVEREIGN SYSTEM ]</p>
-                <div style="margin-top:80px; display:flex; justify-content:center; gap:40px;">
-                    <button class="btn-core" style="width:400px;" onclick="switchTab('apply')">تقديم طلب المواطنة</button>
-                    <button class="btn-core" style="width:400px; border-color:var(--p-color); color:var(--p-color);">انضم للديسكورد</button>
+        <section id="sec-home" class="section-block active">
+            <h1 class="hero-title">NO<span>VA</span>X</h1>
+            <h2 class="hero-subtitle">[ THE ETERNAL ROLEPLAY ]</h2>
+            
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-value">150+</div>
+                    <div class="stat-label">مواطن نشط</div>
                 </div>
+                <div class="stat-item">
+                    <div class="stat-value">32+</div>
+                    <div class="stat-label">عصابة منظمة</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">1200+</div>
+                    <div class="stat-label">مركبة حصرية</div>
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:center; gap:60px; margin-top:120px;">
+                <button class="btn-action" style="width:450px;" onclick="goto('apply')">باشر بتقديم هويتك</button>
+                <button class="btn-action" style="width:450px; border-color:var(--p-neon); color:var(--p-neon);">الدخول للمجتمع</button>
             </div>
         </section>
 
-        <section id="sector-laws" class="sector">
+        <section id="sec-laws" class="section-block">
             <div class="laws-grid">
                 <div class="law-card">
-                    <h3>01. التقمص الفائق</h3>
-                    <p>يجب الحفاظ على شخصيتك داخل المدينة في كل الظروف. الخروج عن التقمص يعني الخروج من المدينة نهائياً.</p>
+                    <h3>01. ميثاق الشرف</h3>
+                    <p>يجب على كل مواطن احترام هويته الافتراضية والالتزام بالواقعية المطلقة. كسر التقمص (OOC) هو إهانة لكل المتواجدين وسيتم التعامل معه بحزم.</p>
                 </div>
                 <div class="law-card">
-                    <h3>02. قيمة الروح</h3>
-                    <p>أنت تملك حياة واحدة غالية. في NoVaX، الخوف من الموت (Fear RP) هو أساس البقاء والواقعية.</p>
+                    <h3>02. قدسية الحياة</h3>
+                    <p>حياتك في NoVaX ليست رخيصة. الخوف من التهديد (Fear RP) هو قانون ملزم، وعدم المبالاة بالخطر يعرضك للنفي المباشر.</p>
                 </div>
                 <div class="law-card">
-                    <h3>03. نظام النزاعات</h3>
-                    <p>يُمنع القتل بدون سبب مقنع أو سيناريو مسبق. كل رصاصة تُطلق يجب أن تحكي قصة.</p>
+                    <h3>03. نظام الاشتباك</h3>
+                    <p>يُمنع منعاً باتاً القتل العشوائي (RDM) أو استخدام المركبات للدهس (VDM). كل رصاصة يجب أن تكون جزءاً من قصة مكتوبة بعناية.</p>
                 </div>
                 <div class="law-card">
-                    <h3>04. الاحترام الإداري</h3>
-                    <p>قرارات مجلس الإدارة نهائية وغير قابلة للنقاش في الأماكن العامة. الاحترام هو أساس المجتمع.</p>
+                    <h3>04. المناطق المحمية</h3>
+                    <p>المرافق الحيوية (المستشفيات، مراكز الشرطة، الوزارات) هي مناطق خضراء. يمنع فيها أي نشاط عدائي لضمان سير الخدمات العامة.</p>
+                </div>
+                <div class="law-card">
+                    <h3>05. التواصل الميتا</h3>
+                    <p>يُمنع استخدام أي معلومات خارجية (Meta-Gaming) لم تعرفها شخصيتك داخل اللعبة. ما يحدث في الديسكورد يبقى في الديسكورد.</p>
+                </div>
+                <div class="law-card">
+                    <h3>06. الاستغلال التقني</h3>
+                    <p>أي محاولة لاستغلال ثغرات برمجية (Bugs) أو استخدام برامج خارجية ستؤدي إلى حظر أبدي لجهازك من خوادمنا.</p>
                 </div>
             </div>
         </section>
 
-        <section id="sector-store" class="sector">
-            <div class="store-flex">
-                <div class="package">
-                    <div style="font-family:var(--font-tech); color:var(--a-color);">STARTER KIT</div>
-                    <div class="package-price">$30</div>
-                    <ul class="package-features">
-                        <li>- سيارة فئة رياضية</li>
-                        <li>- شقة مودرن</li>
-                        <li>- رصيد 2,000,000$</li>
+        <section id="sec-store" class="section-block">
+            <div class="store-grid">
+                <div class="pkg-card">
+                    <div style="font-family:var(--font-tech); color:var(--a-neon); font-size:1.8rem;">CITIZEN+</div>
+                    <div class="pkg-price">$45</div>
+                    <ul class="pkg-features">
+                        <li class="pkg-item"><i class="fas fa-car"></i> سيارة رياضية فئة A</li>
+                        <li class="pkg-item"><i class="fas fa-home"></i> شقة تمليك في الداون تاون</li>
+                        <li class="pkg-item"><i class="fas fa-id-card"></i> أولوية دخول (Level 1)</li>
                     </ul>
-                    <button class="btn-core" style="width:100%;">امتلاك</button>
+                    <button class="btn-action" style="width:100%;">شراء الآن</button>
                 </div>
-                <div class="package vip">
-                    <div style="font-family:var(--font-tech); color:var(--g-color);">EMPEROR STATUS</div>
-                    <div class="package-price" style="color:var(--g-color);">$150</div>
-                    <ul class="package-features">
-                        <li>- قصر خاص + يخت</li>
-                        <li>- أولوية دخول قصوى</li>
-                        <li>- تأسيس منظمة خاصة</li>
-                        <li>- سيارة نادرة جداً</li>
+                <div class="pkg-card ultra">
+                    <div style="font-family:var(--font-tech); color:var(--g-neon); font-size:1.8rem;">SOVEREIGN LORD</div>
+                    <div class="pkg-price" style="color:var(--g-neon);">$200</div>
+                    <ul class="pkg-features">
+                        <li class="pkg-item"><i class="fas fa-crown"></i> قصر ملكي خاص بجزيرة</li>
+                        <li class="pkg-item"><i class="fas fa-plane"></i> مروحية خاصة + مهبط</li>
+                        <li class="pkg-item"><i class="fas fa-users-cog"></i> رخصة تأسيس عصابة رسمية</li>
+                        <li class="pkg-item"><i class="fas fa-bolt"></i> أولوية دخول قصوى (Level 0)</li>
                     </ul>
-                    <button class="btn-core" style="width:100%; border-color:var(--g-color); color:var(--g-color);">اعتلاء العرش</button>
+                    <button class="btn-action" style="width:100%; border-color:var(--g-neon); color:var(--g-neon);">اعتلاء العرش</button>
                 </div>
-                <div class="package">
-                    <div style="font-family:var(--font-tech); color:var(--p-color);">ROGUE PACK</div>
-                    <div class="price-tag" style="font-size:5rem; margin:40px 0;">$60</div>
-                    <ul class="package-features">
-                        <li>- دراجة نيون حصرية</li>
-                        <li>- مكتب إجرامي</li>
-                        <li>- رصيد 5,000,000$</li>
+                <div class="pkg-card">
+                    <div style="font-family:var(--font-tech); color:var(--p-neon); font-size:1.8rem;">CRIME BOSS</div>
+                    <div class="pkg-price">$85</div>
+                    <ul class="pkg-features">
+                        <li class="pkg-item"><i class="fas fa-motorcycle"></i> دراجة نارية نيون حصرية</li>
+                        <li class="pkg-item"><i class="fas fa-warehouse"></i> مستودع لتجارة الأسلحة</li>
+                        <li class="pkg-item"><i class="fas fa-user-secret"></i> ملابس مخفية نادرة</li>
                     </ul>
-                    <button class="btn-core" style="width:100%; border-color:var(--p-color); color:var(--p-color);">امتلاك</button>
+                    <button class="btn-action" style="width:100%; border-color:var(--p-neon); color:var(--p-neon);">شراء الآن</button>
                 </div>
             </div>
         </section>
 
-        <section id="sector-apply" class="sector">
-            <div class="app-portal">
-                <h2 style="font-family:var(--font-tech); text-align:center; margin-bottom:50px; font-size:3rem; color:var(--p-color);">طلب الانضمام</h2>
-                
-                <div class="form-step active" id="step-1">
-                    <div class="f-group">
-                        <label>الاسم الحقيقي بالكامل</label>
-                        <input type="text" placeholder="اكتب اسمك هنا...">
+        <section id="sec-staff" class="section-block">
+            <div class="staff-grid">
+                <div class="staff-card">
+                    <div class="staff-img"></div>
+                    <div class="staff-name">VIRUSZ</div>
+                    <div class="staff-rank">FOUNDER & DEVELOPER</div>
+                </div>
+                <div class="staff-card">
+                    <div class="staff-img"></div>
+                    <div class="staff-name">COUNCIL_1</div>
+                    <div class="staff-rank">HEAD OF ADMINS</div>
+                </div>
+                <div class="staff-card">
+                    <div class="staff-img"></div>
+                    <div class="staff-name">JUDGE_X</div>
+                    <div class="staff-rank">RULES OVERSEER</div>
+                </div>
+                <div class="staff-card">
+                    <div class="staff-img"></div>
+                    <div class="staff-name">SUPPORT_S</div>
+                    <div class="staff-rank">TICKET MANAGER</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-apply" class="section-block">
+            <div class="app-box">
+                <div class="step-container active" id="st-1">
+                    <h2 style="font-family:var(--font-tech); color:var(--p-neon); margin-bottom:50px;">بيانات الهوية</h2>
+                    <div class="form-row">
+                        <label>الاسم الثلاثي (الحقيقي)</label>
+                        <input type="text" placeholder="...">
                     </div>
-                    <div class="f-group">
-                        <label>العمر الحقيقي (يجب أن يكون +18)</label>
-                        <input type="number" placeholder="عمرك...">
+                    <div class="form-row">
+                        <label>العمر (يجب أن تكون فوق 18 سنة)</label>
+                        <input type="number" placeholder="...">
                     </div>
-                    <div class="f-group">
-                        <label>رابط حساب الديسكورد</label>
-                        <input type="text" placeholder="User#0000">
+                    <div class="form-row">
+                        <label>معرف الديسكورد (ID)</label>
+                        <input type="text" placeholder="Username#0000">
                     </div>
                     <div style="display:flex; justify-content:flex-end;">
-                        <button class="btn-core" onclick="moveStep(2)">المرحلة التالية</button>
+                        <button class="btn-action" onclick="move(2)">المرحلة التالية</button>
                     </div>
                 </div>
-
-                <div class="form-step" id="step-2">
-                    <div class="f-group">
-                        <label>ما هو مفهومك عن الـ Roleplay؟</label>
-                        <textarea rows="4" placeholder="اشرح لنا بأسلوبك..."></textarea>
+                <div class="step-container" id="st-2">
+                    <h2 style="font-family:var(--font-tech); color:var(--p-neon); margin-bottom:50px;">اختبار الكفاءة</h2>
+                    <div class="form-row">
+                        <label>ماذا تفعل إذا صدمك شخص بسيارته وهرب؟</label>
+                        <textarea rows="4" placeholder="اشرح رد فعلك التقمصي..."></textarea>
                     </div>
-                    <div class="f-group">
-                        <label>ماذا تفعل إذا رأيت شخصاً يخالف القوانين؟</label>
-                        <textarea rows="4" placeholder="تصرفك الإداري والتقمصي..."></textarea>
+                    <div class="form-row">
+                        <label>ما هو مفهومك لـ (New Life Rule)؟</label>
+                        <textarea rows="4" placeholder="اشرح القاعدة بالتفصيل..."></textarea>
                     </div>
                     <div style="display:flex; justify-content:space-between;">
-                        <button class="btn-core" onclick="moveStep(1)">رجوع</button>
-                        <button class="btn-core" onclick="moveStep(3)">المرحلة التالية</button>
+                        <button class="btn-action" onclick="move(1)">رجوع</button>
+                        <button class="btn-action" onclick="move(3)">المرحلة التالية</button>
                     </div>
                 </div>
-
-                <div class="form-step" id="step-3">
-                    <div class="f-group">
-                        <label>سيناريو: أنت في عملية سرقة وتمت محاصرتك، كيف تتصرف؟</label>
-                        <textarea rows="5" placeholder="أظهر لنا مهاراتك في التقمص..."></textarea>
+                <div class="step-container" id="st-3">
+                    <h2 style="font-family:var(--font-tech); color:var(--p-neon); margin-bottom:50px;">قصة الشخصية</h2>
+                    <div class="form-row">
+                        <label>تاريخ شخصيتك وأهدافها داخل المدينة</label>
+                        <textarea rows="8" placeholder="من أين أتيت؟ ماذا تريد أن تصبح؟"></textarea>
                     </div>
                     <div style="display:flex; justify-content:space-between;">
-                        <button class="btn-core" onclick="moveStep(2)">رجوع</button>
-                        <button class="btn-core" onclick="finishApp()">إرسال الطلب</button>
+                        <button class="btn-action" onclick="move(2)">رجوع</button>
+                        <button class="btn-action" onclick="finish()">تقديم الهوية</button>
                     </div>
                 </div>
             </div>
@@ -457,9 +601,10 @@
 
     </main>
 
-    <div class="sys-monitor" id="log-box">
-        <div class="log-line">> SYSTEM_BOOT_SUCCESS</div>
-        <div class="log-line">> CONNECTING_TO_NOVAX_GRID...</div>
+    <div class="monitor-win" id="log-window">
+        <div class="log-row">> AUTHENTICATING_VIRUSZ_SESSION...</div>
+        <div class="log-row">> LOADING_NEURAL_NETWORK_V5...</div>
+        <div class="log-row">> SYSTEM_CAPACITY_OPTIMIZED</div>
     </div>
 
     <footer>
@@ -467,146 +612,148 @@
     </footer>
 
     <script>
-        // 1. Mouse Coordination
-        const cMain = document.getElementById('c-main');
+        // 1. Mouse Coordination System
         const cDot = document.getElementById('c-dot');
-        const cOuter = document.getElementById('c-outer');
-        let mx = 0, my = 0, rx = 0, ry = 0;
+        const cRing = document.getElementById('c-ring');
+        const cFrame = document.getElementById('c-frame');
+        let mX = 0, mY = 0, rX = 0, rY = 0;
 
         window.addEventListener('mousemove', e => {
-            mx = e.clientX; my = e.clientY;
-            cDot.style.left = mx + 'px';
-            cDot.style.top = my + 'px';
+            mX = e.clientX;
+            mY = e.clientY;
+            cDot.style.left = mX + 'px';
+            cDot.style.top = mY + 'px';
         });
 
-        function animateMouse() {
-            rx += (mx - rx) * 0.15;
-            ry += (my - ry) * 0.15;
-            cMain.style.left = rx + 'px';
-            cMain.style.top = ry + 'px';
-            cOuter.style.left = rx + 'px';
-            cOuter.style.top = ry + 'px';
-            requestAnimationFrame(animateMouse);
+        function syncMouse() {
+            rX += (mX - rX) * 0.15;
+            rY += (mY - rY) * 0.15;
+            cRing.style.left = rX + 'px';
+            cRing.style.top = rY + 'px';
+            cFrame.style.left = rX + 'px';
+            cFrame.style.top = rY + 'px';
+            requestAnimationFrame(syncMouse);
         }
-        animateMouse();
+        syncMouse();
 
-        // 2. Neural Background Engine (The Connected Threads)
-        const canvas = document.getElementById('net-canvas');
+        // 2. Neural Network Background (THE CONNECTED STYLE)
+        const canvas = document.getElementById('neural-canvas');
         const ctx = canvas.getContext('2d');
-        let particles = [];
+        let dots = [];
 
-        function initNet() {
+        function initNeural() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            particles = [];
-            for(let i=0; i<120; i++) {
-                particles.push({
+            dots = [];
+            for(let i=0; i<150; i++) {
+                dots.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.6,
-                    vy: (Math.random() - 0.5) * 0.6
+                    vx: (Math.random() - 0.5) * 0.7,
+                    vy: (Math.random() - 0.5) * 0.7
                 });
             }
         }
 
-        function drawNet() {
+        function drawNeural() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#bc13fe";
-            ctx.lineWidth = 0.6;
+            ctx.lineWidth = 0.5;
 
-            particles.forEach((p, i) => {
-                p.x += p.vx;
-                p.y += p.vy;
+            dots.forEach((d, i) => {
+                d.x += d.vx;
+                d.y += d.vy;
 
-                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                if(d.x < 0 || d.x > canvas.width) d.vx *= -1;
+                if(d.y < 0 || d.y > canvas.height) d.vy *= -1;
 
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 2, 0, Math.PI*2);
+                ctx.arc(d.x, d.y, 2, 0, Math.PI*2);
                 ctx.fill();
 
-                for(let j=i+1; j<particles.length; j++) {
-                    let dist = Math.hypot(p.x - particles[j].x, p.y - particles[j].y);
-                    if(dist < 160) {
-                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - dist/160})`;
+                for(let j=i+1; j<dots.length; j++) {
+                    let dist = Math.hypot(d.x - dots[j].x, d.y - dots[j].y);
+                    if(dist < 180) {
+                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - dist/180})`;
                         ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.moveTo(d.x, d.y);
+                        ctx.lineTo(dots[j].x, dots[j].y);
                         ctx.stroke();
                     }
                 }
             });
-            requestAnimationFrame(drawNet);
+            requestAnimationFrame(drawNeural);
         }
-        initNet();
-        drawNet();
+        initNeural();
+        drawNeural();
 
-        // 3. Preloader Sequence
-        function initApp() {
+        // 3. Sovereign Preloader Logic
+        function initSovereign() {
             let p = 0;
-            const fill = document.getElementById('fill-bar');
-            const status = document.getElementById('status-msg');
-            const steps = ["DECRYPTING_ASSETS...", "LOADING_VINE_SERVER...", "SYNCING_CITIZENS...", "READY."];
+            const fill = document.getElementById('fill-id');
+            const status = document.getElementById('boot-status');
+            const msgs = ["ENCRYPTING_SOCKETS...", "SYNCING_SQL_DATABASE...", "GATHERING_SOULS...", "CORE_ESTABLISHED."];
 
-            const interval = setInterval(() => {
-                p += Math.random() * 6;
+            const itv = setInterval(() => {
+                p += Math.random() * 5;
                 if(p >= 100) {
                     p = 100;
-                    clearInterval(interval);
-                    gsap.to('#preloader', { opacity: 0, duration: 1.2, onComplete: () => {
+                    clearInterval(itv);
+                    gsap.to('#preloader', { opacity: 0, duration: 1.5, onComplete: () => {
                         document.getElementById('preloader').remove();
-                        addLog("USER_AUTHORIZED_VIA_CORE");
+                        pushLog("ACCESS_GRANTED: WELCOME ADMIN");
                     }});
                 }
                 fill.style.width = p + '%';
-                status.innerText = steps[Math.floor((p/100)*(steps.length-1))];
+                status.innerText = msgs[Math.floor((p/100)*(msgs.length-1))];
             }, 100);
         }
 
         // 4. Navigation Control
-        function switchTab(id, btn) {
-            document.querySelectorAll('.sector').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('sector-' + id).classList.add('active');
+        function goto(id, btn) {
+            document.querySelectorAll('.section-block').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            const target = document.getElementById('sec-' + id);
+            target.classList.add('active');
             if(btn) btn.classList.add('active');
-            addLog(`TAB_CHANGED: ${id.toUpperCase()}`);
-            gsap.from('#sector-' + id, { y: 20, opacity: 0, duration: 0.5 });
+            pushLog(`SECTOR_NAV: ${id.toUpperCase()}`);
+            gsap.from(target, { y: 40, opacity: 0, duration: 0.8 });
         }
 
-        // 5. App Form Steps
-        function moveStep(s) {
-            document.querySelectorAll('.form-step').forEach(st => st.classList.remove('active'));
-            document.getElementById('step-' + s).classList.add('active');
-            addLog(`APP_PROGRESS: STEP_${s}`);
+        // 5. App Steps Controller
+        function move(s) {
+            document.querySelectorAll('.step-container').forEach(sc => sc.classList.remove('active'));
+            document.getElementById('st-' + s).classList.add('active');
+            pushLog(`APP_SEQ: PHASE_${s}`);
         }
 
-        function finishApp() {
+        function finish() {
             Swal.fire({
-                title: 'تم الإرسال بنجاح',
-                text: 'سجلنا طلبك في قاعدة بيانات NoVaX، انتظر ردنا بالديسكورد.',
+                title: 'تم إرسال الهوية',
+                text: 'سجلنا بياناتك في أرشيف NoVaX الملكي. انتظر تواصلنا.',
                 icon: 'success',
                 background: '#050508',
                 color: '#fff',
                 confirmButtonColor: '#bc13fe'
             });
-            addLog("APPLICATION_SUBMITTED_TO_COUNCIL");
+            pushLog("IDENTITY_DATA_SECURED");
         }
 
-        // 6. Live Monitor Engine
-        function addLog(m) {
-            const box = document.getElementById('log-box');
-            const div = document.createElement('div');
-            div.className = 'log-line';
-            div.innerText = `> ${new Date().toLocaleTimeString()} | ${m}`;
-            box.appendChild(div);
-            if(box.childNodes.length > 9) box.removeChild(box.firstChild);
+        // 6. Live Log Engine
+        function pushLog(m) {
+            const win = document.getElementById('log-window');
+            const log = document.createElement('div');
+            log.className = 'log-row';
+            log.innerText = `> ${new Date().toLocaleTimeString()} | ${m}`;
+            win.appendChild(log);
+            if(win.childNodes.length > 10) win.removeChild(win.firstChild);
         }
 
-        function auth() {
+        function discordLogin() {
             window.location.href = "https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify";
         }
 
-        window.addEventListener('resize', initNet);
+        window.addEventListener('resize', initNeural);
     </script>
 </body>
 </html>
