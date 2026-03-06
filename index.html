@@ -3,251 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoVaX RP | THE DEFINITIVE MASTERPIECE</title>
+    <title>NoVaX RP | THE GALACTIC SUPREMACY</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         :root {
-            --primary: #a246f0;
-            --accent: #00f2ff;
-            --kick: #53fc18;
-            --gold: #ffcf40;
-            --dark: #020205;
-            --card-bg: rgba(255, 255, 255, 0.02);
+            --p: #a246f0;         /* Primary Purple */
+            --p-dim: #5c2885;
+            --p-glow: rgba(162, 70, 240, 0.4);
+            --a: #00f2ff;         /* Cyan Accent */
+            --k: #53fc18;         /* Kick Green */
+            --g: #ffcf40;         /* Gold */
+            --bg: #020205;        /* Deep Black */
+            --glass: rgba(255, 255, 255, 0.02);
             --border: rgba(162, 70, 240, 0.2);
+            --font-tech: 'Orbitron', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
         }
 
-        /* --- Global Tech Style --- */
+        /* --- UI Reset & Custom Scroll --- */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
-        body { background: var(--dark); color: #fff; font-family: 'Cairo', sans-serif; overflow-x: hidden; }
-        .w-e { filter: grayscale(1) brightness(10); width: 22px; vertical-align: middle; }
+        body { background: var(--bg); color: #fff; font-family: 'Cairo', sans-serif; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--p); box-shadow: 0 0 10px var(--p); }
+
+        /* --- White Emoji Filter --- */
+        .w-e { filter: grayscale(1) brightness(10); width: 22px; vertical-align: middle; transition: 0.3s; }
+
+        /* --- Core Background Elements --- */
+        canvas#space { position: fixed; inset: 0; z-index: -2; opacity: 0.6; }
+        .scanlines {
+            position: fixed; inset: 0; z-index: 5000; pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 4px, 3px 100%;
+        }
+        .vignette { position: fixed; inset: 0; background: radial-gradient(circle, transparent 30%, #000 120%); z-index: -1; }
 
         /* --- Custom Cursor --- */
-        #cursor {
-            width: 20px; height: 20px; border: 2px solid var(--accent);
-            border-radius: 50%; position: fixed; pointer-events: none;
-            z-index: 9999; box-shadow: 0 0 15px var(--accent);
-        }
-
-        /* --- Background Nexus --- */
-        canvas#nexus { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.4; }
-        .vignette { position: fixed; inset: 0; background: radial-gradient(circle, transparent 20%, #000 100%); z-index: -1; pointer-events: none; }
+        #c { width: 25px; height: 25px; border: 1px solid var(--a); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.1s; box-shadow: 0 0 15px var(--a); }
+        #c-dot { width: 4px; height: 4px; background: var(--p); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; }
 
         /* --- Preloader --- */
-        #loader {
+        #pre {
             position: fixed; inset: 0; background: #000; z-index: 10000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        .load-line { width: 200px; height: 2px; background: rgba(255,255,255,0.1); margin-top: 20px; position: relative; }
-        .load-line::after { content: ''; position: absolute; height: 100%; width: 0; background: var(--primary); animation: load 2s forwards; box-shadow: 0 0 10px var(--primary); }
-        @keyframes load { to { width: 100%; } }
+        .pre-text { font-family: var(--font-tech); font-size: 1.5rem; letter-spacing: 5px; color: var(--p); margin-bottom: 20px; }
+        .pre-bar { width: 300px; height: 2px; background: rgba(255,255,255,0.05); overflow: hidden; }
+        .pre-fill { width: 0%; height: 100%; background: var(--p); box-shadow: 0 0 20px var(--p); }
 
-        /* --- Navigation --- */
+        /* --- Header --- */
         header {
-            padding: 20px 5%; display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
+            padding: 20px 4%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000;
         }
-        .logo { font-family: 'Orbitron'; font-size: 28px; font-weight: 900; letter-spacing: 2px; }
-        .logo span { color: var(--primary); text-shadow: 0 0 15px var(--primary); }
+        .brand { font-family: var(--font-tech); font-size: 30px; font-weight: 900; color: #fff; text-shadow: 0 0 10px var(--p); }
+        .brand span { color: var(--a); }
 
-        .nav-grid { display: flex; gap: 8px; }
-        .tab {
-            padding: 10px 20px; background: var(--card-bg); border: 1px solid var(--border);
-            border-radius: 4px; font-weight: 700; font-size: 0.8rem; transition: 0.3s;
+        nav { display: flex; gap: 5px; }
+        .t {
+            padding: 12px 18px; background: var(--glass); border: 1px solid var(--border);
+            font-size: 0.75rem; font-weight: 800; border-radius: 2px; transition: 0.4s;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
         }
-        .tab:hover, .tab.active { background: var(--primary); border-color: #fff; transform: skewX(-10deg); box-shadow: 0 0 20px rgba(162, 70, 240, 0.4); }
+        .t:hover, .t.active { background: var(--p); border-color: #fff; transform: translateY(-3px); box-shadow: 0 0 20px var(--p-glow); }
 
-        /* --- Main Content --- */
-        .container { max-width: 1500px; margin: 40px auto; padding: 0 30px; }
+        /* --- Sidebar Mini-Stats --- */
+        .side-info {
+            position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+            z-index: 800; display: flex; flex-direction: column; gap: 15px;
+        }
+        .s-box {
+            background: rgba(0,0,0,0.8); border: 1px solid var(--border);
+            padding: 15px; writing-mode: vertical-rl; font-family: var(--font-tech);
+            font-size: 0.6rem; letter-spacing: 2px; color: var(--a);
+        }
+
+        /* --- Content --- */
+        .container { max-width: 1400px; margin: 40px auto; padding: 0 20px; position: relative; }
         .section { display: none; }
-        .section.active { display: block; animation: fadeInUp 0.6s ease; }
+        .section.active { display: block; animation: sectionIn 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
+        @keyframes sectionIn { from { opacity: 0; transform: translateY(50px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        .panel {
+        /* --- Hero --- */
+        .hero { text-align: center; padding: 100px 0; }
+        .glitch-text { font-family: var(--font-tech); font-size: 7rem; font-weight: 900; line-height: 0.9; }
+        .sub-text { font-family: var(--font-mono); color: var(--a); font-size: 1.2rem; margin-top: 20px; opacity: 0.7; }
+
+        /* --- Panel Style (The Core Look) --- */
+        .pnl {
             background: rgba(255,255,255,0.01); border: 1px solid var(--border);
-            padding: 35px; position: relative; backdrop-filter: blur(10px);
-            border-radius: 4px; margin-bottom: 30px;
+            padding: 40px; border-radius: 2px; position: relative;
+            backdrop-filter: blur(10px); transition: 0.5s; margin-bottom: 30px;
         }
-        .panel::before { content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 40px; background: var(--accent); }
+        .pnl:hover { border-color: var(--p); background: rgba(162, 70, 240, 0.03); }
+        .pnl::before { content: ''; position: absolute; top: -1px; left: -1px; width: 40px; height: 40px; border-top: 2px solid var(--a); border-left: 2px solid var(--a); }
+        .pnl::after { content: ''; position: absolute; bottom: -1px; right: -1px; width: 40px; height: 40px; border-bottom: 2px solid var(--a); border-right: 2px solid var(--a); }
 
-        /* --- Store UI --- */
-        .store-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .pack {
-            background: #05050a; border: 1px solid var(--border); padding: 40px;
-            text-align: center; border-radius: 15px; transition: 0.4s; position: relative;
-            overflow: hidden;
+        /* --- Store (New) --- */
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        .item {
+            background: #050508; border: 1px solid var(--border); padding: 50px 30px;
+            text-align: center; position: relative; overflow: hidden; transition: 0.4s;
         }
-        .pack:hover { transform: translateY(-10px); border-color: var(--primary); }
-        .pack.gold { border-color: var(--gold); }
-        .pack.gold::after { content: 'BEST VALUE'; position: absolute; top: 20px; right: -30px; background: var(--gold); color: #000; transform: rotate(45deg); padding: 5px 40px; font-size: 0.6rem; font-weight: 900; }
-        
-        .price { font-family: 'Orbitron'; font-size: 3rem; margin: 20px 0; color: var(--accent); }
-        .features { list-style: none; text-align: right; margin-bottom: 30px; font-size: 0.9rem; }
-        .features li { margin-bottom: 12px; opacity: 0.8; }
-        .features li i { color: var(--primary); margin-left: 10px; }
-
-        /* --- Staff UI --- */
-        .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-        .staff-card {
-            background: var(--card-bg); padding: 30px 15px; text-align: center;
-            border: 1px solid var(--border); border-radius: 10px;
-        }
-        .staff-card img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary); margin-bottom: 15px; }
-        .staff-card h4 { font-family: 'Orbitron'; font-size: 0.9rem; }
-        .role { font-size: 0.7rem; color: var(--accent); font-weight: 900; text-transform: uppercase; }
-
-        /* --- Buttons --- */
-        .btn-tech {
-            width: 100%; padding: 15px; background: var(--primary); color: #fff;
-            border: none; font-family: 'Orbitron'; font-weight: 900;
-            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+        .item:hover { transform: scale(1.02); border-color: var(--p); }
+        .item i { font-size: 4rem; color: var(--p); margin-bottom: 20px; text-shadow: 0 0 20px var(--p); }
+        .price { font-family: var(--font-tech); font-size: 3.5rem; margin: 25px 0; color: var(--a); }
+        .buy-btn {
+            width: 100%; padding: 18px; background: transparent; border: 1px solid var(--p);
+            color: #fff; font-family: var(--font-tech); font-weight: 900; cursor: pointer;
             transition: 0.3s;
         }
-        .btn-tech:hover { background: var(--accent); color: #000; letter-spacing: 2px; }
+        .buy-btn:hover { background: var(--p); box-shadow: 0 0 30px var(--p); letter-spacing: 5px; }
+
+        /* --- Wanted List (New Section) --- */
+        .wanted-card {
+            display: flex; align-items: center; gap: 20px; background: rgba(255,0,0,0.05);
+            border: 1px solid rgba(255,0,0,0.2); padding: 15px; margin-bottom: 10px;
+        }
+        .wanted-card img { width: 60px; height: 60px; filter: grayscale(1); border: 2px solid #ff0000; }
+        .wanted-info h4 { color: #ff0000; font-family: var(--font-tech); }
+
+        /* --- Terminal Log --- */
+        .terminal {
+            background: #000; border: 1px solid #1a1a1a; padding: 20px;
+            font-family: var(--font-mono); font-size: 0.8rem; color: var(--k);
+            height: 200px; overflow-y: auto; margin-top: 30px;
+        }
+
+        /* --- Staff --- */
+        .staff-wrap { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+        .member {
+            background: var(--glass); padding: 30px; text-align: center; border: 1px solid var(--border);
+            clip-path: polygon(0 15%, 15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%);
+        }
+        .member img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--p); margin-bottom: 15px; }
+        .rank { font-size: 0.6rem; background: var(--p); color: #fff; padding: 2px 10px; border-radius: 50px; font-weight: 900; }
 
         /* --- Footer --- */
-        footer { padding: 60px; text-align: center; border-top: 1px solid var(--border); opacity: 0.4; font-size: 0.8rem; }
+        footer { padding: 80px 20px; text-align: center; opacity: 0.3; border-top: 1px solid var(--border); }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <h1 style="font-family: 'Orbitron'; letter-spacing: 5px;">NOVAX<span>.SYSTEM</span></h1>
-        <div class="load-line"></div>
+    <div id="pre">
+        <div class="pre-text">LOADING NOVAX CORE</div>
+        <div class="pre-bar"><div class="pre-fill"></div></div>
     </div>
 
-    <div id="cursor"></div>
-    <canvas id="nexus"></canvas>
+    <div id="c"></div>
+    <div id="c-dot"></div>
+    <div class="scanlines"></div>
+    <canvas id="space"></canvas>
     <div class="vignette"></div>
 
     <header>
-        <div class="logo">NOVAX<span>.SA</span></div>
-        <div class="nav-grid">
-            <div class="tab active" onclick="nav('home', this)">الرئيسية</div>
-            <div class="tab" onclick="nav('rules', this)">القوانين</div>
-            <div class="tab" onclick="nav('kick', this)">البثوث</div>
-            <div class="tab" onclick="nav('store', this)">المتجر</div>
-            <div class="tab" onclick="nav('apply', this)">التقديم</div>
-            <div class="tab" onclick="nav('staff', this)">الإدارة</div>
-        </div>
-        <div>
-            <button class="tab" style="border-color: var(--primary);" onclick="login()">LOGIN <span class="w-e">🔑</span></button>
-        </div>
+        <div class="brand">NOVAX<span>.SYSTEM</span></div>
+        <nav>
+            <div class="t active" onclick="nav('home', this)">الرئيسية</div>
+            <div class="t" onclick="nav('rules', this)">القوانين</div>
+            <div class="t" onclick="nav('kick', this)">البثوث</div>
+            <div class="t" onclick="nav('store', this)">المتجر</div>
+            <div class="t" onclick="nav('wanted', this)">المطلوبين</div>
+            <div class="t" onclick="nav('apply', this)">المواطنة</div>
+            <div class="t" onclick="nav('staff', this)">الإدارة</div>
+        </nav>
+        <button class="t" style="border-color: var(--a); color: var(--a);" onclick="login()">IDENTIFY</button>
     </header>
+
+    <div class="side-info">
+        <div class="s-box">SERVER STATUS: ONLINE</div>
+        <div class="s-box" style="color: var(--p);">POPULATION: 214/300</div>
+        <div class="s-box" style="color: var(--k);">LATENCY: 14MS</div>
+    </div>
 
     <div class="container">
         
         <section id="home-page" class="section active">
-            <div class="panel" style="text-align: center; padding: 120px 20px; border: none; background: transparent;">
-                <h1 style="font-family: 'Orbitron'; font-size: 5rem; line-height: 0.8; margin-bottom: 20px;">SYSTEM<br><span style="color:var(--primary)">OVERRIDE</span></h1>
-                <p style="color: var(--accent); letter-spacing: 8px; font-weight: 900;">WELCOME TO THE NEXT GENERATION OF RP</p>
-                <div style="margin-top: 50px;">
-                    <button class="btn-tech" style="width: 280px;" onclick="nav('apply', document.querySelectorAll('.tab')[4])">ابدأ رحلتك الآن</button>
+            <div class="hero">
+                <div class="glitch-text" style="color: var(--p);">NOVAX</div>
+                <div class="glitch-text" style="font-size: 5rem; color: #fff; margin-top: -20px;">REALITY</div>
+                <p class="sub-text">> INITIALIZING IMMERSIVE ROLEPLAY PROTOCOL...</p>
+                <div style="margin-top: 40px; display: flex; justify-content: center; gap: 20px;">
+                    <button class="buy-btn" style="width: 250px;">دليل المدينة</button>
+                    <button class="buy-btn" style="width: 250px; border-color: var(--a);">ديسكورد</button>
+                </div>
+            </div>
+
+            <div class="pnl">
+                <h3 style="font-family: var(--font-tech); margin-bottom: 20px;">آخر العمليات المتلفزة <span class="w-e">🎥</span></h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div style="height: 200px; background: #111; border: 1px solid var(--border);"></div>
+                    <div style="height: 200px; background: #111; border: 1px solid var(--border);"></div>
                 </div>
             </div>
         </section>
 
         <section id="rules-page" class="section">
-            <div class="panel">
-                <h2 style="font-family:'Orbitron'; color:var(--primary); margin-bottom:30px;">CITY PROTOCOLS</h2>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+            <div class="pnl">
+                <h2 style="font-family: var(--font-tech); color: var(--p); margin-bottom: 40px;">THE CODE OF CONDUCT</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
                     <div>
-                        <h4 style="color:var(--accent); margin-bottom:15px;">القوانين الجنائية</h4>
-                        <div class="panel" style="padding:15px; font-size:0.85rem;">يمنع منعاً باتاً القتل العشوائي (RDM).</div>
-                        <div class="panel" style="padding:15px; font-size:0.85rem;">يمنع استخدام المركبات كسلاح (VDM).</div>
+                        <h4 style="color: var(--a); margin-bottom: 15px;">01. الالتزام بالواقعية</h4>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">يجب أن تكون جميع أفعالك مبنية على منطق بشري واقعي. أي تصرف خارق للطبيعة يؤدي للنفي.</p>
                     </div>
                     <div>
-                        <h4 style="color:var(--accent); margin-bottom:15px;">قوانين الحياة</h4>
-                        <div class="panel" style="padding:15px; font-size:0.85rem;">يجب تقدير الحياة (Fear RP) عند التهديد.</div>
-                        <div class="panel" style="padding:15px; font-size:0.85rem;">يمنع الخروج أثناء السيناريو (Combat Log).</div>
+                        <h4 style="color: var(--a); margin-bottom: 15px;">02. قانون الحياة الواحدة</h4>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">عند الموت، تنقطع ذاكرتك عن الحدث السابق. يمنع العودة لمكان موتك قبل مرور 15 دقيقة.</p>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="kick-page" class="section">
-            <div class="panel">
-                <h2 style="margin-bottom:30px;">KICK LIVE STREAMS <span style="color:var(--kick)">🟢</span></h2>
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">
-                    <div class="panel" style="text-align:center;">
-                        <img src="https://i.pravatar.cc/100?u=v" style="border-radius:50%; border:3px solid var(--kick); margin-bottom:15px;">
-                        <h4>Virusz_Official</h4>
-                        <p style="font-size:0.7rem; color:var(--kick); margin-bottom:15px;">LIVE: مطاردات كبرى</p>
-                        <button class="btn-tech" style="background:var(--kick); color:#000;">مشاهدة</button>
-                    </div>
+                <div class="terminal" id="rule-term">
+                    [SYSTEM]: Loading Full Rulebook...<br>
+                    [INFO]: Encryption Level 128-bit Active.<br>
+                    [SUCCESS]: Protocols Loaded.
                 </div>
             </div>
         </section>
 
         <section id="store-page" class="section">
             <div class="store-grid">
-                <div class="pack">
-                    <h3 style="font-family:'Orbitron'">BRONZE VIP</h3>
-                    <div class="price">$10</div>
-                    <ul class="features">
-                        <li><i class="fas fa-check"></i> سيارة رياضية فئة B</li>
-                        <li><i class="fas fa-check"></i> رصيد 50,000$ داخل اللعبة</li>
-                        <li><i class="fas fa-check"></i> رتبة مميزة في الديسكورد</li>
-                    </ul>
-                    <button class="btn-tech">شراء الآن</button>
+                <div class="item">
+                    <i class="fas fa-microchip"></i>
+                    <h3>CORE UPGRADE</h3>
+                    <div class="price">$15</div>
+                    <p style="margin-bottom: 20px; font-size: 0.8rem;">باقة المبتدئين: سيارة رياضية + سكن خاص</p>
+                    <button class="buy-btn">ACQUIRE</button>
                 </div>
-                <div class="pack gold">
-                    <h3 style="font-family:'Orbitron'; color:var(--gold)">ROYAL VIP</h3>
-                    <div class="price">$35</div>
-                    <ul class="features">
-                        <li><i class="fas fa-star"></i> قصر خاص مع كراج واسع</li>
-                        <li><i class="fas fa-star"></i> 3 سيارات فئة Super Rare</li>
-                        <li><i class="fas fa-star"></i> أولوية دخول السيرفر (Queue Bypass)</li>
-                        <li><i class="fas fa-star"></i> سلاح خاص محفور باسمك</li>
-                    </ul>
-                    <button class="btn-tech" style="background:var(--gold); color:#000;">شراء الآن</button>
+                <div class="item" style="border-color: var(--g);">
+                    <i class="fas fa-crown" style="color: var(--g); text-shadow: 0 0 20px var(--g);"></i>
+                    <h3 style="color: var(--g);">CELESTIAL VIP</h3>
+                    <div class="price" style="color: var(--g);">$50</div>
+                    <p style="margin-bottom: 20px; font-size: 0.8rem;">الباقة الملكية: طائرة مروحية + قصر + رتبة إمبراطور</p>
+                    <button class="buy-btn" style="border-color: var(--g); color: var(--g);">CLAIM THRONE</button>
                 </div>
-                <div class="pack">
-                    <h3 style="font-family:'Orbitron'">SILVER VIP</h3>
-                    <div class="price">$20</div>
-                    <ul class="features">
-                        <li><i class="fas fa-check"></i> سيارة فئة A معدلة</li>
-                        <li><i class="fas fa-check"></i> منزل في وسط المدينة</li>
-                        <li><i class="fas fa-check"></i> لوحة سيارة مخصصة</li>
-                    </ul>
-                    <button class="btn-tech">شراء الآن</button>
+                <div class="item">
+                    <i class="fas fa-database"></i>
+                    <h3>DATA PACK</h3>
+                    <div class="price">$25</div>
+                    <p style="margin-bottom: 20px; font-size: 0.8rem;">باقة الوسط: سيارتين فئة A + منزل في المدينة</p>
+                    <button class="buy-btn">ACQUIRE</button>
                 </div>
             </div>
         </section>
 
-        <section id="apply-page" class="section">
-            <div class="panel" style="max-width:800px; margin:0 auto;">
-                <h2 style="font-family:'Orbitron'; margin-bottom:30px;">CITIZEN APPLICATION</h2>
-                <input type="text" placeholder="الاسم داخل اللعبة" style="width:100%; padding:15px; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:#fff; margin-bottom:20px;">
-                <textarea placeholder="تكلم عن خلفية شخصيتك الدرامية..." rows="5" style="width:100%; padding:15px; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:#fff; margin-bottom:20px;"></textarea>
-                <button class="btn-tech" onclick="Swal.fire('تم!', 'تم إرسال طلبك بنجاح', 'success')">إرسال للمراجعة</button>
+        <section id="wanted-page" class="section">
+            <div class="pnl">
+                <h2 style="color: #ff0000; font-family: var(--font-tech); margin-bottom: 30px;">MOST WANTED LIST</h2>
+                <div class="wanted-card">
+                    <img src="https://i.pravatar.cc/100?u=w1">
+                    <div class="wanted-info">
+                        <h4>"THE GHOST"</h4>
+                        <p style="font-size: 0.7rem;">الجريمة: سرقة البنك المركزي | الجائزة: 500,000$</p>
+                    </div>
+                </div>
+                <div class="wanted-card">
+                    <img src="https://i.pravatar.cc/100?u=w2">
+                    <div class="wanted-info">
+                        <h4>"REAPER"</h4>
+                        <p style="font-size: 0.7rem;">الجريمة: اغتيال مسؤولين | الجائزة: 1,000,000$</p>
+                    </div>
+                </div>
             </div>
         </section>
 
         <section id="staff-page" class="section">
-            <div class="panel">
-                <h2 style="font-family:'Orbitron'; margin-bottom:40px;">THE OVERSEERS</h2>
-                <div class="staff-grid">
-                    <div class="staff-card">
-                        <img src="https://i.imgur.com/8Q9Z5X9.jpeg">
-                        <h4>VIRUSZ</h4>
-                        <span class="role">Founder / Owner</span>
-                    </div>
-                    <div class="staff-card">
-                        <img src="https://i.pravatar.cc/100?u=a2">
-                        <h4>NOVA</h4>
-                        <span class="role">Head Admin</span>
-                    </div>
-                    <div class="staff-card">
-                        <img src="https://i.pravatar.cc/100?u=a3">
-                        <h4>GHOST</h4>
-                        <span class="role">Developer</span>
-                    </div>
+            <div class="staff-wrap">
+                <div class="member">
+                    <img src="https://i.imgur.com/8Q9Z5X9.jpeg">
+                    <h4>VIRUSZ</h4>
+                    <span class="rank">OVERLORD</span>
+                </div>
+                <div class="member">
+                    <img src="https://i.pravatar.cc/100?u=s1">
+                    <h4>NEXUS</h4>
+                    <span class="rank">ARCHITECT</span>
+                </div>
+                <div class="member">
+                    <img src="https://i.pravatar.cc/100?u=s2">
+                    <h4>BLADE</h4>
+                    <span class="rank">ENFORCER</span>
                 </div>
             </div>
         </section>
@@ -255,59 +296,67 @@
     </div>
 
     <footer>
-        NOVAX RP &copy; 2026 | DESIGNED BY ARTIFICIAL INTELLIGENCE | ALL SYSTEMS OPERATIONAL
+        <p style="font-family: var(--font-tech);">&copy; 2026 NOVAX RP - SECURED BY NEURAL NETWORK</p>
+        <p style="font-size: 0.6rem; margin-top: 10px; color: var(--p);">ENCRYPTED CONNECTION: 256-BIT SSL ACTIVE</p>
     </footer>
 
     <script>
-        // 1. Cursor Interaction
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        // 2. Preloader
-        window.onload = () => {
-            setTimeout(() => {
-                gsap.to('#loader', { duration: 0.8, opacity: 0, onComplete: () => document.getElementById('loader').style.display='none' });
-            }, 1500);
-        };
-
-        // 3. Navigation
-        function nav(id, btn) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(id + '-page').classList.add('active');
-            btn.classList.add('active');
-            gsap.from('#' + id + '-page', { duration: 0.5, y: 30, opacity: 0 });
-        }
-
-        // 4. Background Nexus
-        const canvas = document.getElementById('nexus');
+        // 1. Interactive Space Background (Canvas)
+        const canvas = document.getElementById('space');
         const ctx = canvas.getContext('2d');
-        let dots = [];
-        function init() {
+        let particles = [];
+        function initSpace() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            dots = [];
-            for(let i=0; i<60; i++) dots.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: Math.random()-0.5, vy: Math.random()-0.5 });
-        }
-        function draw() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.strokeStyle = 'rgba(162, 70, 240, 0.15)';
-            dots.forEach((d, i) => {
-                d.x += d.vx; d.y += d.vy;
-                if(d.x<0 || d.x>canvas.width) d.vx*=-1;
-                if(d.y<0 || d.y>canvas.height) d.vy*=-1;
-                for(let j=i+1; j<dots.length; j++) {
-                    let dist = Math.hypot(d.x-dots[j].x, d.y-dots[j].y);
-                    if(dist<150) { ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(dots[j].x, dots[j].y); ctx.stroke(); }
-                }
+            particles = [];
+            for(let i=0; i<150; i++) particles.push({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                z: Math.random()*canvas.width, s: Math.random()*2
             });
-            requestAnimationFrame(draw);
         }
-        init(); draw();
-        window.onresize = init;
+        function drawSpace() {
+            ctx.fillStyle = '#020205'; ctx.fillRect(0,0,canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.z -= 2; if(p.z <= 0) p.z = canvas.width;
+                let sx = (p.x - canvas.width/2) * (canvas.width/p.z) + canvas.width/2;
+                let sy = (p.y - canvas.height/2) * (canvas.width/p.z) + canvas.height/2;
+                let size = (1 - p.z/canvas.width) * 3;
+                ctx.fillStyle = i % 2 == 0 ? '#a246f0' : '#00f2ff';
+                ctx.beginPath(); ctx.arc(sx, sy, size, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(drawSpace);
+        }
+        initSpace(); drawSpace(); window.onresize = initSpace;
+
+        // 2. Advanced Custom Cursor
+        const c = document.getElementById('c');
+        const d = document.getElementById('c-dot');
+        document.addEventListener('mousemove', e => {
+            gsap.to(c, { duration: 0.2, x: e.clientX - 12, y: e.clientY - 12 });
+            gsap.to(d, { duration: 0.1, x: e.clientX - 2, y: e.clientY - 2 });
+        });
+
+        // 3. Preloader Timeline
+        const tl = gsap.timeline();
+        tl.to('.pre-fill', { width: '100%', duration: 2.5, ease: 'power2.inOut' })
+          .to('#pre', { opacity: 0, duration: 1, onComplete: () => document.getElementById('pre').style.display='none' });
+
+        // 4. Navigation System
+        function nav(id, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.t').forEach(t => t.classList.remove('active'));
+            document.getElementById(id + '-page').classList.add('active');
+            btn.classList.add('active');
+            
+            // GSAP Entrance
+            gsap.from('#' + id + '-page .pnl, #' + id + '-page .item', {
+                duration: 0.8, y: 100, opacity: 0, stagger: 0.1, ease: "expo.out"
+            });
+
+            // Log to terminal if exists
+            const term = document.getElementById('rule-term');
+            if(term) term.innerHTML += `<br>> Switching to protocol: ${id.toUpperCase()}...`;
+        }
 
         function login() {
             window.location.href = "https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify";
